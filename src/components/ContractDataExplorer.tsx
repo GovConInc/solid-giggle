@@ -75,16 +75,6 @@ export default function ContractDataExplorer() {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate API call - replace with actual API endpoint
-    // For now using mock data
-    setTimeout(() => {
-      setData(MOCK_DATA);
-      setHasSearched(true);
-      setLoading(false);
-    }, 800);
-    
-    /* 
-    // Real API implementation would look like:
     try {
       const params = new URLSearchParams({
         naics: naicsCode,
@@ -95,15 +85,25 @@ export default function ContractDataExplorer() {
       });
       
       const response = await fetch(`/api/contracts?${params}`);
+      
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+      
       const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch data');
+      }
+      
       setData(result.data);
       setHasSearched(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Search failed:', error);
+      alert(`Search failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
-    */
   };
 
   const getChartData = () => {
@@ -498,6 +498,9 @@ export default function ContractDataExplorer() {
           </p>
         </Card>
       )}
+    </div>
+  );
+}
     </div>
   );
 }
