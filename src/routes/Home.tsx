@@ -7,6 +7,8 @@ import StatCard from "../components/StatCard";
 import Card from "../components/Card";
 import { LinkButton } from "../components/Button";
 import { BRAND, LINKS } from "../lib/constants";
+import ContractDataExplorer from "../components/ContractDataExplorer";
+import MethodologyLoop from "../components/MethodologyLoop";
 
 const features = [
   {
@@ -125,6 +127,18 @@ export default function Home() {
               accent="green"
             />
           </div>
+        </div>
+      </section>
+
+      {/* Contract Data Explorer */}
+      <Section title="Explore Federal Contract Data" kicker="Market Intelligence">
+        <ContractDataExplorer />
+      </Section>
+
+      {/* Methodology Loop */}
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <MethodologyLoop />
         </div>
       </section>
 
