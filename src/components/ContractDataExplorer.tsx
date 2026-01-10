@@ -501,6 +501,3 @@ export default function ContractDataExplorer() {
     </div>
   );
 }
-    </div>
-  );
-}
