@@ -17,22 +17,20 @@ const guaranteedPrograms = [
     icon: Shield,
     title: "SAM.gov Registration",
     subtitle: "5 Business Days",
-    description: "Complete SAM.gov registration with CAGE code, UEI, and all required validation. You provide documents, we handle everything else.",
-    guarantee: "100% Complete Guarantee",
-  },
+    description: "SAM.gov is free through the federal system. We step in for companies that prefer professional management or have issues. Complete SAM.gov registration with CAGE code, UEI, and all required validation."
   {
     icon: Award,
     title: "SBA Certifications",
     subtitle: "14 Business Days",
-    description: "8(a), WOSB, HUBZone, VOSB certifications submitted within 14 days. Full application prep and direct submission support.",
+    description: "SBA certifications submitted within 14 days by our certification specialists. Full application preparation, templates, submission, and ongoing support. Includes a tailored set-aside roadmap. .",
     guarantee: "Submitted or Full Refund",
   },
   {
     icon: Building2,
     title: "GSA Schedule Award",
     subtitle: "30 Business Days",
-    description: "Complete GSA MAS application submitted in 30 days. We manage pricing, compliance, negotiations, and final contract execution.",
-    guarantee: "Submitted or Money Back",
+    description: "Complete GSA MAS application submitted in 30 days. We start with strategy and alginment, prepare pricing, documentation, and technical responses, followed by negotiations, initial award, and more.",
+    guarantee: "Free Qualification Assessment",
   },
 ];
 
@@ -40,17 +38,17 @@ const fcpServices = [
   {
     icon: Database,
     title: "FCP Baseline Migration",
-    description: "Seamless transition from legacy SIP/EDI to the new FAS Catalog Platform without losing catalog data or compliance standing.",
+    description: "Seamless transition from legacy GSA Schedule Input Program (SIP) to the new FAS Catalog Platform (FCP) without losing catalog data or compliance standing.",
   },
   {
     icon: FileText,
-    title: "Product File Management",
-    description: "Monthly catalog updates, pricing modifications, and automated compliance reporting through FCP Product/Services Plus Files.",
+    title: "GSA Contract Management",
+    description: "Professional management of your GSA Schedule, including all Modifications, Sales Reporting, Product/Service Updates, Refreshes/Mass Mods, annual assessments, & more",
   },
   {
     icon: CheckCheck,
     title: "Modification Support",
-    description: "Handle additions, deletions, price changes, and temporary reductions while maintaining automated GSA Advantage publishing.",
+    description: "GSA Schedule modifications for new SINs, offerings, pricing, and EPA updates, with accurate and compliant GSA catalog pricing maintained throughout.",
   },
   {
     icon: TrendingUp,
