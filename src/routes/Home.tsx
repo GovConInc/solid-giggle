@@ -7,34 +7,32 @@ import {
   CheckCheck, AlertCircle, Zap
 } from "lucide-react";
 import Section from "../components/Section";
-import StatCard from "../components/StatCard";
 import Card from "../components/Card";
 import { LinkButton } from "../components/Button";
 import { BRAND, LINKS } from "../lib/constants";
-import ContractDataExplorer from "../components/ContractDataExplorer";
 import MethodologyLoop from "../components/MethodologyLoop";
 
 const guaranteedPrograms = [
   {
     icon: Shield,
     title: "SAM.gov Registration",
-    subtitle: "7-10 Business Days",
-    description: "Complete SAM.gov registration with CAGE code, UEI, and all required validation. Rejected submissions are re-done at no cost.",
-    guarantee: "100% Approval Guaranteed",
+    subtitle: "5 Business Days",
+    description: "Complete SAM.gov registration with CAGE code, UEI, and all required validation. You provide documents, we handle everything else.",
+    guarantee: "100% Complete Guarantee",
   },
   {
     icon: Award,
-    title: "SBA 8(a) Certification",
-    subtitle: "90-120 Days",
-    description: "Full application prep, documentation package, and direct submission support. We handle the entire 8(a) certification process.",
-    guarantee: "Approval or Full Refund",
+    title: "SBA Certifications",
+    subtitle: "14 Business Days",
+    description: "8(a), WOSB, HUBZone, VOSB certifications submitted within 14 days. Full application prep and direct submission support.",
+    guarantee: "Submitted or Full Refund",
   },
   {
     icon: Building2,
     title: "GSA Schedule Award",
-    subtitle: "120-180 Days",
-    description: "End-to-end GSA MAS contract acquisition. We manage pricing, compliance, negotiations, and final contract execution.",
-    guarantee: "Award or Money Back",
+    subtitle: "30 Business Days",
+    description: "Complete GSA MAS application submitted in 30 days. We manage pricing, compliance, negotiations, and final contract execution.",
+    guarantee: "Submitted or Money Back",
   },
 ];
 
@@ -257,8 +255,8 @@ export default function Home() {
       {/* Guaranteed Certification Programs */}
       <Section title="Guaranteed Certification Programs" kicker="For New Companies">
         <p className="text-center text-slate-600 max-w-3xl mx-auto mb-12">
-          Stop worrying about rejection. These programs come with 100% approval guarantees or full refunds. 
-          We've executed 7,000+ registrations and certifications with a rejection-proof process.
+          These programs come with ironclad completion guarantees. We'll complete and submit your applications 
+          within the stated timelines—as long as you provide the documents we need. That's it. No excuses, no delays.
         </p>
 
         <div className="grid gap-8 lg:grid-cols-3">
@@ -305,9 +303,9 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <AlertCircle className="text-gov-gold" size={24} />
               <div className="text-left">
-                <div className="font-bold text-gov-navy">Money-Back Guarantee</div>
+                <div className="font-bold text-gov-navy">The Only Requirement</div>
                 <div className="text-sm text-slate-600">
-                  If you're not approved, you don't pay. Period.
+                  Provide the documents we request. We handle the rest.
                 </div>
               </div>
             </div>
@@ -391,15 +389,6 @@ export default function Home() {
       <section className="bg-white py-16">
         <MethodologyLoop />
       </section>
-
-      {/* Contract Data Explorer */}
-      <Section title="Federal Contract Intelligence" kicker="Market Research">
-        <p className="text-center text-slate-600 max-w-3xl mx-auto mb-12">
-          Research federal spending patterns, identify target agencies, and analyze set-aside opportunities 
-          across NAICS codes and states. Real contract data from USAspending.gov.
-        </p>
-        <ContractDataExplorer />
-      </Section>
 
       {/* Quick Links Section */}
       <section className="bg-slate-50 py-16">
@@ -490,4 +479,5 @@ export default function Home() {
       </Section>
     </>
   );
+}
 }
