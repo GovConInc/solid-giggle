@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, FileText, Award, Target, TrendingUp } from "lucide-react";
-import { cn } from "./cn"; // Assuming you have this utility, otherwise use clsx/tailwind-merge
+import { cn } from "./cn"; // Standard tailwind merge utility
 
-// Configuration for the stages
 const stages = [
   {
     id: "compliance",
     title: "Compliance",
     description: "Complete all Registrations, Certifications, and paperwork.",
     icon: Shield,
-    position: { x: "10%", y: "80%" }, // Bottom Line Start
+    position: { x: "10%", y: "80%" }, // x=100
     color: "bg-slate-500",
   },
   {
@@ -18,7 +17,7 @@ const stages = [
     title: "Context",
     description: "Understand requirements and position for success.",
     icon: FileText,
-    position: { x: "30%", y: "80%" }, // Bottom Line Pre-Loop
+    position: { x: "30%", y: "80%" }, // x=300
     color: "bg-slate-500",
   },
   {
@@ -26,29 +25,32 @@ const stages = [
     title: "Compete",
     description: "Working with your team to write persuasive bids.",
     icon: Award,
-    position: { x: "48%", y: "35%" }, // Top Left of Loop
-    color: "bg-gov-crimson", // Ensure this class exists in your tailwind config or use arbitrary values
+    position: { x: "48%", y: "40%" }, // Left side of loop
+    color: "bg-gov-crimson", 
   },
   {
     id: "capture",
     title: "Capture",
     description: "Identify the right opportunities, by any means.",
     icon: Target,
-    position: { x: "72%", y: "35%" }, // Top Right of Loop
-    color: "bg-gov-navy", // Ensure this class exists
+    position: { x: "72%", y: "40%" }, // Right side of loop
+    color: "bg-gov-navy",
   },
   {
     id: "continuity",
     title: "Continuity",
     description: "Learn how to systematically grow your GovCon Department.",
     icon: TrendingUp,
-    position: { x: "90%", y: "80%" }, // Bottom Line End
+    position: { x: "90%", y: "80%" }, // x=900
     color: "bg-slate-500",
   },
 ];
 
 export default function MethodologyLoop() {
   const [activeStage, setActiveStage] = useState<string | null>(null);
+
+  // Solid slate color to guarantee visibility (no gradients)
+  const strokeColor = "#cbd5e1"; 
 
   return (
     <div className="relative w-full max-w-7xl mx-auto py-24 px-4 overflow-hidden">
@@ -62,114 +64,106 @@ export default function MethodologyLoop() {
       {/* --- DESKTOP ANIMATED VIEW --- */}
       <div className="hidden lg:block relative h-[400px] w-full">
         
-        {/* The SVG Canvas */}
+        {/* The SVG Canvas - ViewBox optimized for 1000x400 coordinate system */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none"
           viewBox="0 0 1000 400"
           preserveAspectRatio="xMidYMid meet"
         >
           <defs>
-            <linearGradient id="line-gradient" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#cbd5e1" />
-              <stop offset="100%" stopColor="#94a3b8" />
-            </linearGradient>
-            
-            {/* Arrow Marker Definition */}
             <marker
               id="arrowhead"
-              markerWidth="6"
-              markerHeight="6"
-              refX="5"
-              refY="3"
+              markerWidth="4"
+              markerHeight="4"
+              refX="2"
+              refY="2"
               orient="auto"
-              fill="#94a3b8"
+              fill={strokeColor}
             >
-              <path d="M0,0 L6,3 L0,6 L1,3 Z" />
+              <path d="M0,0 L4,2 L0,4 L1,2 Z" />
             </marker>
           </defs>
 
-          {/* 1. Base Line (Compliance -> Context -> Loop Base) */}
+          {/* 1. LEFT LINE: Start -> Loop Tangent Point */}
+          {/* Coordinates: Starts at x=50, Goes to x=600 (center of loop x-axis) */}
           <motion.path
-            d="M 50 320 L 450 320"
-            stroke="url(#line-gradient)"
-            strokeWidth="14"
+            d="M 50 320 L 600 320"
+            stroke={strokeColor}
+            strokeWidth="12"
             strokeLinecap="round"
             fill="none"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
           />
 
-          {/* 2. The Cycle Loop (Circle) */}
-          {/* Defined as two arcs to allow distinct coloring or animation directions if needed */}
+          {/* 2. THE LOOP: Circular Cycle */}
+          {/* Center: 600, 200. Radius: 120. Bottom Tangent: 600, 320 */}
           <motion.path
             d="M 600 320 
-               A 120 120 0 1 0 600 80 
-               A 120 120 0 1 0 600 320 Z"
-            stroke="#cbd5e1"
-            strokeWidth="14"
+               A 120 120 0 1 1 600 80
+               A 120 120 0 1 1 600 320"
+            stroke={strokeColor}
+            strokeWidth="12"
             fill="none"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
+            transition={{ duration: 1.5, delay: 0.6, ease: "easeInOut" }}
           />
 
-          {/* 3. Exit Line (Loop Base -> Continuity) */}
+          {/* 3. RIGHT LINE: Loop Tangent Point -> End */}
+          {/* Coordinates: Starts at x=600, Goes to x=950 */}
           <motion.path
-            d="M 750 320 L 950 320"
-            stroke="url(#line-gradient)"
-            strokeWidth="14"
+            d="M 600 320 L 950 320"
+            stroke={strokeColor}
+            strokeWidth="12"
             strokeLinecap="round"
             fill="none"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeInOut" }}
           />
 
-          {/* --- Directional Arrows on the Path --- */}
+          {/* --- ARROWS --- */}
           
-          {/* Arrow: Context -> Loop */}
+          {/* Arrow 1: Between Context and Loop */}
           <motion.path
-            d="M 380 320 L 385 320"
+            d="M 450 320 L 452 320"
             stroke="none"
-            fill="none"
             markerEnd="url(#arrowhead)"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
           />
 
-           {/* Arrow: Loop Top (Moving Left) */}
+           {/* Arrow 2: Top of Loop (Moving Left) */}
            <motion.path
-            d="M 620 80 L 580 80" 
-            stroke="#64748b"
-            strokeWidth="6"
-            strokeLinecap="round"
+            d="M 610 80 L 590 80" 
+            stroke={strokeColor}
+            strokeWidth="4"
             markerEnd="url(#arrowhead)"
             fill="none"
-            initial={{ opacity: 0, pathLength: 0 }}
-            animate={{ opacity: 1, pathLength: 1 }}
-            transition={{ delay: 1.8, duration: 0.5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
           />
 
-          {/* Arrow: Loop Bottom (Moving Right - Feedback) */}
+          {/* Arrow 3: Bottom of Loop (Moving Right/Feedback) */}
           <motion.path
-             d="M 580 320 L 620 320"
-             stroke="#64748b"
-             strokeWidth="6"
-             strokeLinecap="round"
+             d="M 590 320 L 610 320"
+             stroke={strokeColor}
+             strokeWidth="4"
              markerEnd="url(#arrowhead)"
              fill="none"
-             initial={{ opacity: 0, pathLength: 0 }}
-             animate={{ opacity: 1, pathLength: 1 }}
-             transition={{ delay: 1.8, duration: 0.5 }}
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ delay: 1.5 }}
           />
 
-          {/* Arrow: Loop -> Continuity */}
+          {/* Arrow 4: Between Loop and Continuity */}
           <motion.path
-            d="M 830 320 L 835 320"
+            d="M 800 320 L 802 320"
             stroke="none"
-            fill="none"
             markerEnd="url(#arrowhead)"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -177,7 +171,7 @@ export default function MethodologyLoop() {
           />
         </svg>
 
-        {/* --- Interactive Nodes --- */}
+        {/* --- INTERACTIVE NODES --- */}
         {stages.map((stage) => (
           <motion.div
             key={stage.id}
@@ -194,7 +188,7 @@ export default function MethodologyLoop() {
           </motion.div>
         ))}
 
-        {/* --- Info Card Popup --- */}
+        {/* --- INFO CARD POPUP --- */}
         <AnimatePresence mode="wait">
           {activeStage && (
             <div className="absolute top-[45%] left-1/2 -translate-x-1/2 w-full max-w-md z-20 pointer-events-none">
@@ -204,9 +198,10 @@ export default function MethodologyLoop() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="bg-white/95 backdrop-blur-sm border border-slate-200 shadow-2xl rounded-2xl p-6 text-center"
+                className="bg-white/95 backdrop-blur-md border border-slate-200 shadow-2xl rounded-2xl p-6 text-center"
               >
                 <div className="flex justify-center mb-3">
+                  {/* Icon wrapper to prevent type errors */}
                   {(() => {
                     const s = stages.find(s => s.id === activeStage);
                     const Icon = s?.icon || Shield;
@@ -225,7 +220,7 @@ export default function MethodologyLoop() {
         </AnimatePresence>
       </div>
 
-      {/* --- MOBILE VIEW (Vertical Stack) --- */}
+      {/* --- MOBILE VIEW --- */}
       <div className="lg:hidden space-y-6">
         {stages.map((stage, idx) => (
           <motion.div
@@ -234,7 +229,7 @@ export default function MethodologyLoop() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1 }}
-            className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow"
+            className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm"
           >
             <div className="flex items-start gap-5">
               <div
@@ -273,15 +268,15 @@ function StageNode({
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.5 }}
-      whileHover={{ scale: 1.15 }}
+      whileHover={{ scale: 1.1 }}
       className="group relative flex flex-col items-center cursor-pointer"
     >
-      {/* Pulse Effect for Active State */}
+      {/* Pulse Effect */}
       {isActive && (
         <motion.div
           layoutId="pulse"
           className={cn(
-            "absolute inset-0 rounded-2xl opacity-30 blur-md scale-110",
+            "absolute inset-0 rounded-2xl opacity-30 blur-md scale-125",
             stage.id === "compete" ? "bg-red-500" : 
             stage.id === "capture" ? "bg-blue-500" : "bg-slate-400"
           )}
@@ -293,28 +288,26 @@ function StageNode({
 
       <div
         className={cn(
-          "relative flex h-20 w-20 items-center justify-center rounded-2xl border-4 shadow-xl transition-colors duration-300",
-          isActive ? "border-white" : "border-slate-100",
-          // Conditional Coloring Logic
-          stage.id === "compete" ? "bg-[#8b1538] text-white" : // Crimson
-          stage.id === "capture" ? "bg-[#1e3a5f] text-white" : // Navy
+          "relative flex h-16 w-16 items-center justify-center rounded-2xl border-4 shadow-xl transition-all duration-300",
+          isActive ? "border-white scale-110" : "border-slate-100",
+          stage.id === "compete" ? "bg-[#8b1538] text-white" : 
+          stage.id === "capture" ? "bg-[#1e3a5f] text-white" : 
           "bg-white text-slate-600 border-slate-200"
         )}
       >
         <stage.icon 
-          size={36} 
+          size={32} 
           strokeWidth={isLoopNode || isActive ? 2.5 : 2} 
         />
       </div>
       
-      {/* Label - Hidden on hover because the popup takes over, or keep it? 
-          The popup is better for cleanliness, but let's keep the title for context. */}
+      {/* Label under node */}
       <motion.div 
-        animate={{ opacity: isActive ? 0 : 1, y: isActive ? 10 : 0 }}
-        className="absolute top-24 w-32 text-center"
+        animate={{ opacity: isActive ? 0 : 1, y: isActive ? 5 : 0 }}
+        className="absolute top-20 w-32 text-center"
       >
         <span className={cn(
-          "text-sm font-bold uppercase tracking-wider",
+          "text-xs font-bold uppercase tracking-wider",
           isLoopNode ? "text-slate-800" : "text-slate-500"
         )}>
           {stage.title}
@@ -323,4 +316,3 @@ function StageNode({
     </motion.div>
   );
 }
-
