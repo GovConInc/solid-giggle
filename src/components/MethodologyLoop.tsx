@@ -9,53 +9,53 @@ const stages = [
     title: "Compliance",
     description: "Complete all Registrations, Certifications, and paperwork.",
     icon: Shield,
-    position: { x: "10%", y: "80%" }, // x=100
-    color: "bg-slate-500",
+    // Using precise coordinates for the 1000x400 viewBox
+    position: { x: "100", y: "320" },
   },
   {
     id: "context",
     title: "Context",
     description: "Understand requirements and position for success.",
     icon: FileText,
-    position: { x: "30%", y: "80%" }, // x=300
-    color: "bg-slate-500",
+    position: { x: "300", y: "320" },
   },
   {
     id: "compete",
     title: "Compete",
     description: "Working with your team to write persuasive bids.",
     icon: Award,
-    position: { x: "48%", y: "40%" }, // Left side of loop
-    color: "bg-gov-crimson", 
+    // Symmetrical position on the loop
+    position: { x: "500", y: "160" },
   },
   {
     id: "capture",
     title: "Capture",
     description: "Identify the right opportunities, by any means.",
     icon: Target,
-    position: { x: "72%", y: "40%" }, // Right side of loop
-    color: "bg-gov-navy",
+    // Symmetrical position on the loop
+    position: { x: "700", y: "160" },
   },
   {
     id: "continuity",
     title: "Continuity",
     description: "Learn how to systematically grow your GovCon Department.",
     icon: TrendingUp,
-    position: { x: "90%", y: "80%" }, // x=900
-    color: "bg-slate-500",
+    position: { x: "900", y: "320" },
   },
 ];
 
 export default function MethodologyLoop() {
   const [activeStage, setActiveStage] = useState<string | null>(null);
 
-  // Solid slate color to guarantee visibility (no gradients)
-  const strokeColor = "#cbd5e1"; 
+  // Set the path color to black
+  const strokeColor = "#000000";
 
   return (
     <div className="relative w-full max-w-7xl mx-auto py-24 px-4 overflow-hidden">
       <div className="text-center mb-20">
-        <h2 className="font-display text-4xl font-bold text-gov-navy">The Stages</h2>
+        <h2 className="font-display text-4xl font-bold text-gov-navy">
+          The Stages
+        </h2>
         <p className="mt-4 text-xl text-slate-600">
           Powerful results built through a clear, steady path.
         </p>
@@ -63,7 +63,6 @@ export default function MethodologyLoop() {
 
       {/* --- DESKTOP ANIMATED VIEW --- */}
       <div className="hidden lg:block relative h-[400px] w-full">
-        
         {/* The SVG Canvas - ViewBox optimized for 1000x400 coordinate system */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none"
@@ -78,18 +77,17 @@ export default function MethodologyLoop() {
               refX="2"
               refY="2"
               orient="auto"
-              fill={strokeColor}
+              fill={strokeColor} // Arrowhead is now black
             >
               <path d="M0,0 L4,2 L0,4 L1,2 Z" />
             </marker>
           </defs>
 
           {/* 1. LEFT LINE: Start -> Loop Tangent Point */}
-          {/* Coordinates: Starts at x=50, Goes to x=600 (center of loop x-axis) */}
           <motion.path
             d="M 50 320 L 600 320"
             stroke={strokeColor}
-            strokeWidth="12"
+            strokeWidth="8"
             strokeLinecap="round"
             fill="none"
             initial={{ pathLength: 0 }}
@@ -98,13 +96,12 @@ export default function MethodologyLoop() {
           />
 
           {/* 2. THE LOOP: Circular Cycle */}
-          {/* Center: 600, 200. Radius: 120. Bottom Tangent: 600, 320 */}
           <motion.path
-            d="M 600 320 
+            d="M 600 320
                A 120 120 0 1 1 600 80
                A 120 120 0 1 1 600 320"
             stroke={strokeColor}
-            strokeWidth="12"
+            strokeWidth="8"
             fill="none"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
@@ -112,11 +109,10 @@ export default function MethodologyLoop() {
           />
 
           {/* 3. RIGHT LINE: Loop Tangent Point -> End */}
-          {/* Coordinates: Starts at x=600, Goes to x=950 */}
           <motion.path
             d="M 600 320 L 950 320"
             stroke={strokeColor}
-            strokeWidth="12"
+            strokeWidth="8"
             strokeLinecap="round"
             fill="none"
             initial={{ pathLength: 0 }}
@@ -125,49 +121,59 @@ export default function MethodologyLoop() {
           />
 
           {/* --- ARROWS --- */}
-          
-          {/* Arrow 1: Between Context and Loop */}
+
+          {/* Arrow 1: Compliance -> Context */}
+          <motion.path
+            d="M 200 320 L 202 320"
+            stroke="none"
+            markerEnd="url(#arrowhead)"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9 }}
+          />
+
+          {/* Arrow 2: Context -> Loop */}
           <motion.path
             d="M 450 320 L 452 320"
             stroke="none"
             markerEnd="url(#arrowhead)"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            transition={{ delay: 1.1 }}
           />
 
-           {/* Arrow 2: Top of Loop (Moving Left) */}
-           <motion.path
-            d="M 610 80 L 590 80" 
+          {/* Arrow 3: Top of Loop (Moving Left) */}
+          <motion.path
+            d="M 610 80 L 590 80"
             stroke={strokeColor}
             strokeWidth="4"
             markerEnd="url(#arrowhead)"
             fill="none"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
+            transition={{ delay: 1.8 }}
           />
 
-          {/* Arrow 3: Bottom of Loop (Moving Right/Feedback) */}
+          {/* Arrow 4: Bottom of Loop (Moving Right/Feedback) */}
           <motion.path
-             d="M 590 320 L 610 320"
-             stroke={strokeColor}
-             strokeWidth="4"
-             markerEnd="url(#arrowhead)"
-             fill="none"
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
-             transition={{ delay: 1.5 }}
+            d="M 590 320 L 610 320"
+            stroke={strokeColor}
+            strokeWidth="4"
+            markerEnd="url(#arrowhead)"
+            fill="none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.8 }}
           />
 
-          {/* Arrow 4: Between Loop and Continuity */}
+          {/* Arrow 5: Loop -> Continuity */}
           <motion.path
-            d="M 800 320 L 802 320"
+            d="M 750 320 L 752 320"
             stroke="none"
             markerEnd="url(#arrowhead)"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
+            transition={{ delay: 1.3 }}
           />
         </svg>
 
@@ -176,14 +182,15 @@ export default function MethodologyLoop() {
           <motion.div
             key={stage.id}
             className="absolute -translate-x-1/2 -translate-y-1/2 z-10"
+            // Use the exact coordinates from the stages array
             style={{ left: stage.position.x, top: stage.position.y }}
             onMouseEnter={() => setActiveStage(stage.id)}
             onMouseLeave={() => setActiveStage(null)}
           >
-            <StageNode 
-              stage={stage} 
-              isActive={activeStage === stage.id} 
-              isLoopNode={stage.id === 'compete' || stage.id === 'capture'}
+            <StageNode
+              stage={stage}
+              isActive={activeStage === stage.id}
+              isLoopNode={stage.id === "compete" || stage.id === "capture"}
             />
           </motion.div>
         ))}
@@ -191,7 +198,7 @@ export default function MethodologyLoop() {
         {/* --- INFO CARD POPUP --- */}
         <AnimatePresence mode="wait">
           {activeStage && (
-            <div className="absolute top-[45%] left-1/2 -translate-x-1/2 w-full max-w-md z-20 pointer-events-none">
+            <div className="absolute top-[55%] left-1/2 -translate-x-1/2 w-full max-w-md z-20 pointer-events-none">
               <motion.div
                 key={activeStage}
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -203,7 +210,7 @@ export default function MethodologyLoop() {
                 <div className="flex justify-center mb-3">
                   {/* Icon wrapper to prevent type errors */}
                   {(() => {
-                    const s = stages.find(s => s.id === activeStage);
+                    const s = stages.find((s) => s.id === activeStage);
                     const Icon = s?.icon || Shield;
                     return <Icon className="text-gov-navy w-8 h-8" />;
                   })()}
@@ -235,15 +242,22 @@ export default function MethodologyLoop() {
               <div
                 className={cn(
                   "flex h-14 w-14 items-center justify-center rounded-xl shrink-0 text-white shadow-md",
-                  stage.id === "compete" ? "bg-red-700" : 
-                  stage.id === "capture" ? "bg-blue-900" : "bg-slate-500"
+                  stage.id === "compete"
+                    ? "bg-[#8b1538]"
+                    : stage.id === "capture"
+                    ? "bg-[#1e3a5f]"
+                    : "bg-slate-500"
                 )}
               >
                 <stage.icon size={28} strokeWidth={2} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900">{stage.title}</h3>
-                <p className="text-slate-600 mt-1 leading-relaxed">{stage.description}</p>
+                <h3 className="text-lg font-bold text-gray-900">
+                  {stage.title}
+                </h3>
+                <p className="text-slate-600 mt-1 leading-relaxed">
+                  {stage.description}
+                </p>
               </div>
             </div>
           </motion.div>
@@ -277,8 +291,11 @@ function StageNode({
           layoutId="pulse"
           className={cn(
             "absolute inset-0 rounded-2xl opacity-30 blur-md scale-125",
-            stage.id === "compete" ? "bg-red-500" : 
-            stage.id === "capture" ? "bg-blue-500" : "bg-slate-400"
+            stage.id === "compete"
+              ? "bg-[#8b1538]"
+              : stage.id === "capture"
+              ? "bg-[#1e3a5f]"
+              : "bg-slate-400"
           )}
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.4 }}
@@ -290,26 +307,30 @@ function StageNode({
         className={cn(
           "relative flex h-16 w-16 items-center justify-center rounded-2xl border-4 shadow-xl transition-all duration-300",
           isActive ? "border-white scale-110" : "border-slate-100",
-          stage.id === "compete" ? "bg-[#8b1538] text-white" : 
-          stage.id === "capture" ? "bg-[#1e3a5f] text-white" : 
-          "bg-white text-slate-600 border-slate-200"
+          stage.id === "compete"
+            ? "bg-[#8b1538] text-white"
+            : stage.id === "capture"
+            ? "bg-[#1e3a5f] text-white"
+            : "bg-white text-slate-600 border-slate-200"
         )}
       >
-        <stage.icon 
-          size={32} 
-          strokeWidth={isLoopNode || isActive ? 2.5 : 2} 
+        <stage.icon
+          size={32}
+          strokeWidth={isLoopNode || isActive ? 2.5 : 2}
         />
       </div>
-      
+
       {/* Label under node */}
-      <motion.div 
+      <motion.div
         animate={{ opacity: isActive ? 0 : 1, y: isActive ? 5 : 0 }}
         className="absolute top-20 w-32 text-center"
       >
-        <span className={cn(
-          "text-xs font-bold uppercase tracking-wider",
-          isLoopNode ? "text-slate-800" : "text-slate-500"
-        )}>
+        <span
+          className={cn(
+            "text-xs font-bold uppercase tracking-wider",
+            isLoopNode ? "text-slate-800" : "text-slate-500"
+          )}
+        >
           {stage.title}
         </span>
       </motion.div>
