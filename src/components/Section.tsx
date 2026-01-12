@@ -9,6 +9,7 @@ export default function Section({
   actions,
   className,
   dark = false,
+  center = false,
 }: {
   title: string;
   kicker?: string;
@@ -17,6 +18,7 @@ export default function Section({
   children: ReactNode;
   className?: string;
   dark?: boolean;
+  center?: boolean;
 }) {
   return (
     <section 
@@ -28,7 +30,9 @@ export default function Section({
       )}
     >
       <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className={cn(
+          center ? "flex flex-col gap-3 items-center text-center" : "flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
+        )}>
           <div>
             {kicker && (
               <p className={cn(
@@ -45,7 +49,7 @@ export default function Section({
               {title}
             </h2>
           </div>
-          {actions && <div className="mt-4 sm:mt-0">{actions}</div>}
+          {actions && <div className={cn("mt-4 sm:mt-0", center && "mt-4")} >{actions}</div>}
         </div>
         <div className="mt-10">{children}</div>
       </div>

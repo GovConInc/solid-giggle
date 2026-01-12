@@ -17,19 +17,20 @@ const guaranteedPrograms = [
     icon: Shield,
     title: "SAM.gov Registration",
     subtitle: "5 Business Days",
-    description: "SAM.gov is free through the federal system. We step in for companies that prefer professional management or have issues. Complete SAM.gov registration with CAGE code, UEI, and all required validation."
+    description: "SAM.gov is free through the federal system. We step in for companies that prefer professional management or have issues. Complete SAM.gov registration with CAGE code, UEI, and all required validation.",
+  },
   {
     icon: Award,
     title: "SBA Certifications",
     subtitle: "14 Business Days",
-    description: "SBA certifications submitted within 14 days by our certification specialists. Full application preparation, templates, submission, and ongoing support. Includes a tailored set-aside roadmap. .",
+    description: "SBA certifications submitted within 14 days by our certification specialists. Full application preparation, templates, submission, and ongoing support. Includes a tailored set-aside roadmap.",
     guarantee: "Submitted or Full Refund",
   },
   {
     icon: Building2,
     title: "GSA Schedule Award",
     subtitle: "30 Business Days",
-    description: "Complete GSA MAS application submitted in 30 days. We start with strategy and alginment, prepare pricing, documentation, and technical responses, followed by negotiations, initial award, and more.",
+    description: "Complete GSA MAS application submitted in 30 days. We start with strategy and alignment, prepare pricing, documentation, and technical responses, followed by negotiations, initial award, and more.",
     guarantee: "Free Qualification Assessment",
   },
 ];
@@ -52,8 +53,8 @@ const fcpServices = [
   },
   {
     icon: TrendingUp,
-    title: "Compliance & Pricing Reports",
-    description: "Ongoing market research analysis, competitive pricing strategy, and automated validation to keep your catalog compliant.",
+    title: "GSA Advantage & eBuy Support",
+    description: "Ongoing management of GSA Advantage listings and eBuy participation, including catalog accuracy, compliance checks, and timely updates.",
   },
 ];
 
@@ -61,22 +62,22 @@ const whyChooseUs = [
   {
     stat: "7,000+",
     label: "Registrations Completed",
-    detail: "SAM.gov, DSBS, FEMA, and SBA certifications executed without rejection.",
+    detail: "SAM.gov, DSBS, FEMA, and SBA certifications processed and approved.",
   },
   {
     stat: "$640M",
     label: "Largest Win Supported",
-    detail: "Complex proposals across DoD, VA, DHS, and civilian agencies.",
+    detail: "High-value proposals supported across federal, state, and local government agencies.",
   },
   {
     stat: "87%",
     label: "GSA Approval Rate",
-    detail: "Industry average is 40%. Our 'Holy Trinity' review process works.",
+    detail: "Accurate, complete submissions driven by experience, discipline, and execution speed.",
   },
   {
     stat: "100%",
-    label: "Certification Guarantee",
-    detail: "Approved or full refund on all guaranteed certification programs.",
+    label: "On-Time Guarantee",
+    detail: "Every deadline met, or your money back.",
   },
 ];
 
@@ -117,13 +118,12 @@ export default function Home() {
               </div>
               
               <h1 className="mt-6 font-display text-4xl font-black tracking-tight text-gov-navy sm:text-5xl lg:text-6xl leading-tight">
-                Win Government Contracts.
+                Government Business Results.
                 <span className="block text-gov-blue mt-2">Guaranteed.</span>
               </h1>
               
               <p className="mt-6 text-lg text-slate-700 leading-relaxed">
-                We deliver guaranteed certifications for new companies and FCP catalog management 
-                for GSA Schedule holders. No guessing. No rejection. Just results.
+                We deliver professional support to government contractors at every stage. No guessing. No delays. Just results.
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -136,22 +136,7 @@ export default function Home() {
                 </LinkButton>
               </div>
 
-              <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3">
-                <div>
-                  <div className="text-2xl font-black text-gov-crimson">7,000+</div>
-                  <div className="text-sm text-slate-600 mt-1">Registrations</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-black text-gov-blue">87%</div>
-                  <div className="text-sm text-slate-600 mt-1">GSA Approvals</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-black text-gov-green">100%</div>
-                  <div className="text-sm text-slate-600 mt-1">Guarantee</div>
-                </div>
-              </div>
             </motion.div>
-
             {/* Right Column - Quick Service Picker */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -178,10 +163,10 @@ export default function Home() {
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="font-bold text-gov-navy group-hover:text-gov-crimson transition">
-                          New to Government Contracting
+                          Compliance & Certifications
                         </div>
                         <div className="text-sm text-slate-600 mt-1">
-                          SAM, 8(a), GSA Schedule — Guaranteed
+                          SAM Registration, SBA Certifications, & More
                         </div>
                       </div>
                       <ArrowRight className="text-slate-400 group-hover:text-gov-crimson transition" size={20} />
@@ -195,10 +180,10 @@ export default function Home() {
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="font-bold text-gov-navy group-hover:text-gov-blue transition">
-                          GSA Schedule Holder
+                          Capture & Proposal Support
                         </div>
                         <div className="text-sm text-slate-600 mt-1">
-                          FCP Management & Catalog Updates
+                          Finding, Winning, & Managing Contracts
                         </div>
                       </div>
                       <ArrowRight className="text-slate-400 group-hover:text-gov-blue transition" size={20} />
@@ -212,10 +197,10 @@ export default function Home() {
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="font-bold text-gov-navy group-hover:text-gov-green transition">
-                          Active Contractor
+                          GSA Contract Vehicles
                         </div>
                         <div className="text-sm text-slate-600 mt-1">
-                          Capture, Proposals, Compliance
+                          Submissions, Modifications, & Management
                         </div>
                       </div>
                       <ArrowRight className="text-slate-400 group-hover:text-gov-green transition" size={20} />
@@ -251,13 +236,13 @@ export default function Home() {
       </section>
 
       {/* Guaranteed Certification Programs */}
-      <Section title="Guaranteed Certification Programs" kicker="For New Companies">
-        <p className="text-center text-slate-600 max-w-3xl mx-auto mb-12">
+      <Section title="Guaranteed Delivery. Every Time." kicker="Our Timelines" center>
+        <p className="text-center text-slate-600 max-w-5xl mx-auto mb-12">
           These programs come with ironclad completion guarantees. We'll complete and submit your applications 
           within the stated timelines—as long as you provide the documents we need. That's it. No excuses, no delays.
         </p>
 
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-8 lg:grid-cols-3 mx-auto max-w-6xl">
           {guaranteedPrograms.map((program, idx) => (
             <motion.div
               key={program.title}
@@ -266,7 +251,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
             >
-              <Card className="p-6 h-full border-2" hover>
+              <Card className="p-6 h-full border-2 mx-auto max-w-md" hover>
                 <div className="flex items-start justify-between mb-4">
                   <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-gov-crimson to-gov-blue flex items-center justify-center text-white">
                     <program.icon size={28} />
@@ -315,11 +300,11 @@ export default function Home() {
       <section className="bg-slate-50 py-16">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">For GSA Schedule Holders</p>
-            <h2 className="mt-2 font-display text-4xl font-bold text-gov-navy">FAS Catalog Platform (FCP) Management</h2>
+          <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">FOR GSA CONTRACTORS</p>
+            <h2 className="mt-2 font-display text-4xl font-bold text-gov-navy">2026 GSA Updates</h2>
             <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
               GSA has transitioned from legacy SIP/EDI to the new FAS Catalog Platform. We handle your baseline 
-              migration, ongoing modifications, and automated compliance reporting.
+              migration, Price Proposal migration, and Compliance and Pricing (C&P)report. Our services don't stop there.
             </p>
           </div>
 

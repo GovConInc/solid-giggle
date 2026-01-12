@@ -1,185 +1,811 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, CheckCircle, Shield, Target, Search, Users } from "lucide-react";
+import { 
+  ArrowRight, 
+  CheckCircle, 
+  Shield, 
+  Target, 
+  Search, 
+  Users, 
+  Building2,
+  MapPin,
+  Award,
+  Clock,
+  AlertTriangle,
+  ChevronDown,
+  ChevronRight,
+  Zap,
+  Phone,
+  Mail,
+  Calendar,
+  Sparkles,
+  TrendingUp,
+  Lock,
+  FileCheck,
+  Globe,
+  Briefcase,
+  BarChart3
+} from "lucide-react";
 import Section from "../../components/Section";
 import Card from "../../components/Card";
 import { LinkButton } from "../../components/Button";
 import { LINKS } from "../../lib/constants";
+import { cn } from "../../components/cn";
+
+const registrations = [
+  {
+    name: "SAM.gov",
+    icon: Building2,
+    description: "System for Award Management — The gateway to all federal contracting",
+    details: [
+      "Entity validation and CAGE code assignment",
+      "NAICS code optimization for maximum visibility",
+      "Core data maintenance and annual renewals",
+      "Exclusion monitoring and representation updates",
+      "Electronic Funds Transfer (EFT) banking setup"
+    ],
+    renewal: "Annual",
+    critical: true
+  },
+  {
+    name: "SBA DSBS",
+    icon: Award,
+    description: "Dynamic Small Business Search — Your digital storefront for agencies",
+    details: [
+      "Capability narrative development",
+      "Keywords and NAICS optimization",
+      "Past performance highlighting",
+      "Certification badge display",
+      "Agency search visibility enhancement"
+    ],
+    renewal: "Ongoing",
+    critical: true
+  },
+  {
+    name: "FEMA Vendor Portal",
+    icon: Shield,
+    description: "Access to disaster response and emergency management contracts",
+    details: [
+      "Vendor profile creation and verification",
+      "Capability statement upload",
+      "Geographic service area definition",
+      "Emergency response readiness documentation",
+      "Pre-positioned contract eligibility"
+    ],
+    renewal: "As needed",
+    critical: false
+  },
+  {
+    name: "State Portals",
+    icon: MapPin,
+    description: "50-state vendor registration management",
+    details: [
+      "State-specific registration requirements",
+      "Cooperative purchasing agreement enrollment",
+      "State certification applications",
+      "Vendor preference program enrollment",
+      "Multi-state expansion support"
+    ],
+    renewal: "Varies by state",
+    critical: false
+  }
+];
+
+const certifications = [
+  { 
+    code: "8(a)", 
+    name: "8(a) Business Development", 
+    agency: "SBA",
+    benefit: "Sole-source contracts up to $4M (goods) / $7M (services)",
+    timeline: "90-180 days",
+    requirements: ["Socially & economically disadvantaged", "51% owned by qualifying individuals", "Under $16.5M average revenue"]
+  },
+  { 
+    code: "SDVOSB", 
+    name: "Service-Disabled Veteran-Owned", 
+    agency: "SBA/VA",
+    benefit: "3% federal contracting goal + sole-source authority",
+    timeline: "60-90 days",
+    requirements: ["51% owned by service-disabled veteran", "Veteran must control daily operations", "VA verification required"]
+  },
+  { 
+    code: "WOSB", 
+    name: "Women-Owned Small Business", 
+    agency: "SBA",
+    benefit: "5% federal contracting goal + set-aside eligibility",
+    timeline: "30-60 days",
+    requirements: ["51% owned by women", "Women control management", "Self-certification or third-party"]
+  },
+  { 
+    code: "HUBZone", 
+    name: "Historically Underutilized Business Zone", 
+    agency: "SBA",
+    benefit: "10% price evaluation preference + 3% goal",
+    timeline: "60-90 days",
+    requirements: ["Principal office in HUBZone", "35% of employees live in HUBZone", "Small business size standards"]
+  },
+  { 
+    code: "MBE/DBE", 
+    name: "Minority/Disadvantaged Business", 
+    agency: "State/Local",
+    benefit: "State contract set-asides and preferences",
+    timeline: "30-90 days",
+    requirements: ["Varies by state", "Typically 51% minority ownership", "Personal net worth limits apply"]
+  }
+];
+
+const captureProcess = [
+  {
+    phase: "1",
+    name: "Discovery",
+    description: "Understanding your capabilities, past performance, and ideal customer profile",
+    activities: [
+      "Capability assessment and gap analysis",
+      "Competitive landscape mapping",
+      "Agency spending pattern analysis",
+      "Incumbent contract research"
+    ],
+    deliverables: ["Capability Matrix", "Target Agency List", "Competitive Intel Report"],
+    icon: Search
+  },
+  {
+    phase: "2",
+    name: "Intelligence",
+    description: "Finding opportunities before they hit the street",
+    activities: [
+      "Pre-solicitation monitoring",
+      "Sources sought response tracking",
+      "RFI analysis and positioning",
+      "Subcontracting opportunity identification"
+    ],
+    deliverables: ["Opportunity Pipeline", "Market Intel Brief", "Upcoming Procurement Calendar"],
+    icon: Target
+  },
+  {
+    phase: "3",
+    name: "Engagement",
+    description: "Building relationships with decision makers",
+    activities: [
+      "Contracting Officer introductions",
+      "Industry day attendance and follow-up",
+      "Capability briefing scheduling",
+      "Teaming partner identification"
+    ],
+    deliverables: ["CO Contact Log", "Meeting Notes", "Teaming MOU Templates"],
+    icon: Users
+  },
+  {
+    phase: "4",
+    name: "Positioning",
+    description: "Setting you up to win before the RFP drops",
+    activities: [
+      "Bid/no-bid decision framework",
+      "Win probability assessment",
+      "Competitive pricing intelligence",
+      "Draft proposal strategy"
+    ],
+    deliverables: ["Bid Decision Matrix", "Win Strategy Document", "Proposal Outline"],
+    icon: TrendingUp
+  }
+];
+
+const comparisonData = {
+  aiAlerts: [
+    "Keyword matching only",
+    "100+ irrelevant bids daily",
+    "No analysis or context",
+    "Self-service platform",
+    "No relationship building",
+    "Generic email notifications"
+  ],
+  govcon: [
+    "Human-reviewed opportunities",
+    "3-5 qualified bids weekly",
+    "Full SOW analysis included",
+    "Dedicated capture manager",
+    "CO introductions arranged",
+    "Strategic bid recommendations"
+  ]
+};
+
+const managedItems = [
+  { name: "SAM.gov", category: "Federal" },
+  { name: "SBA DSBS", category: "Federal" },
+  { name: "FEMA Portal", category: "Federal" },
+  { name: "State Portals", category: "State" },
+  { name: "WOSB/EDWOSB", category: "Certification" },
+  { name: "SDVOSB/VOSB", category: "Certification" },
+  { name: "8(a) Reviews", category: "Certification" },
+  { name: "HUBZone", category: "Certification" },
+  { name: "MBE/DBE", category: "State" },
+  { name: "NAICS Updates", category: "Federal" },
+  { name: "Banking/EFT", category: "Federal" },
+  { name: "Representations", category: "Federal" }
+];
 
 export default function ServicesCompliance() {
+  const [activeRegistration, setActiveRegistration] = useState(0);
+  const [activeCertification, setActiveCertification] = useState<number | null>(null);
+  const [activePhase, setActivePhase] = useState(0);
+  const [activeCategory, setActiveCategory] = useState("all");
+
+  const filteredItems = activeCategory === "all" 
+    ? managedItems 
+    : managedItems.filter(item => item.category === activeCategory);
+
   return (
     <>
       <Helmet>
         <title>Compliance & Capture — GovCon Inc.</title>
+        <meta name="description" content="Registration management keeps you legal. Capture management finds you work. Together, they form the foundation of a winning government business." />
       </Helmet>
 
       {/* Hero */}
-      <section className="bg-white">
-        <div className="mx-auto w-full max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Services</p>
-            <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl">
-              Compliance & Capture
-            </h1>
-            <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-              Registration management keeps you legal. Capture management finds you work. 
-              Together, they form the foundation of a winning government business.
-            </p>
+      <section className="bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-50" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gov-blue/5 to-transparent" />
+        
+        <div className="relative mx-auto w-full max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-gov-blue/10 px-4 py-1.5 text-sm font-semibold text-gov-blue mb-6">
+                <Shield size={16} />
+                Foundation Services
+              </div>
+              
+              <h1 className="font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl lg:text-6xl">
+                Compliance & Capture
+              </h1>
+              
+              <p className="mt-6 text-xl text-slate-600 leading-relaxed">
+                Registration management keeps you legal. Capture management finds you work. 
+                Together, they form the foundation of every winning government contractor.
+              </p>
+              
+              <div className="mt-8 grid grid-cols-2 gap-4">
+                <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 group hover:border-gov-blue/30 transition-colors">
+                  <div className="font-display text-3xl font-bold text-gov-crimson group-hover:scale-105 transition-transform">2,500+</div>
+                  <div className="text-sm text-slate-600 mt-1">Registrations Managed</div>
+                </div>
+                <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 group hover:border-gov-blue/30 transition-colors">
+                  <div className="font-display text-3xl font-bold text-gov-crimson group-hover:scale-105 transition-transform">$50M+</div>
+                  <div className="text-sm text-slate-600 mt-1">Contracts Captured</div>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer" size="lg">
+                  Get Compliant Today
+                  <ArrowRight size={18} className="ml-2" />
+                </LinkButton>
+                <LinkButton href="#capture" variant="secondary" size="lg">
+                  Explore Capture Services
+                </LinkButton>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-br from-gov-blue/10 via-gov-crimson/5 to-transparent rounded-3xl" />
+              <Card className="relative p-8" hover={false}>
+                <h3 className="font-bold text-lg text-gov-navy flex items-center gap-2">
+                  <Lock size={20} className="text-gov-green" />
+                  The Compliance Problem
+                </h3>
+                <div className="mt-6 space-y-4">
+                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <AlertTriangle size={20} className="text-gov-crimson shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-semibold text-gov-navy">Expired SAM = No Contracts</div>
+                      <p className="text-sm text-slate-600">Your registration expires annually. Miss it, and you're invisible to every federal buyer.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <AlertTriangle size={20} className="text-gov-crimson shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-semibold text-gov-navy">Wrong NAICS = Wrong Opportunities</div>
+                      <p className="text-sm text-slate-600">Agencies search by NAICS code. Wrong codes mean you never appear in their results.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <AlertTriangle size={20} className="text-gov-crimson shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-semibold text-gov-navy">Missing Certs = Missed Set-Asides</div>
+                      <p className="text-sm text-slate-600">23% of federal contracts are set aside for small businesses. Are you eligible?</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-8 pt-6 border-t border-slate-200">
+                  <div className="flex items-center gap-2 text-gov-green font-semibold">
+                    <CheckCircle size={20} />
+                    We handle all of this. You focus on winning.
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Compliance Section */}
-      <section className="bg-slate-50 py-16">
+      {/* Registration Management Section */}
+      <section className="bg-slate-50 py-20">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-            <div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gov-blue text-white">
-                <Shield size={28} />
-              </div>
-              <h2 className="mt-5 font-display text-2xl font-bold text-gov-navy">
-                Registration Management
-              </h2>
-              <p className="mt-4 text-slate-600">
-                You pay us, we handle the paperwork. It's that simple. We identify all 
-                applicable registrations for your business (Federal, State, Local) and 
-                keep them current.
-              </p>
-              <p className="mt-4 text-slate-600">
-                If your address changes or a certification expires, we fix it before 
-                you even know it's an issue.
-              </p>
-              
-              <ul className="mt-6 space-y-3">
-                {[
-                  "SAM.gov Registration & Renewals",
-                  "SBA DSBS Profile Optimization",
-                  "FEMA Vendor Portal",
-                  "State & Local Portals",
-                  "Certification Monitoring (WOSB, VOSB, 8a, HUBZone)",
-                  "Annual Review Preparation",
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-slate-700">
-                    <CheckCircle size={18} className="text-gov-green shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+          <div className="text-center mb-12">
+            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Registration Management</p>
+            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy sm:text-4xl">
+              You Pay Us. We Handle the Paperwork.
+            </h2>
+            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+              We identify all applicable registrations for your business—Federal, State, and Local—and keep them current. 
+              Address changes, certification renewals, profile updates. We fix it before you know it's an issue.
+            </p>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-5">
+            {/* Registration Selector */}
+            <div className="lg:col-span-2 space-y-3">
+              {registrations.map((reg, idx) => (
+                <button
+                  key={reg.name}
+                  onClick={() => setActiveRegistration(idx)}
+                  className={cn(
+                    "w-full text-left p-4 rounded-xl border-2 transition-all duration-300",
+                    activeRegistration === idx 
+                      ? "border-gov-blue bg-white shadow-lg" 
+                      : "border-transparent bg-white/50 hover:bg-white hover:border-slate-200"
+                  )}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={cn(
+                      "flex h-12 w-12 items-center justify-center rounded-xl transition-colors",
+                      activeRegistration === idx ? "bg-gov-blue text-white" : "bg-slate-100 text-slate-600"
+                    )}>
+                      <reg.icon size={24} />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-gov-navy">{reg.name}</span>
+                        {reg.critical && (
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gov-crimson/10 text-gov-crimson">
+                            Critical
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-slate-500 mt-0.5">{reg.renewal} renewal</p>
+                    </div>
+                    <ChevronRight size={20} className={cn(
+                      "text-slate-400 transition-transform",
+                      activeRegistration === idx && "rotate-90 text-gov-blue"
+                    )} />
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* Registration Details */}
+            <div className="lg:col-span-3">
+              <Card className="p-8 h-full" hover={false}>
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gov-blue text-white">
+                    {(() => {
+                      const Icon = registrations[activeRegistration].icon;
+                      return <Icon size={28} />;
+                    })()}
+                  </div>
+                  <div>
+                    <h3 className="font-display text-2xl font-bold text-gov-navy">
+                      {registrations[activeRegistration].name}
+                    </h3>
+                    <p className="text-slate-600">{registrations[activeRegistration].description}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-gov-navy text-sm uppercase tracking-wider">What We Manage</h4>
+                  {registrations[activeRegistration].details.map((detail, idx) => (
+                    <div 
+                      key={idx}
+                      className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg animate-fade-in-up"
+                      style={{ animationDelay: `${idx * 50}ms` }}
+                    >
+                      <CheckCircle size={18} className="text-gov-green shrink-0" />
+                      <span className="text-slate-700">{detail}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-slate-200">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-sm text-slate-600">Registration Management</div>
+                      <div className="mt-1">
+                        <span className="text-sm text-slate-500">Starting at </span>
+                        <span className="font-display text-2xl font-bold text-gov-navy">$250</span>
+                        <span className="text-slate-500">/month</span>
+                      </div>
+                    </div>
+                    <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer">
+                      Get Started
+                    </LinkButton>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+
+          {/* What We Manage Grid */}
+          <div className="mt-16">
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="text-sm font-semibold text-gov-navy">Filter:</span>
+              {["all", "Federal", "State", "Certification"].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={cn(
+                    "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                    activeCategory === cat 
+                      ? "bg-gov-blue text-white" 
+                      : "bg-white text-slate-600 hover:bg-slate-100"
+                  )}
+                >
+                  {cat === "all" ? "All Items" : cat}
+                </button>
+              ))}
             </div>
             
-            <Card className="p-8" hover={false}>
-              <h3 className="font-bold text-lg text-gov-navy">What We Manage</h3>
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                {["SAM.gov", "SBA DSBS", "FEMA Portal", "State Portals", "WOSB/VOSB", "8(a) Reviews", "HUBZone", "NAICS Updates"].map((item) => (
-                  <div key={item} className="flex items-center gap-2 bg-slate-50 p-3 rounded-lg">
-                    <div className="h-2 w-2 rounded-full bg-gov-green" />
-                    <span className="text-sm text-slate-700">{item}</span>
-                  </div>
-                ))}
-              </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {filteredItems.map((item) => (
+                <div 
+                  key={item.name} 
+                  className="flex items-center gap-2 bg-white p-3 rounded-lg border border-slate-100 hover:border-gov-blue/30 hover:shadow-md transition-all cursor-default"
+                >
+                  <div className={cn(
+                    "h-2 w-2 rounded-full",
+                    item.category === "Federal" && "bg-gov-blue",
+                    item.category === "State" && "bg-gov-gold",
+                    item.category === "Certification" && "bg-gov-green"
+                  )} />
+                  <span className="text-sm text-slate-700">{item.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications Section */}
+      <section className="bg-white py-20">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+            <div className="lg:sticky lg:top-8">
+              <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">SBA Certifications</p>
+              <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
+                Unlock Set-Aside Contracts
+              </h2>
+              <p className="mt-4 text-slate-600">
+                The federal government has a goal: 23% of all contracts go to small businesses. 
+                But to access these set-aside opportunities, you need the right certifications. 
+                We handle the application, documentation, and annual reviews.
+              </p>
               
-              <div className="mt-8 pt-6 border-t border-slate-200">
-                <div className="text-sm text-slate-600">Starting at</div>
-                <div className="mt-1">
-                  <span className="font-display text-3xl font-bold text-gov-navy">$250</span>
-                  <span className="text-slate-500">/month</span>
+              <div className="mt-8 p-6 bg-gov-navy rounded-2xl text-white">
+                <h3 className="font-bold text-lg">Why Certifications Matter</h3>
+                <div className="mt-4 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                      <Zap size={20} />
+                    </div>
+                    <div>
+                      <div className="font-semibold">Sole-Source Authority</div>
+                      <p className="text-sm text-slate-300">Win contracts without competition</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                      <Target size={20} />
+                    </div>
+                    <div>
+                      <div className="font-semibold">Set-Aside Eligibility</div>
+                      <p className="text-sm text-slate-300">Less competition, higher win rates</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                      <TrendingUp size={20} />
+                    </div>
+                    <div>
+                      <div className="font-semibold">Price Preferences</div>
+                      <p className="text-sm text-slate-300">Up to 10% evaluation advantage</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-6 pt-6 border-t border-white/20">
+                  <div className="text-sm text-slate-300">Certification Support</div>
+                  <div className="mt-1">
+                    <span className="text-sm text-slate-400">Starting at </span>
+                    <span className="font-display text-2xl font-bold text-white">$500</span>
+                    <span className="text-slate-400"> per application</span>
+                  </div>
                 </div>
               </div>
-            </Card>
+            </div>
+
+            <div className="space-y-4">
+              {certifications.map((cert, idx) => (
+                <div 
+                  key={cert.code}
+                  className="border border-slate-200 rounded-xl overflow-hidden bg-white hover:shadow-lg transition-shadow"
+                >
+                  <button
+                    onClick={() => setActiveCertification(activeCertification === idx ? null : idx)}
+                    className="w-full p-5 flex items-center justify-between text-left hover:bg-slate-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-crimson/10 text-gov-crimson font-display font-bold text-sm">
+                        {cert.code}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gov-navy">{cert.name}</div>
+                        <div className="text-sm text-slate-500">{cert.agency} Administered</div>
+                      </div>
+                    </div>
+                    <ChevronDown 
+                      size={20} 
+                      className={cn(
+                        "text-slate-400 transition-transform duration-300",
+                        activeCertification === idx && "rotate-180"
+                      )} 
+                    />
+                  </button>
+                  
+                  <div className={cn(
+                    "overflow-hidden transition-all duration-300",
+                    activeCertification === idx ? "max-h-96" : "max-h-0"
+                  )}>
+                    <div className="p-5 pt-0 space-y-4">
+                      <div className="p-4 bg-gov-green/5 rounded-lg border border-gov-green/20">
+                        <div className="text-sm font-semibold text-gov-green">Key Benefit</div>
+                        <p className="text-slate-700 mt-1">{cert.benefit}</p>
+                      </div>
+                      
+                      <div>
+                        <div className="text-sm font-semibold text-gov-navy mb-2">Basic Requirements</div>
+                        <ul className="space-y-1">
+                          {cert.requirements.map((req, rIdx) => (
+                            <li key={rIdx} className="flex items-center gap-2 text-sm text-slate-600">
+                              <div className="h-1.5 w-1.5 rounded-full bg-gov-blue" />
+                              {req}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="flex items-center justify-between text-sm pt-2">
+                        <div className="flex items-center gap-2 text-slate-600">
+                          <Clock size={16} />
+                          Typical Timeline: {cert.timeline}
+                        </div>
+                        <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer" size="sm">
+                          Apply Now
+                        </LinkButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              <Card className="p-6 bg-slate-50 border-dashed" hover={false}>
+                <div className="flex items-center gap-4">
+                  <Sparkles size={24} className="text-gov-gold" />
+                  <div>
+                    <div className="font-semibold text-gov-navy">Not sure which certifications you qualify for?</div>
+                    <p className="text-sm text-slate-600">We provide a free eligibility assessment with every consultation.</p>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Capture Section */}
-      <Section title="Capture Management" kicker="Find Work Before It's Posted">
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-gov-blue/10 px-4 py-1.5 text-sm font-semibold text-gov-blue">
-              People → Process → Technology
+      <section id="capture" className="bg-gov-navy py-20 scroll-mt-20">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-semibold text-white mb-6">
+              <Target size={16} />
+              Capture Management
             </div>
-            <p className="mt-6 text-slate-600">
-              This isn't just another AI bid alert. We don't just look at a synopsis 
-              and forward it. We review the Scope of Work (SOW), analyze the incumbent, 
-              and hand-pick bids you can actually win.
+            <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">
+              Find Work Before It's Posted
+            </h2>
+            <p className="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
+              This isn't another AI bid alert. We follow a simple principle: 
+              <span className="text-white font-semibold"> People → Process → Technology</span>. 
+              In that order.
             </p>
-            <p className="mt-4 text-slate-600">
-              Capture goes beyond what's posted today. We find the 5-year agreement 
-              expiring in 4 months or the subcontracting opportunity with General Dynamics. 
-              We find the POCs, we mingle, and we act as your business development arm.
-            </p>
-            
-            <div className="mt-8 space-y-4">
-              {[
-                { icon: Search, title: "Opportunity Research", desc: "Deep analysis of each potential bid" },
-                { icon: Users, title: "Relationship Building", desc: "CO introductions and teaming arrangements" },
-                { icon: Target, title: "Win Strategy", desc: "Bid/no-bid decisions with real data" },
-              ].map((item) => (
-                <div key={item.title} className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gov-crimson/10 text-gov-crimson shrink-0">
-                    <item.icon size={20} />
+          </div>
+
+          {/* Process Steps */}
+          <div className="grid gap-8 lg:grid-cols-4">
+            {captureProcess.map((step, idx) => (
+              <div 
+                key={step.phase}
+                className="relative"
+                onMouseEnter={() => setActivePhase(idx)}
+              >
+                {idx < captureProcess.length - 1 && (
+                  <div className="hidden lg:block absolute top-12 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-white/20 to-transparent" />
+                )}
+                <Card 
+                  className={cn(
+                    "p-6 h-full transition-all duration-300 cursor-pointer",
+                    activePhase === idx 
+                      ? "bg-white border-gov-crimson ring-2 ring-gov-crimson/20" 
+                      : "bg-white/5 border-white/10 hover:bg-white/10"
+                  )}
+                  hover={false}
+                >
+                  <div className={cn(
+                    "flex h-12 w-12 items-center justify-center rounded-xl font-display text-2xl font-bold transition-colors",
+                    activePhase === idx 
+                      ? "bg-gov-crimson text-white" 
+                      : "bg-white/10 text-white"
+                  )}>
+                    {step.phase}
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-gov-navy">{item.title}</h4>
-                    <p className="text-sm text-slate-600">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  
+                  <h3 className={cn(
+                    "mt-4 font-bold text-lg transition-colors",
+                    activePhase === idx ? "text-gov-navy" : "text-white"
+                  )}>
+                    {step.name}
+                  </h3>
+                  
+                  <p className={cn(
+                    "mt-2 text-sm transition-colors",
+                    activePhase === idx ? "text-slate-600" : "text-slate-400"
+                  )}>
+                    {step.description}
+                  </p>
+                  
+                  <ul className="mt-4 space-y-2">
+                    {step.activities.map((activity, aIdx) => (
+                      <li 
+                        key={aIdx}
+                        className={cn(
+                          "flex items-center gap-2 text-sm transition-colors",
+                          activePhase === idx ? "text-slate-700" : "text-slate-400"
+                        )}
+                      >
+                        <CheckCircle size={14} className={activePhase === idx ? "text-gov-green" : "text-white/40"} />
+                        {activity}
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  {activePhase === idx && (
+                    <div className="mt-4 pt-4 border-t border-slate-200">
+                      <div className="text-xs font-semibold text-gov-blue uppercase tracking-wider mb-2">Deliverables</div>
+                      <div className="flex flex-wrap gap-2">
+                        {step.deliverables.map((del) => (
+                          <span key={del} className="text-xs bg-gov-blue/10 text-gov-blue px-2 py-1 rounded">
+                            {del}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            ))}
           </div>
           
-          <Card className="p-8 bg-gov-navy text-white" hover={false}>
-            <h3 className="font-bold text-lg">The Difference</h3>
-            
-            <div className="mt-6 space-y-6">
-              <div className="pb-6 border-b border-white/20">
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Competitors</div>
-                <p className="mt-2 text-slate-300">
-                  "Here are 50 bids that match the keyword 'Cleaning'."
-                </p>
-              </div>
-              
-              <div>
-                <div className="text-xs font-bold uppercase tracking-wider text-gov-crimson">GovCon Inc.</div>
-                <p className="mt-2 text-white">
-                  "Here are 3 bids. We called the Contracting Officer on Bid #2, and 
-                  they are unhappy with the incumbent. Bid #1 is a set-aside you qualify 
-                  for. Ignore Bid #3, it's wired for someone else."
-                </p>
-              </div>
-            </div>
-            
-            <div className="mt-8 pt-6 border-t border-white/20">
-              <div className="text-sm text-slate-400">Starting at</div>
+          <div className="mt-12 text-center">
+            <div className="inline-block p-6 bg-white/5 rounded-2xl border border-white/10">
+              <div className="text-sm text-slate-400">Capture Management</div>
               <div className="mt-1">
+                <span className="text-sm text-slate-400">Starting at </span>
                 <span className="font-display text-3xl font-bold text-white">$1,500</span>
                 <span className="text-slate-400">/month</span>
               </div>
+              <p className="text-sm text-slate-400 mt-2">Includes dedicated capture manager and bi-weekly strategy calls</p>
             </div>
-          </Card>
+          </div>
         </div>
-      </Section>
+      </section>
 
-      {/* Combined Value */}
-      <section className="bg-slate-50 py-16">
+      {/* AI vs Us Comparison */}
+      <section className="bg-slate-50 py-20">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="text-center mb-10">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Better Together</p>
-            <h2 className="mt-3 font-display text-2xl font-bold text-gov-navy">
-              Compliance + Capture = Winning
+          <div className="text-center mb-12">
+            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">The Difference</p>
+            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
+              AI Bid Alerts vs. Real Capture Management
             </h2>
           </div>
-          
-          <div className="grid gap-6 sm:grid-cols-3">
-            <Card className="p-6 text-center" hover={false}>
-              <div className="font-display text-3xl font-bold text-gov-crimson">87%</div>
-              <div className="mt-2 text-slate-600">of our clients win within 12 months</div>
+
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* AI Alerts */}
+            <Card className="p-8 bg-slate-100 border-slate-200" hover={false}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-300">
+                  <Mail size={24} className="text-slate-600" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-slate-600">Typical AI Bid Alert</h3>
+                  <p className="text-sm text-slate-500">What you're probably getting now</p>
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                {comparisonData.aiAlerts.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3 text-slate-600">
+                    <div className="h-2 w-2 rounded-full bg-slate-400" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 p-4 bg-white rounded-lg">
+                <p className="text-sm text-slate-600 italic">
+                  "Here are 50 bids that match the keyword 'Cleaning'. Good luck."
+                </p>
+              </div>
             </Card>
-            <Card className="p-6 text-center" hover={false}>
-              <div className="font-display text-3xl font-bold text-gov-crimson">3x</div>
-              <div className="mt-2 text-slate-600">more qualified opportunities found</div>
+
+            {/* GovCon Capture */}
+            <Card className="p-8 bg-gov-navy text-white border-gov-crimson ring-2 ring-gov-crimson/20" hover={false}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-crimson">
+                  <Target size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-white">GovCon Capture Management</h3>
+                  <p className="text-sm text-slate-300">What winning looks like</p>
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                {comparisonData.govcon.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3 text-white">
+                    <CheckCircle size={18} className="text-gov-green shrink-0" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 p-4 bg-white/10 rounded-lg">
+                <p className="text-sm text-white">
+                  "Here are 3 bids. We called the CO on Bid #2—they're unhappy with the incumbent. 
+                  Bid #1 is a set-aside you qualify for. Skip Bid #3, it's wired."
+                </p>
+              </div>
             </Card>
-            <Card className="p-6 text-center" hover={false}>
-              <div className="font-display text-3xl font-bold text-gov-crimson">0</div>
-              <div className="mt-2 text-slate-600">compliance issues under our management</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="bg-white py-16">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="p-6 text-center group hover:border-gov-crimson transition-colors" hover>
+              <div className="font-display text-4xl font-bold text-gov-crimson group-hover:scale-110 transition-transform">87%</div>
+              <div className="mt-2 text-slate-600">Win Rate Within 12 Months</div>
+            </Card>
+            <Card className="p-6 text-center group hover:border-gov-crimson transition-colors" hover>
+              <div className="font-display text-4xl font-bold text-gov-crimson group-hover:scale-110 transition-transform">3x</div>
+              <div className="mt-2 text-slate-600">More Qualified Opportunities</div>
+            </Card>
+            <Card className="p-6 text-center group hover:border-gov-crimson transition-colors" hover>
+              <div className="font-display text-4xl font-bold text-gov-crimson group-hover:scale-110 transition-transform">0</div>
+              <div className="mt-2 text-slate-600">Compliance Issues Under Management</div>
+            </Card>
+            <Card className="p-6 text-center group hover:border-gov-crimson transition-colors" hover>
+              <div className="font-display text-4xl font-bold text-gov-crimson group-hover:scale-110 transition-transform">15+</div>
+              <div className="mt-2 text-slate-600">Years of GovCon Experience</div>
             </Card>
           </div>
         </div>
@@ -188,16 +814,32 @@ export default function ServicesCompliance() {
       {/* CTA */}
       <Section title="Ready to Build Your Pipeline?" kicker="Get Started" dark>
         <Card className="p-8 bg-white/5 border-white/10" hover={false}>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h3 className="font-display text-2xl font-bold text-white">
                 Let's assess your current position
               </h3>
               <p className="mt-3 text-slate-300 max-w-xl">
-                We'll review your registrations, identify gaps, and build a capture 
-                strategy tailored to your goals.
+                We'll review your registrations, identify certification opportunities, and build 
+                a capture strategy tailored to your goals. The consultation is free.
               </p>
+              
+              <div className="mt-6 flex flex-wrap gap-4 text-sm">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <Phone size={16} />
+                  (813) 665-0308
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <Mail size={16} />
+                  info@govcon.info
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <Calendar size={16} />
+                  30-minute strategy call
+                </div>
+              </div>
             </div>
+            
             <LinkButton 
               href={LINKS.booking} 
               target="_blank" 

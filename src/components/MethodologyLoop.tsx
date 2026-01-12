@@ -1,300 +1,312 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, FileText, Award, Target, TrendingUp } from "lucide-react";
-import { cn } from "./cn";
+import { Shield, FileText, Award, Target, TrendingUp, ChevronRight } from "lucide-react";
 
 const stages = [
   {
     id: "compliance",
     title: "Compliance",
-    description: "Complete all Registrations, Certifications, and paperwork.",
+    subtitle: "Get Certified",
+    description: "Complete all Registrations, Certifications, and paperwork required to do business with the government.",
+    details: ["SAM.gov Registration", "NAICS Code Selection", "Capability Statement", "Required Certifications"],
     icon: Shield,
+    number: "01",
   },
   {
     id: "context",
     title: "Context",
-    description: "Understand requirements and position for success.",
+    subtitle: "Know the Landscape",
+    description: "Understand agency requirements, procurement patterns, and position your company for success.",
+    details: ["Market Research", "Agency Analysis", "Competitor Intelligence", "Requirement Mapping"],
     icon: FileText,
-  },
-  {
-    id: "compete",
-    title: "Compete",
-    description: "Working with your team to write persuasive bids.",
-    icon: Award,
+    number: "02",
   },
   {
     id: "capture",
     title: "Capture",
-    description: "Identify the right opportunities, by any means.",
+    subtitle: "Find Opportunities",
+    description: "Identify the right opportunities through strategic research, relationships, and market intelligence.",
+    details: ["Opportunity Pipeline", "Relationship Building", "Bid/No-Bid Analysis", "Teaming Partners"],
     icon: Target,
+    emphasized: true,
+    color: "navy",
+    number: "03",
+  },
+  {
+    id: "compete",
+    title: "Compete",
+    subtitle: "Win the Work",
+    description: "Working with your team to write persuasive, compliant bids that stand out from the competition.",
+    details: ["Proposal Writing", "Pricing Strategy", "Compliance Matrix", "Win Themes"],
+    icon: Award,
+    emphasized: true,
+    color: "crimson",
+    number: "04",
   },
   {
     id: "continuity",
     title: "Continuity",
-    description: "Learn how to systematically grow your GovCon Department.",
+    subtitle: "Scale & Repeat",
+    description: "Learn how to systematically grow your GovCon department with repeatable processes.",
+    details: ["Process Documentation", "Team Development", "Contract Management", "Growth Strategy"],
     icon: TrendingUp,
+    number: "05",
   },
 ];
 
-export default function MethodologyLoop() {
-  const [activeStage, setActiveStage] = useState<string | null>(null);
+export default function OurProcess() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto py-20 px-4">
-      <div className="text-center mb-16">
-        <h2 className="font-display text-4xl font-bold text-gov-navy">
-          The Stages
-        </h2>
-        <p className="mt-4 text-xl text-slate-600">
-          Powerful results built through a clear, steady path.
-        </p>
+    <section className="relative bg-gradient-to-b from-slate-50 to-white py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gov-crimson/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gov-navy/5 rounded-full blur-3xl" />
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0)`,
+            backgroundSize: '40px 40px',
+          }}
+        />
       </div>
 
-      {/* Desktop View */}
-      <div className="hidden lg:block relative" style={{ height: "400px" }}>
-        {/* SVG Layer - Paths */}
-        <svg 
-          className="absolute inset-0 w-full h-full pointer-events-none" 
-          viewBox="0 0 1200 400" 
-          preserveAspectRatio="xMidYMid meet"
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-20"
         >
-          {/* Horizontal baseline */}
-          <motion.line
-            x1="100"
-            y1="320"
-            x2="1100"
-            y2="320"
-            stroke="#94a3b8"
-            strokeWidth="16"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-          />
-
-          {/* Loop arc - circular path */}
-          <motion.path
-            d="M 480 320 Q 480 80, 720 80 Q 960 80, 960 320"
-            stroke="#94a3b8"
-            strokeWidth="16"
-            fill="none"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 2, delay: 0.3, ease: "easeInOut" }}
-          />
-
-          {/* Arrows */}
-          {/* Arrow 1: Compliance → Context */}
-          <motion.polygon
-            points="310,305 340,320 310,335"
-            fill="#64748b"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.3 }}
-          />
-
-          {/* Arrow 2: Context → up to loop */}
-          <motion.polygon
-            points="520,305 550,320 520,335"
-            fill="#64748b"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.3 }}
-          />
-
-          {/* Arrow 3: Top of loop pointing left */}
-          <motion.polygon
-            points="735,65 720,95 705,65"
-            fill="#64748b"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.8, duration: 0.3 }}
-          />
-
-          {/* Arrow 4: End of loop back down */}
-          <motion.polygon
-            points="930,305 960,320 930,335"
-            fill="#64748b"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.2, duration: 0.3 }}
-          />
-
-          {/* Arrow 5: Continuity */}
-          <motion.polygon
-            points="1020,305 1050,320 1020,335"
-            fill="#64748b"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.5, duration: 0.3 }}
-          />
-        </svg>
-
-        {/* Node Layer */}
-        {/* Compliance - Far Left */}
-        <motion.div
-          className="absolute"
-          style={{ left: "7%", top: "70%", transform: "translate(-50%, -50%)" }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
-          onMouseEnter={() => setActiveStage("compliance")}
-          onMouseLeave={() => setActiveStage(null)}
-        >
-          <StageNode stage={stages[0]} isActive={activeStage === "compliance"} />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gov-crimson/10 mb-6">
+            <div className="w-2 h-2 rounded-full bg-gov-crimson animate-pulse" />
+            <span className="text-xs font-bold text-gov-crimson uppercase tracking-[0.2em]">
+              The 5C Methodology
+            </span>
+          </div>
+          <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-gray-900 mb-6">
+            Our Process
+          </h2>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            A proven methodology that transforms government contracting from overwhelming to achievable.
+          </p>
         </motion.div>
 
-        {/* Context - Center Left */}
-        <motion.div
-          className="absolute"
-          style={{ left: "28%", top: "70%", transform: "translate(-50%, -50%)" }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.4 }}
-          onMouseEnter={() => setActiveStage("context")}
-          onMouseLeave={() => setActiveStage(null)}
-        >
-          <StageNode stage={stages[1]} isActive={activeStage === "context"} />
-        </motion.div>
-
-        {/* Compete - Top Left (crimson) */}
-        <motion.div
-          className="absolute"
-          style={{ left: "47%", top: "15%", transform: "translate(-50%, -50%)" }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6, duration: 0.4 }}
-          onMouseEnter={() => setActiveStage("compete")}
-          onMouseLeave={() => setActiveStage(null)}
-        >
-          <StageNode stage={stages[2]} isActive={activeStage === "compete"} colored="crimson" />
-        </motion.div>
-
-        {/* Capture - Top Right (navy) */}
-        <motion.div
-          className="absolute"
-          style={{ left: "73%", top: "15%", transform: "translate(-50%, -50%)" }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.8, duration: 0.4 }}
-          onMouseEnter={() => setActiveStage("capture")}
-          onMouseLeave={() => setActiveStage(null)}
-        >
-          <StageNode stage={stages[3]} isActive={activeStage === "capture"} colored="navy" />
-        </motion.div>
-
-        {/* Continuity - Far Right */}
-        <motion.div
-          className="absolute"
-          style={{ right: "7%", top: "70%", transform: "translate(50%, -50%)" }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1, duration: 0.4 }}
-          onMouseEnter={() => setActiveStage("continuity")}
-          onMouseLeave={() => setActiveStage(null)}
-        >
-          <StageNode stage={stages[4]} isActive={activeStage === "continuity"} />
-        </motion.div>
-
-        {/* Popup Description */}
-        <AnimatePresence>
-          {activeStage && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="absolute left-1/2 bottom-0 -translate-x-1/2 z-30 w-80 bg-white p-6 rounded-2xl shadow-2xl border-2 border-gov-blue"
-            >
-              <h3 className="font-bold text-gov-navy text-xl mb-2">
-                {stages.find((s) => s.id === activeStage)?.title}
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                {stages.find((s) => s.id === activeStage)?.description}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Mobile View */}
-      <div className="lg:hidden space-y-6">
-        {stages.map((stage, idx) => (
-          <motion.div
-            key={stage.id}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+        {/* Progress Line (Desktop) */}
+        <div className="hidden lg:block relative mb-8">
+          <div className="absolute top-1/2 left-[10%] right-[10%] h-1 bg-gray-200 rounded-full -translate-y-1/2" />
+          <motion.div 
+            className="absolute top-1/2 left-[10%] h-1 bg-gradient-to-r from-gray-400 via-gov-navy via-50% to-gov-crimson rounded-full -translate-y-1/2"
+            initial={{ width: 0 }}
+            whileInView={{ width: '80%' }}
             viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
-            className="bg-white rounded-2xl border-2 border-slate-200 p-6 shadow-sm"
-          >
-            <div className="flex items-start gap-5">
-              <div
-                className={cn(
-                  "flex h-16 w-16 items-center justify-center rounded-2xl shrink-0 text-white shadow-lg",
-                  stage.id === "compete"
-                    ? "bg-gov-crimson"
-                    : stage.id === "capture"
-                    ? "bg-gov-navy"
-                    : "bg-slate-500"
-                )}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
+          />
+          {/* Progress dots */}
+          <div className="relative flex justify-between px-[10%]">
+            {stages.map((stage, idx) => (
+              <motion.div
+                key={stage.id}
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 + idx * 0.15, type: "spring", stiffness: 300 }}
+                className={`
+                  w-4 h-4 rounded-full border-4 border-white shadow-md
+                  ${stage.emphasized 
+                    ? stage.color === "navy" 
+                      ? "bg-gov-navy" 
+                      : "bg-gov-crimson"
+                    : "bg-gray-400"
+                  }
+                `}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4">
+          {stages.map((stage, idx) => {
+            const Icon = stage.icon;
+            const isEmphasized = stage.emphasized;
+            const isHovered = hoveredIndex === idx;
+
+            return (
+              <motion.div
+                key={stage.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                onMouseEnter={() => setHoveredIndex(idx)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className={`
+                  relative cursor-pointer
+                  ${isEmphasized ? "lg:-mt-4" : ""}
+                `}
               >
-                <stage.icon size={32} strokeWidth={2} />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-gov-navy uppercase tracking-wide">
-                  {stage.title}
-                </h3>
-                <p className="text-slate-600 mt-2 leading-relaxed">
-                  {stage.description}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-}
+                <div className={`
+                  relative h-full rounded-2xl p-6 transition-all duration-500 ease-out
+                  ${isEmphasized
+                    ? stage.color === "crimson"
+                      ? "bg-gradient-to-br from-gov-crimson to-red-800"
+                      : "bg-gradient-to-br from-gov-navy to-slate-900"
+                    : "bg-white border border-gray-200"
+                  }
+                  ${isHovered
+                    ? isEmphasized
+                      ? "shadow-2xl scale-[1.03] -translate-y-2"
+                      : "shadow-xl scale-[1.02] -translate-y-1 border-gray-300"
+                    : isEmphasized
+                      ? "shadow-xl"
+                      : "shadow-md"
+                  }
+                `}>
+                  
+                  {/* Step Number - Large Background */}
+                  <div className={`
+                    absolute top-4 right-4 font-display text-6xl font-black leading-none
+                    ${isEmphasized ? "text-white/10" : "text-gray-100"}
+                  `}>
+                    {stage.number}
+                  </div>
 
-function StageNode({
-  stage,
-  isActive,
-  colored,
-}: {
-  stage: any;
-  isActive: boolean;
-  colored?: "crimson" | "navy";
-}) {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.15 }}
-      className="flex flex-col items-center cursor-pointer"
-    >
-      {/* Hexagon-style node */}
-      <div
-        className={cn(
-          "flex h-20 w-20 items-center justify-center rounded-2xl border-4 shadow-xl transition-all duration-200",
-          colored === "crimson"
-            ? "bg-gov-crimson border-gov-crimson text-white"
-            : colored === "navy"
-            ? "bg-gov-navy border-gov-navy text-white"
-            : "bg-white border-slate-300 text-slate-700",
-          isActive && "ring-4 ring-gov-blue ring-opacity-50 scale-110"
-        )}
-      >
-        <stage.icon size={36} strokeWidth={2.5} />
-      </div>
+                  {/* Icon Container */}
+                  <div className={`
+                    relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center mb-5
+                    transition-transform duration-300
+                    ${isHovered ? "scale-110" : ""}
+                    ${isEmphasized
+                      ? "bg-white/20 backdrop-blur-sm"
+                      : "bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200"
+                    }
+                  `}>
+                    <Icon
+                      size={26}
+                      strokeWidth={2}
+                      className={`
+                        transition-all duration-300
+                        ${isEmphasized ? "text-white" : "text-gray-800"}
+                        ${isHovered ? "scale-110" : ""}
+                      `}
+                    />
+                  </div>
 
-      {/* Label */}
-      <div className="mt-3 text-center">
-        <p className={cn(
-          "text-sm font-bold uppercase tracking-wider transition-opacity",
-          isActive ? "text-gov-blue" : "text-slate-600"
-        )}>
-          {stage.title}
-        </p>
+                  {/* Content */}
+                  <div className="relative z-10">
+                    {/* Subtitle */}
+                    <p className={`
+                      text-[11px] font-bold uppercase tracking-[0.15em] mb-2
+                      ${isEmphasized ? "text-white/60" : "text-gray-400"}
+                    `}>
+                      {stage.subtitle}
+                    </p>
+
+                    {/* Title */}
+                    <h3 className={`
+                      font-display text-xl font-bold mb-3
+                      ${isEmphasized ? "text-white" : "text-gray-900"}
+                    `}>
+                      {stage.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className={`
+                      text-sm leading-relaxed mb-4
+                      ${isEmphasized ? "text-white/80" : "text-gray-600"}
+                    `}>
+                      {stage.description}
+                    </p>
+
+                    {/* Details - Expandable on hover */}
+                    <AnimatePresence>
+                      {isHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className={`
+                            pt-4 border-t
+                            ${isEmphasized ? "border-white/20" : "border-gray-200"}
+                          `}>
+                            <div className="flex flex-wrap gap-2">
+                              {stage.details.map((detail, i) => (
+                                <span
+                                  key={i}
+                                  className={`
+                                    text-xs font-medium px-3 py-1.5 rounded-full
+                                    ${isEmphasized
+                                      ? "bg-white/15 text-white/90"
+                                      : "bg-gray-100 text-gray-700"
+                                    }
+                                  `}
+                                >
+                                  {detail}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Emphasized Badge */}
+                  {isEmphasized && (
+                    <div className={`
+                      absolute -top-3 left-6 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+                      ${stage.color === "crimson" 
+                        ? "bg-white text-gov-crimson" 
+                        : "bg-white text-gov-navy"
+                      }
+                      shadow-lg
+                    `}>
+                      Core Phase
+                    </div>
+                  )}
+
+                  {/* Hover indicator */}
+                  <div className={`
+                    absolute bottom-4 right-4 w-8 h-8 rounded-full flex items-center justify-center
+                    transition-all duration-300
+                    ${isEmphasized ? "bg-white/10" : "bg-gray-100"}
+                    ${isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}
+                  `}>
+                    <ChevronRight 
+                      size={16} 
+                      className={isEmphasized ? "text-white" : "text-gray-600"} 
+                    />
+                  </div>
+                </div>
+
+                {/* Connection Arrow (Mobile/Tablet) */}
+                {idx < stages.length - 1 && (
+                  <div className="flex lg:hidden justify-center py-4">
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 + 0.2 }}
+                      className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center"
+                    >
+                      <ChevronRight size={18} className="text-gray-400 rotate-90" />
+                    </motion.div>
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Loop Indicator - Removed */}
       </div>
-    </motion.div>
+    </section>
   );
 }
