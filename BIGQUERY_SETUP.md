@@ -11,7 +11,7 @@ The Contract Data Explorer integrates with BigQuery to fetch federal contract aw
 ## Setup Steps
 
 ### 1. Create a Google Cloud Project
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
+1. Go to [Google Cloud Console](https://consDole.cloud.google.com)
 2. Create a new project or select an existing one
 3. Enable the BigQuery API
 
