@@ -40,7 +40,9 @@ export type ContactPayload = {
   email: string;
   phone?: string;
   company?: string;
-  message: string;
+  cage?: string;
+  interest?: string;
+  bestTime?: string;
 };
 
 export async function submitContact(payload: ContactPayload) {

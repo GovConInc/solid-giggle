@@ -12,7 +12,9 @@ export default function Contact() {
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
+  const [cage, setCage] = useState("");
+  const [interest, setInterest] = useState("General");
+  const [bestTime, setBestTime] = useState("Anytime");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -24,13 +26,23 @@ export default function Contact() {
     setSuccess(null);
     
     try {
-      const r = await submitContact({ name, company, email, phone, message });
+      const r = await submitContact({ 
+        name, 
+        company, 
+        email, 
+        phone, 
+        cage,
+        interest,
+        bestTime
+      });
       setSuccess(r.id ? `Submitted successfully! Reference: ${r.id}` : "Submitted successfully!");
       setName("");
       setCompany("");
       setEmail("");
       setPhone("");
-      setMessage("");
+      setCage("");
+      setInterest("General");
+      setBestTime("Anytime");
     } catch (e: any) {
       setError(e?.message ?? "Failed to submit. Please try again.");
     } finally {
@@ -96,19 +108,6 @@ export default function Contact() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700">Company</label>
-                      <input
-                        type="text"
-                        value={company}
-                        onChange={(e) => setCompany(e.target.value)}
-                        className="mt-2 w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm focus:border-gov-blue focus:outline-none transition"
-                        placeholder="Company name"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid gap-6 sm:grid-cols-2">
-                    <div>
                       <label className="block text-sm font-semibold text-slate-700">Email *</label>
                       <input
                         type="email"
@@ -117,6 +116,19 @@ export default function Contact() {
                         required
                         className="mt-2 w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm focus:border-gov-blue focus:outline-none transition"
                         placeholder="you@company.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-700">Company</label>
+                      <input
+                        type="text"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                        className="mt-2 w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm focus:border-gov-blue focus:outline-none transition"
+                        placeholder="Company name"
                       />
                     </div>
                     <div>
@@ -131,16 +143,49 @@ export default function Contact() {
                     </div>
                   </div>
 
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-700">CAGE Code</label>
+                      <input
+                        type="text"
+                        value={cage}
+                        onChange={(e) => setCage(e.target.value.toUpperCase().slice(0, 5))}
+                        className="mt-2 w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm focus:border-gov-blue focus:outline-none transition"
+                        placeholder="e.g., 1A2B3"
+                        maxLength={5}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-700">Interest Area</label>
+                      <select
+                        value={interest}
+                        onChange={(e) => setInterest(e.target.value)}
+                        className="mt-2 w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm focus:border-gov-blue focus:outline-none transition"
+                      >
+                        <option value="General">General Inquiry</option>
+                        <option value="Compliance">Compliance & Certifications</option>
+                        <option value="GSA">GSA Schedule</option>
+                        <option value="Vehicles">Vehicles</option>
+                        <option value="Proposals">Proposal Writing</option>
+                        <option value="Programs">Federal Programs</option>
+                        <option value="Bids">Bid Support</option>
+                        <option value="SAM">SAM Registration</option>
+                      </select>
+                    </div>
+                  </div>
+
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700">Message *</label>
-                    <textarea
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      required
-                      rows={5}
-                      className="mt-2 w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm focus:border-gov-blue focus:outline-none transition resize-none"
-                      placeholder="Tell us about your goals and challenges..."
-                    />
+                    <label className="block text-sm font-semibold text-slate-700">Best Time to Contact</label>
+                    <select
+                      value={bestTime}
+                      onChange={(e) => setBestTime(e.target.value)}
+                      className="mt-2 w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-sm focus:border-gov-blue focus:outline-none transition"
+                    >
+                      <option value="Anytime">Anytime</option>
+                      <option value="Morning (8am-12pm)">Morning (8am-12pm)</option>
+                      <option value="Afternoon (12pm-5pm)">Afternoon (12pm-5pm)</option>
+                      <option value="Evening (5pm-8pm)">Evening (5pm-8pm)</option>
+                    </select>
                   </div>
 
                   {error && (
