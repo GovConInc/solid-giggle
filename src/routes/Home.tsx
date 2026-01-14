@@ -118,8 +118,7 @@ export default function Home() {
               </div>
               
               <h1 className="mt-6 font-display text-4xl font-black tracking-tight text-gov-navy sm:text-5xl lg:text-6xl leading-tight">
-                Your Roadmap to Winning Government Contracts.
-                <span className="block text-gov-blue mt-2">Guaranteed.</span>
+                Your Roadmap to Winning More Contracts.
               </h1>
               
               <p className="mt-6 text-lg text-slate-700 leading-relaxed">

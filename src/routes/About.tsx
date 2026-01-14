@@ -166,13 +166,11 @@ export default function About() {
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">About Us</p>
             <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl">
-              A clear path to winning government business
+              Government contracting doesn't have to be complicated
             </h1>
             <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-              GovCon Inc. exists because federal systems change constantly and businesses 
-              waste months learning by rework. We build a repeatable approach: strategy, 
-              compliance, execution, and continuous improvement. The result: faster wins, 
-              higher margins, and sustainable government revenue.
+              GovCon Inc. exists because federal systems change constantly and businesses waste months figuring it out on their own. 
+              We provide strategy, structure, and execution—turning chaos into a repeatable process. The result: faster wins, sustainable revenue, and a government business that scales.
             </p>
           </div>
         </div>

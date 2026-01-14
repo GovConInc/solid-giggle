@@ -62,11 +62,11 @@ export default function Contact() {
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Contact Us</p>
             <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl">
-              Let's talk.
+              Let's Talk.
             </h1>
             <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-              Send us a message or book a readiness call. We'll tell you what's real, 
-              what's noise, and what to do next.
+              Have questions about certifications, capture strategy, GSA schedules, or proposal support? 
+              Send us a message or book a free readiness call. No pitch—just straight answers and a clear path forward.
             </p>
             
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -89,9 +89,9 @@ export default function Contact() {
             {/* Form */}
             <div className="lg:col-span-2">
               <Card className="p-8" hover={false}>
-                <h2 className="text-xl font-bold text-gov-navy">Send a message</h2>
+                <h2 className="text-xl font-bold text-gov-navy">Send a Message</h2>
                 <p className="mt-2 text-sm text-slate-600">
-                  Fill out the form below and we'll get back to you within 24 hours.
+                  We respond to all inquiries within 24 hours. Tell us about your business and how we can help.
                 </p>
 
                 <form className="mt-8 space-y-6" onSubmit={onSubmit}>
