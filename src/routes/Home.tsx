@@ -118,7 +118,7 @@ export default function Home() {
               </div>
               
               <h1 className="mt-6 font-display text-4xl font-black tracking-tight text-gov-navy sm:text-5xl lg:text-6xl leading-tight">
-                Government Business Results.
+                Your Roadmap to Winning Government Contracts.
                 <span className="block text-gov-blue mt-2">Guaranteed.</span>
               </h1>
               
@@ -410,7 +410,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="font-display text-3xl font-bold text-white mb-4">
-                Book a 15-Minute Readiness Call
+                Book Your Free Readiness Call
               </h3>
               <p className="text-slate-300 text-lg leading-relaxed mb-6">
                 We'll assess your compliance status, identify certification opportunities, review your 

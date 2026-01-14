@@ -207,7 +207,7 @@ const faqs = [
   },
   { 
     q: "Do you guarantee results?", 
-    a: "We guarantee our work—every registration, every document, every submission will be done correctly. While we can't guarantee contract awards (that depends on your capabilities and the market), 87% of our Growth and Prime clients win within 12 months." 
+    a: "We guarantee our work—every registration, every document, every submission will be done correctly. We focus on the quality of submissions that get you in the door. Contract awards depend on your capabilities and the market, but proper positioning and strategy dramatically improve your odds." 
   }
 ];
 
@@ -263,7 +263,7 @@ export default function ServicesPrograms() {
           {/* Quick Stats */}
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card className="p-5 text-center" hover>
-              <div className="font-display text-3xl font-bold text-gov-crimson">87%</div>
+              <div className="font-display text-3xl font-bold text-gov-crimson">24hrs</div>
               <div className="text-sm text-slate-600 mt-1">Win within 12 months</div>
             </Card>
             <Card className="p-5 text-center" hover>
