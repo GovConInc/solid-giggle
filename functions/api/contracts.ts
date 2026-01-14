@@ -425,6 +425,7 @@ function transformBigQueryData(bigQueryData: any) {
   const row = bigQueryData.rows?.[0];
   
   if (!row) {
+    console.log('No rows returned from BigQuery');
     return {
       metrics: {
         total_contract_value: 0,
@@ -470,7 +471,7 @@ function transformBigQueryData(bigQueryData: any) {
   const topVendors = Array.isArray(vendorsRaw) 
     ? transformTopList(vendorsRaw, true)
     : [];
-  
+
   return {
     metrics: {
       total_contract_value: totalValue,

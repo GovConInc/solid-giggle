@@ -76,20 +76,7 @@ const INITIAL_DATA: AppData = {
     small_business_value: 12456780000,
     small_business_percentage: 27.3,
   },
-  timeline: [
-    { month: "Jan 2024", small_business: 980000000, other_than_small: 2840000000, total: 3820000000 },
-    { month: "Feb 2024", small_business: 1050000000, other_than_small: 2950000000, total: 4000000000 },
-    { month: "Mar 2024", small_business: 1120000000, other_than_small: 3100000000, total: 4220000000 },
-    { month: "Apr 2024", small_business: 1090000000, other_than_small: 3050000000, total: 4140000000 },
-    { month: "May 2024", small_business: 1180000000, other_than_small: 3200000000, total: 4380000000 },
-    { month: "Jun 2024", small_business: 1210000000, other_than_small: 3280000000, total: 4490000000 },
-    { month: "Jul 2024", small_business: 1150000000, other_than_small: 3150000000, total: 4300000000 },
-    { month: "Aug 2024", small_business: 1190000000, other_than_small: 3230000000, total: 4420000000 },
-    { month: "Sep 2024", small_business: 1240000000, other_than_small: 3340000000, total: 4580000000 },
-    { month: "Oct 2024", small_business: 1280000000, other_than_small: 3420000000, total: 4700000000 },
-    { month: "Nov 2024", small_business: 1260000000, other_than_small: 3380000000, total: 4640000000 },
-    { month: "Dec 2024", small_business: 1290000000, other_than_small: 3450000000, total: 4740000000 },
-  ],
+  timeline: generateMockTimeline(),
   setAsideDistribution: [
     { label: "8(a) Program", value: 3200000000, color: "#2563eb" },
     { label: "HUBZone", value: 2800000000, color: "#7c3aed" },
@@ -134,16 +121,19 @@ export default function ContractDataExplorer() {
   const [chartView, setChartView] = useState<"total" | "small" | "other">("total");
   const [error, setError] = useState<string | null>(null);
 
-  // --- THE FIX: Transformer Function ---
-  // This bridges the gap between your API response and your UI components
+  // Transform API response to UI format
   const transformApiResponse = (apiData: any): AppData => {
-    // 1. Calculate Percentage
+    console.log('API Response received:', apiData);
+    
+    if (!apiData || !apiData.metrics) {
+      throw new Error('Invalid API response structure');
+    }
+
     const total = apiData.metrics.total_contract_value || 0;
     const sbValue = apiData.metrics.small_business_value || 0;
     const sbPercent = total > 0 ? (sbValue / total) * 100 : 0;
 
-    // 2. Transform Timeline
-    // API sends 'monthlySpendingBySize', UI wants 'timeline'
+    // Transform Timeline
     const timeline = (apiData.monthlySpendingBySize || []).map((item: any) => ({
       month: item.month,
       small_business: item.small_business_spending || 0,
@@ -151,29 +141,31 @@ export default function ContractDataExplorer() {
       total: item.total_spending || 0
     }));
 
-    // 3. Transform Set Asides for Pie Chart
-    // API sends an object, UI wants an array with colors
-    const bt = apiData.business_types || {};
-    const setAsideDistribution = [
-      { label: "8(a) Program", value: bt.eight_a?.value || 0, color: "#2563eb" },
-      { label: "HUBZone", value: bt.hubzone?.value || 0, color: "#7c3aed" },
-      { label: "Women-Owned", value: bt.wosb?.value || 0, color: "#ec4899" },
-      { label: "Veteran-Owned", value: bt.sdvosb?.value || 0, color: "#f59e0b" },
-    ].filter(item => item.value > 0); // Only show segments with data
+    // Transform Set Asides
+    let setAsideDistribution: SetAsideItem[] = [];
+    if (apiData.business_types) {
+      const bt = apiData.business_types;
+      setAsideDistribution = [
+        { label: "8(a) Program", value: bt.eight_a?.value || 0, color: "#2563eb" },
+        { label: "HUBZone", value: bt.hubzone?.value || 0, color: "#7c3aed" },
+        { label: "Women-Owned", value: bt.wosb?.value || 0, color: "#ec4899" },
+        { label: "Veteran-Owned", value: bt.sdvosb?.value || 0, color: "#f59e0b" },
+      ].filter(item => item.value > 0);
+    }
 
-    // 4. Transform Vendors
-    // API sends 'topVendors', UI wants 'topContractors' with boolean is_small
+    // Transform Vendors
     const topContractors = (apiData.topVendors || []).map((vendor: any) => ({
       name: vendor.name,
       value: vendor.value,
       count: vendor.award_count,
-      // Check if the business_size string contains 'S'
       is_small: (vendor.business_size || "").includes("S")
     }));
 
-    return {
+    const transformed: AppData = {
       metrics: {
-        ...apiData.metrics,
+        total_contract_value: total,
+        small_business_count: apiData.metrics.small_business_count || 0,
+        small_business_value: sbValue,
         small_business_percentage: sbPercent
       },
       timeline,
@@ -181,6 +173,9 @@ export default function ContractDataExplorer() {
       topAgencies: apiData.topAgencies || [],
       topContractors
     };
+    
+    console.log('Transformed data:', transformed);
+    return transformed;
   };
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -197,15 +192,24 @@ export default function ContractDataExplorer() {
         yearRange: String(timeRange),
       });
       
+      console.log(`Searching with params: ${params.toString()}`);
+      
       const response = await fetch(`/api/contracts?${params}`);
       const result = await response.json();
+      
+      console.log('API Response status:', response.status);
+      console.log('API Response body:', result);
       
       if (!response.ok) {
         throw new Error(result.error || `API error: ${response.status}`);
       }
       
-      if (!result.success || !result.data) {
-        throw new Error(result.error || 'Failed to fetch data');
+      if (!result.success) {
+        throw new Error(result.error || 'API returned success: false');
+      }
+      
+      if (!result.data) {
+        throw new Error('API returned no data - BigQuery query may have returned empty results');
       }
       
       // Transform the data before setting state
