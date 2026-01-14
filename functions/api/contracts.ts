@@ -33,26 +33,35 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
   const clientIP = request.headers.get('CF-Connecting-IP') || 
                    request.headers.get('X-Forwarded-For')?.split(',')[0] || 
                    'unknown';
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const todayDate = new Date();
+  const today = todayDate.toISOString().split('T')[0]; // YYYY-MM-DD
   const rateLimitKey = `${clientIP}:${today}`;
+  
+  // Helper to get end of day timestamp
+  const getEndOfDayISO = () => {
+    const eod = new Date(todayDate);
+    eod.setHours(23, 59, 59, 999);
+    return eod.toISOString();
+  };
   
   // Check rate limit
   const currentLimit = rateLimitCache.get(rateLimitKey);
   const requestCount = currentLimit?.date === today ? currentLimit.count : 0;
   
   if (requestCount >= RATE_LIMIT) {
+    const resetTime = getEndOfDayISO();
     return new Response(JSON.stringify({
       success: false,
       error: `Rate limit exceeded. Maximum ${RATE_LIMIT} requests per day. Try again tomorrow.`,
       remaining: 0,
-      resetTime: new Date(today + 'T23:59:59Z').toISOString()
+      resetTime: resetTime
     }), { 
       status: 429,
       headers: {
         'Content-Type': 'application/json',
         'X-RateLimit-Limit': String(RATE_LIMIT),
         'X-RateLimit-Remaining': '0',
-        'X-RateLimit-Reset': new Date(today + 'T23:59:59Z').toISOString(),
+        'X-RateLimit-Reset': resetTime,
         'Access-Control-Allow-Origin': '*',
       }
     });
@@ -79,6 +88,7 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
   const yearRange = parseInt(url.searchParams.get('yearRange') || '1');
 
   // CORS headers
+  const resetTime = getEndOfDayISO();
   const headers = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -86,7 +96,7 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     'Access-Control-Allow-Headers': 'Content-Type',
     'X-RateLimit-Limit': String(RATE_LIMIT),
     'X-RateLimit-Remaining': String(RATE_LIMIT - requestCount - 1),
-    'X-RateLimit-Reset': new Date(today + 'T23:59:59Z').toISOString(),
+    'X-RateLimit-Reset': resetTime,
   };
 
   try {
@@ -149,7 +159,7 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
       rateLimit: {
         limit: RATE_LIMIT,
         remaining: RATE_LIMIT - requestCount - 1,
-        reset: new Date(today + 'T23:59:59Z').toISOString()
+        reset: resetTime
       }
     }), { headers });
 
@@ -161,7 +171,7 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
       rateLimit: {
         limit: RATE_LIMIT,
         remaining: RATE_LIMIT - requestCount - 1,
-        reset: new Date(today + 'T23:59:59Z').toISOString()
+        reset: resetTime
       }
     }), { 
       status: 500,
