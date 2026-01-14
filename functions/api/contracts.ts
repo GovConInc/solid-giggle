@@ -12,6 +12,22 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
   const { request, env } = context;
   const url = new URL(request.url);
   
+  // Validate environment
+  if (!env.BIGQUERY_CREDENTIALS) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    };
+    return new Response(JSON.stringify({
+      success: false,
+      error: 'BigQuery credentials not configured. Please set BIGQUERY_CREDENTIALS environment variable.',
+      rateLimit: { limit: RATE_LIMIT, remaining: 0, reset: new Date().toISOString() }
+    }), { 
+      status: 500,
+      headers 
+    });
+  }
+  
   // Get client IP
   const clientIP = request.headers.get('CF-Connecting-IP') || 
                    request.headers.get('X-Forwarded-For')?.split(',')[0] || 
@@ -106,11 +122,17 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
 
     if (!bigQueryResponse.ok) {
       const errorText = await bigQueryResponse.text();
-      console.error('BigQuery error:', errorText);
-      throw new Error(`BigQuery error: ${bigQueryResponse.status}`);
+      console.error('BigQuery error response:', errorText);
+      throw new Error(`BigQuery error: ${bigQueryResponse.status} - ${errorText}`);
     }
 
     const bigQueryData = await bigQueryResponse.json();
+    
+    // Check for query errors
+    if (bigQueryData.errors) {
+      console.error('BigQuery query errors:', bigQueryData.errors);
+      throw new Error(`BigQuery query failed: ${bigQueryData.errors.map((e: any) => e.message).join(', ')}`);
+    }
     
     // Transform BigQuery response to match your frontend format
     const formattedData = transformBigQueryData(bigQueryData);
@@ -130,6 +152,7 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     return new Response(JSON.stringify({
       success: false,
       error: error.message || 'Failed to fetch data',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined,
       rateLimit: {
         limit: RATE_LIMIT,
         remaining: RATE_LIMIT - requestCount - 1,
@@ -155,42 +178,59 @@ export async function onRequestOptions() {
 
 // Get OAuth2 access token from service account
 async function getAccessToken(credentialsJson: string): Promise<string> {
-  const credentials = JSON.parse(credentialsJson);
-  
-  // Create JWT
-  const now = Math.floor(Date.now() / 1000);
-  const header = {
-    alg: 'RS256',
-    typ: 'JWT',
-    kid: credentials.private_key_id,
-  };
-  
-  const payload = {
-    iss: credentials.client_email,
-    scope: 'https://www.googleapis.com/auth/bigquery.readonly',
-    aud: 'https://oauth2.googleapis.com/token',
-    exp: now + 3600,
-    iat: now,
-  };
+  try {
+    const credentials = JSON.parse(credentialsJson);
+    
+    // Validate required fields
+    if (!credentials.private_key || !credentials.client_email) {
+      throw new Error('Missing required fields in credentials: private_key and client_email are required');
+    }
+    
+    // Create JWT
+    const now = Math.floor(Date.now() / 1000);
+    const header = {
+      alg: 'RS256',
+      typ: 'JWT',
+      kid: credentials.private_key_id,
+    };
+    
+    const payload = {
+      iss: credentials.client_email,
+      scope: 'https://www.googleapis.com/auth/bigquery.readonly',
+      aud: 'https://oauth2.googleapis.com/token',
+      exp: now + 3600,
+      iat: now,
+    };
 
-  const jwt = await signJWT(header, payload, credentials.private_key);
-  
-  // Exchange JWT for access token
-  const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-      assertion: jwt,
-    }),
-  });
+    const jwt = await signJWT(header, payload, credentials.private_key);
+    
+    // Exchange JWT for access token
+    const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+        assertion: jwt,
+      }),
+    });
 
-  if (!tokenResponse.ok) {
-    throw new Error('Failed to get access token');
+    if (!tokenResponse.ok) {
+      const errorText = await tokenResponse.text();
+      console.error('Token exchange error:', errorText);
+      throw new Error(`Failed to get access token: ${tokenResponse.status}`);
+    }
+
+    const tokenData = await tokenResponse.json();
+    
+    if (!tokenData.access_token) {
+      throw new Error('No access token in response from Google OAuth');
+    }
+    
+    return tokenData.access_token;
+  } catch (error: any) {
+    console.error('Access token error:', error.message);
+    throw error;
   }
-
-  const tokenData = await tokenResponse.json();
-  return tokenData.access_token;
 }
 
 // Sign JWT using Web Crypto API
@@ -199,34 +239,46 @@ async function signJWT(header: any, payload: any, privateKey: string): Promise<s
   const encodedPayload = base64UrlEncode(JSON.stringify(payload));
   const unsignedToken = `${encodedHeader}.${encodedPayload}`;
 
-  // Import private key
-  const pemHeader = '-----BEGIN PRIVATE KEY-----';
-  const pemFooter = '-----END PRIVATE KEY-----';
-  const pemContents = privateKey.substring(
-    pemHeader.length,
-    privateKey.length - pemFooter.length - 1
-  ).replace(/\s/g, '');
-  
-  const binaryKey = base64Decode(pemContents);
-  
-  const cryptoKey = await crypto.subtle.importKey(
-    'pkcs8',
-    binaryKey,
-    {
-      name: 'RSASSA-PKCS1-v1_5',
-      hash: 'SHA-256',
-    },
-    false,
-    ['sign']
-  );
+  try {
+    // Import private key
+    const pemHeader = '-----BEGIN PRIVATE KEY-----';
+    const pemFooter = '-----END PRIVATE KEY-----';
+    
+    if (!privateKey.includes(pemHeader)) {
+      throw new Error('Invalid private key format - missing PEM header');
+    }
+    
+    const pemContents = privateKey
+      .substring(
+        privateKey.indexOf(pemHeader) + pemHeader.length,
+        privateKey.indexOf(pemFooter)
+      )
+      .replace(/\s/g, '');
+    
+    const binaryKey = base64Decode(pemContents);
+    
+    const cryptoKey = await crypto.subtle.importKey(
+      'pkcs8',
+      binaryKey,
+      {
+        name: 'RSASSA-PKCS1-v1_5',
+        hash: 'SHA-256',
+      },
+      false,
+      ['sign']
+    );
 
-  // Sign the token
-  const encoder = new TextEncoder();
-  const data = encoder.encode(unsignedToken);
-  const signature = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', cryptoKey, data);
+    // Sign the token
+    const encoder = new TextEncoder();
+    const data = encoder.encode(unsignedToken);
+    const signature = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', cryptoKey, data);
 
-  const encodedSignature = base64UrlEncode(signature);
-  return `${unsignedToken}.${encodedSignature}`;
+    const encodedSignature = base64UrlEncode(signature);
+    return `${unsignedToken}.${encodedSignature}`;
+  } catch (error: any) {
+    console.error('JWT signing error:', error.message);
+    throw new Error(`Failed to sign JWT: ${error.message}`);
+  }
 }
 
 function base64UrlEncode(data: string | ArrayBuffer): string {

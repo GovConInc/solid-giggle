@@ -70,10 +70,12 @@ export default function ContractDataExplorer() {
   const [hasSearched, setHasSearched] = useState(false);
   const [data, setData] = useState(MOCK_DATA);
   const [chartView, setChartView] = useState<"total" | "small" | "other">("total");
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     
     try {
       const params = new URLSearchParams({
@@ -84,23 +86,34 @@ export default function ContractDataExplorer() {
         yearRange: String(timeRange),
       });
       
+      console.log(`Fetching contract data with params: ${params.toString()}`);
+      
       const response = await fetch(`/api/contracts?${params}`);
+      const result = await response.json();
+      
+      console.log('API Response:', result);
       
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        const errorMsg = result.error || result.details || `API error: ${response.status}`;
+        throw new Error(errorMsg);
       }
-      
-      const result = await response.json();
       
       if (!result.success) {
         throw new Error(result.error || 'Failed to fetch data');
       }
       
+      if (!result.data) {
+        throw new Error('No data returned from API');
+      }
+      
       setData(result.data);
       setHasSearched(true);
+      setError(null);
     } catch (error: any) {
-      console.error('Search failed:', error);
-      alert(`Search failed: ${error.message}`);
+      const errorMessage = error.message || 'An unknown error occurred';
+      console.error('Search failed:', errorMessage);
+      setError(errorMessage);
+      setHasSearched(false);
     } finally {
       setLoading(false);
     }
@@ -123,6 +136,16 @@ export default function ContractDataExplorer() {
           </div>
           <h2 className="text-xl font-bold text-gov-navy">Contract Data Explorer</h2>
         </div>
+
+        {error && (
+          <div className="mb-6 p-4 rounded-lg bg-red-50 border-2 border-red-200">
+            <p className="text-sm font-semibold text-red-900 mb-2">Error:</p>
+            <p className="text-sm text-red-800 font-mono break-words">{error}</p>
+            <p className="text-xs text-red-700 mt-2">
+              Make sure your BigQuery credentials are properly configured and the API endpoint is available.
+            </p>
+          </div>
+        )}
 
         <form onSubmit={handleSearch}>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">

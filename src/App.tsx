@@ -9,6 +9,7 @@ import InformationCertification from "./routes/information/Certification";
 import InformationBids from "./routes/information/Bids";
 import InformationProposals from "./routes/information/Proposals";
 import InformationVehicles from "./routes/information/Vehicles";
+import SearchContracts from "./routes/information/SearchContracts";
 
 // Services Pages
 import ServicesGSA from "./routes/services/GSA";
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/information/finding-bids" element={<InformationBids />} />
         <Route path="/information/writing-proposals" element={<InformationProposals />} />
         <Route path="/information/contract-vehicles" element={<InformationVehicles />} />
+        <Route path="/information/search-contracts" element={<SearchContracts />} />
 
         {/* Services Routes */}
         <Route path="/services" element={<ServicesGSA />} />
