@@ -227,10 +227,13 @@ export default function ContractDataExplorer() {
   };
 
   const getChartData = () => {
-    return data.timeline.map(item => ({
+    console.log('getChartData - timeline data:', data.timeline);
+    const chartData = data.timeline.map(item => ({
       month: item.month,
-      value: chartView === "total" ? item.total : chartView === "small" ? item.small_business : item.other_than_small,
+      value: chartView === "total" ? item.total_spending : chartView === "small" ? item.small_business_spending : item.other_than_small_spending,
     }));
+    console.log('getChartData - formatted chart data:', chartData);
+    return chartData;
   };
 
   return (
@@ -409,45 +412,53 @@ export default function ContractDataExplorer() {
                   ))}
                 </div>
               </div>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={getChartData()}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="#64748b" />
-                  <YAxis tick={{ fontSize: 11 }} stroke="#64748b" tickFormatter={(value) => compact(value)} />
-                  <Tooltip
-                    contentStyle={{ background: "rgba(15, 23, 42, 0.95)", border: "none", borderRadius: "8px", color: "#fff" }}
-                    formatter={(value: number) => [usd(value), "Value"]}
-                  />
-                  <Line type="monotone" dataKey="value" stroke="#2563eb" strokeWidth={3} dot={{ fill: "#2563eb", r: 4 }} activeDot={{ r: 6 }} />
-                </LineChart>
-              </ResponsiveContainer>
+              {data.timeline && data.timeline.length > 0 ? (
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={getChartData()}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="#64748b" />
+                    <YAxis tick={{ fontSize: 11 }} stroke="#64748b" tickFormatter={(value) => compact(value)} />
+                    <Tooltip
+                      contentStyle={{ background: "rgba(15, 23, 42, 0.95)", border: "none", borderRadius: "8px", color: "#fff" }}
+                      formatter={(value: number) => [usd(value), "Value"]}
+                    />
+                    <Line type="monotone" dataKey="value" stroke="#2563eb" strokeWidth={3} dot={{ fill: "#2563eb", r: 4 }} activeDot={{ r: 6 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-64 flex items-center justify-center text-slate-500">No timeline data available</div>
+              )}
             </Card>
 
             {/* Pie Chart */}
             <Card className="p-6" hover={false}>
               <h3 className="font-bold text-lg text-gov-navy mb-6">Set-Aside Distribution</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={data.setAsideDistribution}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={2}
-                    dataKey="value"
-                    label={(entry) => entry.label}
-                  >
-                    {data.setAsideDistribution.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{ background: "rgba(15, 23, 42, 0.95)", border: "none", borderRadius: "8px", color: "#fff" }}
-                    formatter={(value: number) => [usd(value), "Value"]}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+              {data.setAsideDistribution && data.setAsideDistribution.length > 0 ? (
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={data.setAsideDistribution}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={2}
+                      dataKey="value"
+                      label={(entry) => entry.label}
+                    >
+                      {data.setAsideDistribution.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{ background: "rgba(15, 23, 42, 0.95)", border: "none", borderRadius: "8px", color: "#fff" }}
+                      formatter={(value: number) => [usd(value), "Value"]}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-64 flex items-center justify-center text-slate-500">No set-aside data available</div>
+              )}
             </Card>
           </div>
 
