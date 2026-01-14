@@ -105,19 +105,22 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     
     // Calculate date range
     const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth() + 1;
     
-    // Fiscal year runs from October to September
-    // If we're before October, the current fiscal year started last October
-    const fiscalYearStartYear = currentMonth < 10 ? currentYear - 1 : currentYear;
-    const startDate = yearRange === 5 
-      ? `${fiscalYearStartYear - 4}-10-01`
-      : `${fiscalYearStartYear}-10-01`;
+    // For 1-year: look back 12 months from today
+    // For 5-year: look back 60 months from today
+    const monthsBack = yearRange === 5 ? 60 : 12;
+    const startDate = new Date(today);
+    startDate.setMonth(startDate.getMonth() - monthsBack);
+    
+    const startDateStr = startDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+    
+    console.log(`Date range calculation: yearRange=${yearRange}, monthsBack=${monthsBack}, startDate=${startDateStr}, today=${today.toISOString().split('T')[0]}`);
 
     // Build and execute query
     const projectId = 'govspend1';
-    const query = buildBigQuerySQL(naics, state, setAside, keyword, startDate);
+    const query = buildBigQuerySQL(naics, state, setAside, keyword, startDateStr);
+    
+    console.log(`BigQuery parameters: naics=${naics}, state=${state}, setAside=${setAside}, keyword=${keyword}, startDate=${startDateStr}`);
 
     const bigQueryUrl = `https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/queries`;
     
@@ -144,6 +147,9 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
 
     const bigQueryData = await bigQueryResponse.json();
     
+    console.log(`BigQuery response - rows: ${bigQueryData.rows?.length || 0}, totalRows: ${bigQueryData.totalRows}`);
+    console.log(`BigQuery response full data:`, JSON.stringify(bigQueryData));
+    
     // Check for query errors
     if (bigQueryData.errors) {
       console.error('BigQuery query errors:', bigQueryData.errors);
@@ -152,6 +158,8 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     
     // Transform BigQuery response to match your frontend format
     const formattedData = transformBigQueryData(bigQueryData);
+    
+    console.log(`Formatted data:`, JSON.stringify(formattedData));
 
     return new Response(JSON.stringify({
       success: true,
