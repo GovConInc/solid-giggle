@@ -6,6 +6,26 @@ import { Button } from "./Button";
 import { cn } from "./cn";
 import { usd, compact } from "../lib/format";
 
+// Generate timeline data for the last 12 months
+function generateMockTimeline(): any[] {
+  const months = [];
+  const now = new Date();
+  
+  for (let i = 11; i >= 0; i--) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const month = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    
+    months.push({
+      month,
+      small_business: 980000000 + Math.random() * 500000000,
+      other_than_small: 2840000000 + Math.random() * 800000000,
+      total: 3820000000 + Math.random() * 1000000000,
+    });
+  }
+  
+  return months;
+}
+
 // Mock data structure - replace with actual API call
 const MOCK_DATA = {
   metrics: {
@@ -14,20 +34,7 @@ const MOCK_DATA = {
     small_business_value: 12456780000,
     small_business_percentage: 27.3,
   },
-  timeline: [
-    { month: "Jan 2024", small_business: 980000000, other_than_small: 2840000000, total: 3820000000 },
-    { month: "Feb 2024", small_business: 1050000000, other_than_small: 2950000000, total: 4000000000 },
-    { month: "Mar 2024", small_business: 1120000000, other_than_small: 3100000000, total: 4220000000 },
-    { month: "Apr 2024", small_business: 1090000000, other_than_small: 3050000000, total: 4140000000 },
-    { month: "May 2024", small_business: 1180000000, other_than_small: 3200000000, total: 4380000000 },
-    { month: "Jun 2024", small_business: 1210000000, other_than_small: 3280000000, total: 4490000000 },
-    { month: "Jul 2024", small_business: 1150000000, other_than_small: 3150000000, total: 4300000000 },
-    { month: "Aug 2024", small_business: 1190000000, other_than_small: 3230000000, total: 4420000000 },
-    { month: "Sep 2024", small_business: 1240000000, other_than_small: 3340000000, total: 4580000000 },
-    { month: "Oct 2024", small_business: 1280000000, other_than_small: 3420000000, total: 4700000000 },
-    { month: "Nov 2024", small_business: 1260000000, other_than_small: 3380000000, total: 4640000000 },
-    { month: "Dec 2024", small_business: 1290000000, other_than_small: 3450000000, total: 4740000000 },
-  ],
+  timeline: generateMockTimeline(),
   setAsideDistribution: [
     { label: "8(a) Program", value: 3200000000, color: "#2563eb" },
     { label: "HUBZone", value: 2800000000, color: "#7c3aed" },

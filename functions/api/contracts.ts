@@ -93,11 +93,16 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     const accessToken = await getAccessToken(env.BIGQUERY_CREDENTIALS);
     
     // Calculate date range
-    const currentYear = new Date().getFullYear();
-    const fiscalYearStart = `${currentYear - 1}-10-01`;
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth() + 1;
+    
+    // Fiscal year runs from October to September
+    // If we're before October, the current fiscal year started last October
+    const fiscalYearStartYear = currentMonth < 10 ? currentYear - 1 : currentYear;
     const startDate = yearRange === 5 
-      ? `${currentYear - 5}-10-01` 
-      : fiscalYearStart;
+      ? `${fiscalYearStartYear - 4}-10-01`
+      : `${fiscalYearStartYear}-10-01`;
 
     // Build and execute query
     const projectId = 'govspend1';
@@ -152,7 +157,6 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     return new Response(JSON.stringify({
       success: false,
       error: error.message || 'Failed to fetch data',
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined,
       rateLimit: {
         limit: RATE_LIMIT,
         remaining: RATE_LIMIT - requestCount - 1,
@@ -407,11 +411,54 @@ function buildBigQuerySQL(
 }
 
 function transformBigQueryData(bigQueryData: any) {
-  const row = bigQueryData.rows?.[0] || {};
+  const row = bigQueryData.rows?.[0];
   
-  const totalValue = parseFloat(row.f?.[0]?.v || 0);
-  const smallBusinessValue = parseFloat(row.f?.[1]?.v || 0);
-  const smallBusinessCount = parseInt(row.f?.[2]?.v || 0);
+  if (!row) {
+    return {
+      metrics: {
+        total_contract_value: 0,
+        small_business_count: 0,
+        small_business_value: 0,
+        small_business_percentage: 0,
+      },
+      timeline: [],
+      setAsideDistribution: [],
+      topAgencies: [],
+      topContractors: [],
+    };
+  }
+  
+  // Handle both nested f/v structure and direct values
+  const getFieldValue = (fieldIndex: number) => {
+    const field = row.f?.[fieldIndex];
+    return field?.v !== undefined ? field.v : field;
+  };
+  
+  const totalValue = parseFloat(getFieldValue(0) || 0);
+  const smallBusinessValue = parseFloat(getFieldValue(1) || 0);
+  const smallBusinessCount = parseInt(getFieldValue(2) || 0);
+  
+  // Timeline data (field 4)
+  const timelineRaw = getFieldValue(4);
+  const timelineData = Array.isArray(timelineRaw) 
+    ? transformTimelineData(timelineRaw)
+    : [];
+  
+  // Set-aside data (field 3)
+  const setAsideRaw = getFieldValue(3);
+  const setAsideData = transformSetAsideData(setAsideRaw || {});
+  
+  // Top agencies (field 5)
+  const agenciesRaw = getFieldValue(5);
+  const agencies = Array.isArray(agenciesRaw) 
+    ? transformTopList(agenciesRaw)
+    : [];
+  
+  // Top vendors (field 6)
+  const vendorsRaw = getFieldValue(6);
+  const vendors = Array.isArray(vendorsRaw) 
+    ? transformTopList(vendorsRaw, true)
+    : [];
   
   return {
     metrics: {
@@ -420,39 +467,67 @@ function transformBigQueryData(bigQueryData: any) {
       small_business_value: smallBusinessValue,
       small_business_percentage: totalValue > 0 ? (smallBusinessValue / totalValue) * 100 : 0,
     },
-    timeline: transformTimelineData(row.f?.[4]?.v || []),
-    setAsideDistribution: transformSetAsideData(row.f?.[3]?.v || {}),
-    topAgencies: transformTopList(row.f?.[5]?.v || []),
-    topContractors: transformTopList(row.f?.[6]?.v || [], true),
+    timeline: timelineData && timelineData.length > 0 ? timelineData : [],
+    setAsideDistribution: setAsideData && setAsideData.length > 0 ? setAsideData : [],
+    topAgencies: agencies && agencies.length > 0 ? agencies : [],
+    topContractors: vendors && vendors.length > 0 ? vendors : [],
   };
 }
 
 function transformTimelineData(data: any[]): any[] {
-  return (data || []).map((item: any) => ({
-    month: item.f?.[0]?.v || '',
-    small_business: parseFloat(item.f?.[1]?.v || 0),
-    other_than_small: parseFloat(item.f?.[2]?.v || 0),
-    total: parseFloat(item.f?.[3]?.v || 0),
-  }));
+  return (data || []).map((item: any) => {
+    // Handle both nested f/v structure and direct object access
+    const getField = (index: number) => {
+      const field = item.f?.[index];
+      return field?.v !== undefined ? field.v : field;
+    };
+    
+    const monthValue = getField(0);
+    return {
+      month: monthValue?.toString() || '',
+      small_business: parseFloat(getField(1) || 0),
+      other_than_small: parseFloat(getField(2) || 0),
+      total: parseFloat(getField(3) || 0),
+    };
+  }).filter(item => item.month && item.month.length > 0);
 }
 
 function transformSetAsideData(data: any): any[] {
   const colors = ['#2563eb', '#7c3aed', '#ec4899', '#f59e0b'];
+  
+  // Handle nested f/v structure from BigQuery
+  const getValue = (key: string) => {
+    if (data[key] !== undefined) return data[key];
+    if (data.f && Array.isArray(data.f)) {
+      const field = data.f.find((f: any) => f?.v?.[key]);
+      if (field?.v?.[key]) return field.v[key];
+    }
+    return 0;
+  };
+  
   return [
-    { label: '8(a) Program', value: parseFloat(data.eight_a_value || 0), color: colors[0] },
-    { label: 'HUBZone', value: parseFloat(data.hubzone_value || 0), color: colors[1] },
-    { label: 'Women-Owned', value: parseFloat(data.wosb_value || 0), color: colors[2] },
-    { label: 'Veteran-Owned', value: parseFloat(data.sdvosb_value || 0), color: colors[3] },
+    { label: '8(a) Program', value: parseFloat(getValue('eight_a_value') || 0), color: colors[0] },
+    { label: 'HUBZone', value: parseFloat(getValue('hubzone_value') || 0), color: colors[1] },
+    { label: 'Women-Owned', value: parseFloat(getValue('wosb_value') || 0), color: colors[2] },
+    { label: 'Veteran-Owned', value: parseFloat(getValue('sdvosb_value') || 0), color: colors[3] },
   ].filter(item => item.value > 0);
 }
 
 function transformTopList(data: any[], isContractors = false): any[] {
-  return (data || []).map((item: any) => ({
-    name: item.f?.[0]?.v || '',
-    count: parseInt(item.f?.[1]?.v || 0),
-    value: parseFloat(item.f?.[2]?.v || 0),
-    ...(isContractors && {
-      is_small: (item.f?.[3]?.v || '').includes('S')
-    })
-  }));
+  return (data || []).map((item: any) => {
+    // Handle both nested f/v structure and direct object access
+    const getField = (index: number) => {
+      const field = item.f?.[index];
+      return field?.v !== undefined ? field.v : field;
+    };
+    
+    return {
+      name: getField(0)?.toString() || '',
+      count: parseInt(getField(1) || 0),
+      value: parseFloat(getField(2) || 0),
+      ...(isContractors && {
+        is_small: (getField(3)?.toString() || '').includes('S')
+      })
+    };
+  }).filter(item => item.name && item.name.length > 0);
 }
