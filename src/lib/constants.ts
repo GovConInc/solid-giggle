@@ -8,7 +8,7 @@ export const BRAND = {
 };
 
 export const LINKS = {
-  booking: "https://calendar.google.com", // replace with your Google Appointment Schedule / meeting link
+  booking: "https://calendar.app.google/EA6JzEhbNTH6AM6S8", // replace with your Google Appointment Schedule / meeting link
   linkedin: "#",
 };
 
