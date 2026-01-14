@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Search, TrendingUp, Building2, Users, DollarSign, Filter } from "lucide-react";
-import { LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import Card from "./Card";
 import { Button } from "./Button";
 import { cn } from "./cn";
@@ -26,15 +26,70 @@ function generateMockTimeline(): any[] {
   return months;
 }
 
-// Mock data structure - replace with actual API call
-const MOCK_DATA = {
+// --- Types for your State ---
+interface Metrics {
+  total_contract_value: number;
+  small_business_count: number;
+  small_business_value: number;
+  small_business_percentage: number;
+}
+
+interface TimelineItem {
+  month: string;
+  small_business: number;
+  other_than_small: number;
+  total: number;
+}
+
+interface SetAsideItem {
+  label: string;
+  value: number;
+  color: string;
+}
+
+interface AgencyItem {
+  name: string;
+  value: number;
+  count: number;
+}
+
+interface ContractorItem {
+  name: string;
+  value: number;
+  count: number;
+  is_small: boolean;
+}
+
+interface AppData {
+  metrics: Metrics;
+  timeline: TimelineItem[];
+  setAsideDistribution: SetAsideItem[];
+  topAgencies: AgencyItem[];
+  topContractors: ContractorItem[];
+}
+
+// Default/Initial State
+const INITIAL_DATA: AppData = {
   metrics: {
     total_contract_value: 45678900000,
     small_business_count: 1247,
     small_business_value: 12456780000,
     small_business_percentage: 27.3,
   },
-  timeline: generateMockTimeline(),
+  timeline: [
+    { month: "Jan 2024", small_business: 980000000, other_than_small: 2840000000, total: 3820000000 },
+    { month: "Feb 2024", small_business: 1050000000, other_than_small: 2950000000, total: 4000000000 },
+    { month: "Mar 2024", small_business: 1120000000, other_than_small: 3100000000, total: 4220000000 },
+    { month: "Apr 2024", small_business: 1090000000, other_than_small: 3050000000, total: 4140000000 },
+    { month: "May 2024", small_business: 1180000000, other_than_small: 3200000000, total: 4380000000 },
+    { month: "Jun 2024", small_business: 1210000000, other_than_small: 3280000000, total: 4490000000 },
+    { month: "Jul 2024", small_business: 1150000000, other_than_small: 3150000000, total: 4300000000 },
+    { month: "Aug 2024", small_business: 1190000000, other_than_small: 3230000000, total: 4420000000 },
+    { month: "Sep 2024", small_business: 1240000000, other_than_small: 3340000000, total: 4580000000 },
+    { month: "Oct 2024", small_business: 1280000000, other_than_small: 3420000000, total: 4700000000 },
+    { month: "Nov 2024", small_business: 1260000000, other_than_small: 3380000000, total: 4640000000 },
+    { month: "Dec 2024", small_business: 1290000000, other_than_small: 3450000000, total: 4740000000 },
+  ],
   setAsideDistribution: [
     { label: "8(a) Program", value: 3200000000, color: "#2563eb" },
     { label: "HUBZone", value: 2800000000, color: "#7c3aed" },
@@ -75,9 +130,58 @@ export default function ContractDataExplorer() {
   const [timeRange, setTimeRange] = useState<1 | 5>(1);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-  const [data, setData] = useState(MOCK_DATA);
+  const [data, setData] = useState<AppData>(INITIAL_DATA);
   const [chartView, setChartView] = useState<"total" | "small" | "other">("total");
   const [error, setError] = useState<string | null>(null);
+
+  // --- THE FIX: Transformer Function ---
+  // This bridges the gap between your API response and your UI components
+  const transformApiResponse = (apiData: any): AppData => {
+    // 1. Calculate Percentage
+    const total = apiData.metrics.total_contract_value || 0;
+    const sbValue = apiData.metrics.small_business_value || 0;
+    const sbPercent = total > 0 ? (sbValue / total) * 100 : 0;
+
+    // 2. Transform Timeline
+    // API sends 'monthlySpendingBySize', UI wants 'timeline'
+    const timeline = (apiData.monthlySpendingBySize || []).map((item: any) => ({
+      month: item.month,
+      small_business: item.small_business_spending || 0,
+      other_than_small: item.other_than_small_spending || 0,
+      total: item.total_spending || 0
+    }));
+
+    // 3. Transform Set Asides for Pie Chart
+    // API sends an object, UI wants an array with colors
+    const bt = apiData.business_types || {};
+    const setAsideDistribution = [
+      { label: "8(a) Program", value: bt.eight_a?.value || 0, color: "#2563eb" },
+      { label: "HUBZone", value: bt.hubzone?.value || 0, color: "#7c3aed" },
+      { label: "Women-Owned", value: bt.wosb?.value || 0, color: "#ec4899" },
+      { label: "Veteran-Owned", value: bt.sdvosb?.value || 0, color: "#f59e0b" },
+    ].filter(item => item.value > 0); // Only show segments with data
+
+    // 4. Transform Vendors
+    // API sends 'topVendors', UI wants 'topContractors' with boolean is_small
+    const topContractors = (apiData.topVendors || []).map((vendor: any) => ({
+      name: vendor.name,
+      value: vendor.value,
+      count: vendor.award_count,
+      // Check if the business_size string contains 'S'
+      is_small: (vendor.business_size || "").includes("S")
+    }));
+
+    return {
+      metrics: {
+        ...apiData.metrics,
+        small_business_percentage: sbPercent
+      },
+      timeline,
+      setAsideDistribution,
+      topAgencies: apiData.topAgencies || [],
+      topContractors
+    };
+  };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,33 +197,25 @@ export default function ContractDataExplorer() {
         yearRange: String(timeRange),
       });
       
-      console.log(`Fetching contract data with params: ${params.toString()}`);
-      
       const response = await fetch(`/api/contracts?${params}`);
       const result = await response.json();
       
-      console.log('API Response:', result);
-      
       if (!response.ok) {
-        const errorMsg = result.error || result.details || `API error: ${response.status}`;
-        throw new Error(errorMsg);
+        throw new Error(result.error || `API error: ${response.status}`);
       }
       
-      if (!result.success) {
+      if (!result.success || !result.data) {
         throw new Error(result.error || 'Failed to fetch data');
       }
       
-      if (!result.data) {
-        throw new Error('No data returned from API');
-      }
-      
-      setData(result.data);
+      // Transform the data before setting state
+      const formattedData = transformApiResponse(result.data);
+      setData(formattedData);
       setHasSearched(true);
-      setError(null);
+      
     } catch (error: any) {
-      const errorMessage = error.message || 'An unknown error occurred';
-      console.error('Search failed:', errorMessage);
-      setError(errorMessage);
+      console.error('Search failed:', error);
+      setError(error.message || 'An unknown error occurred');
       setHasSearched(false);
     } finally {
       setLoading(false);
@@ -148,18 +244,13 @@ export default function ContractDataExplorer() {
           <div className="mb-6 p-4 rounded-lg bg-red-50 border-2 border-red-200">
             <p className="text-sm font-semibold text-red-900 mb-2">Error:</p>
             <p className="text-sm text-red-800 font-mono break-words">{error}</p>
-            <p className="text-xs text-red-700 mt-2">
-              Make sure your BigQuery credentials are properly configured and the API endpoint is available.
-            </p>
           </div>
         )}
 
         <form onSubmit={handleSearch}>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                NAICS Code
-              </label>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">NAICS Code</label>
               <input
                 type="text"
                 value={naicsCode}
@@ -171,9 +262,7 @@ export default function ContractDataExplorer() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                State
-              </label>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">State</label>
               <input
                 type="text"
                 value={state}
@@ -185,9 +274,7 @@ export default function ContractDataExplorer() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Set-Aside Type
-              </label>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Set-Aside Type</label>
               <select
                 value={setAside}
                 onChange={(e) => setSetAside(e.target.value)}
@@ -202,9 +289,7 @@ export default function ContractDataExplorer() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Keyword
-              </label>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Keyword</label>
               <input
                 type="text"
                 value={keyword}
@@ -220,24 +305,14 @@ export default function ContractDataExplorer() {
               <button
                 type="button"
                 onClick={() => setTimeRange(1)}
-                className={cn(
-                  "rounded-lg px-4 py-2 text-sm font-semibold transition",
-                  timeRange === 1
-                    ? "bg-gov-blue text-white"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                )}
+                className={cn("rounded-lg px-4 py-2 text-sm font-semibold transition", timeRange === 1 ? "bg-gov-blue text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200")}
               >
                 1 Year View
               </button>
               <button
                 type="button"
                 onClick={() => setTimeRange(5)}
-                className={cn(
-                  "rounded-lg px-4 py-2 text-sm font-semibold transition",
-                  timeRange === 5
-                    ? "bg-gov-blue text-white"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                )}
+                className={cn("rounded-lg px-4 py-2 text-sm font-semibold transition", timeRange === 5 ? "bg-gov-blue text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200")}
               >
                 5 Year View
               </button>
@@ -259,12 +334,8 @@ export default function ContractDataExplorer() {
             <Card className="p-6" hover>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Total Award Value
-                  </p>
-                  <p className="mt-2 text-2xl font-bold text-gov-navy">
-                    {usd(data.metrics.total_contract_value)}
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Total Award Value</p>
+                  <p className="mt-2 text-2xl font-bold text-gov-navy">{usd(data.metrics.total_contract_value)}</p>
                 </div>
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue/10 text-gov-blue">
                   <DollarSign size={24} />
@@ -275,12 +346,8 @@ export default function ContractDataExplorer() {
             <Card className="p-6" hover>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Small Business Count
-                  </p>
-                  <p className="mt-2 text-2xl font-bold text-gov-navy">
-                    {data.metrics.small_business_count.toLocaleString()}
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Small Business Count</p>
+                  <p className="mt-2 text-2xl font-bold text-gov-navy">{data.metrics.small_business_count.toLocaleString()}</p>
                 </div>
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-green/10 text-gov-green">
                   <Users size={24} />
@@ -291,12 +358,8 @@ export default function ContractDataExplorer() {
             <Card className="p-6" hover>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Small Business Value
-                  </p>
-                  <p className="mt-2 text-2xl font-bold text-gov-navy">
-                    {usd(data.metrics.small_business_value)}
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Small Business Value</p>
+                  <p className="mt-2 text-2xl font-bold text-gov-navy">{usd(data.metrics.small_business_value)}</p>
                 </div>
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-crimson/10 text-gov-crimson">
                   <TrendingUp size={24} />
@@ -307,12 +370,8 @@ export default function ContractDataExplorer() {
             <Card className="p-6" hover>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Small Business %
-                  </p>
-                  <p className="mt-2 text-2xl font-bold text-gov-navy">
-                    {data.metrics.small_business_percentage.toFixed(1)}%
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Small Business %</p>
+                  <p className="mt-2 text-2xl font-bold text-gov-navy">{data.metrics.small_business_percentage.toFixed(1)}%</p>
                 </div>
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-gold/20 text-gov-gold">
                   <TrendingUp size={24} />
@@ -338,9 +397,7 @@ export default function ContractDataExplorer() {
                       onClick={() => setChartView(view.id as typeof chartView)}
                       className={cn(
                         "rounded-lg px-3 py-1.5 text-xs font-semibold transition",
-                        chartView === view.id
-                          ? "bg-gov-blue text-white"
-                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        chartView === view.id ? "bg-gov-blue text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                       )}
                     >
                       {view.label}
@@ -351,33 +408,13 @@ export default function ContractDataExplorer() {
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={getChartData()}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis 
-                    dataKey="month" 
-                    tick={{ fontSize: 11 }}
-                    stroke="#64748b"
-                  />
-                  <YAxis 
-                    tick={{ fontSize: 11 }}
-                    stroke="#64748b"
-                    tickFormatter={(value) => compact(value)}
-                  />
-                  <Tooltip 
-                    contentStyle={{ 
-                      background: "rgba(15, 23, 42, 0.95)", 
-                      border: "none",
-                      borderRadius: "8px",
-                      color: "#fff"
-                    }}
+                  <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="#64748b" />
+                  <YAxis tick={{ fontSize: 11 }} stroke="#64748b" tickFormatter={(value) => compact(value)} />
+                  <Tooltip
+                    contentStyle={{ background: "rgba(15, 23, 42, 0.95)", border: "none", borderRadius: "8px", color: "#fff" }}
                     formatter={(value: number) => [usd(value), "Value"]}
                   />
-                  <Line 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke="#2563eb" 
-                    strokeWidth={3}
-                    dot={{ fill: "#2563eb", r: 4 }}
-                    activeDot={{ r: 6 }}
-                  />
+                  <Line type="monotone" dataKey="value" stroke="#2563eb" strokeWidth={3} dot={{ fill: "#2563eb", r: 4 }} activeDot={{ r: 6 }} />
                 </LineChart>
               </ResponsiveContainer>
             </Card>
@@ -401,13 +438,8 @@ export default function ContractDataExplorer() {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip 
-                    contentStyle={{ 
-                      background: "rgba(15, 23, 42, 0.95)", 
-                      border: "none",
-                      borderRadius: "8px",
-                      color: "#fff"
-                    }}
+                  <Tooltip
+                    contentStyle={{ background: "rgba(15, 23, 42, 0.95)", border: "none", borderRadius: "8px", color: "#fff" }}
                     formatter={(value: number) => [usd(value), "Value"]}
                   />
                 </PieChart>
@@ -429,32 +461,17 @@ export default function ContractDataExplorer() {
                 <table className="w-full">
                   <thead className="sticky top-0 bg-white border-b-2 border-slate-200">
                     <tr>
-                      <th className="text-left px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">
-                        Agency
-                      </th>
-                      <th className="text-right px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">
-                        Value
-                      </th>
-                      <th className="text-right px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">
-                        Awards
-                      </th>
+                      <th className="text-left px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">Agency</th>
+                      <th className="text-right px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">Value</th>
+                      <th className="text-right px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">Awards</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {data.topAgencies.map((agency, idx) => (
-                      <tr 
-                        key={agency.name}
-                        className="border-b border-slate-100 hover:bg-slate-50 transition"
-                      >
-                        <td className="px-6 py-4 text-sm text-slate-700">
-                          {agency.name}
-                        </td>
-                        <td className="px-6 py-4 text-sm font-semibold text-right text-gov-blue">
-                          {usd(agency.value)}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-right text-slate-600">
-                          {agency.count.toLocaleString()}
-                        </td>
+                    {data.topAgencies.map((agency) => (
+                      <tr key={agency.name} className="border-b border-slate-100 hover:bg-slate-50 transition">
+                        <td className="px-6 py-4 text-sm text-slate-700">{agency.name}</td>
+                        <td className="px-6 py-4 text-sm font-semibold text-right text-gov-blue">{usd(agency.value)}</td>
+                        <td className="px-6 py-4 text-sm text-right text-slate-600">{agency.count.toLocaleString()}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -474,37 +491,22 @@ export default function ContractDataExplorer() {
                 <table className="w-full">
                   <thead className="sticky top-0 bg-white border-b-2 border-slate-200">
                     <tr>
-                      <th className="text-left px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">
-                        Contractor
-                      </th>
-                      <th className="text-right px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">
-                        Value
-                      </th>
-                      <th className="text-right px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">
-                        Awards
-                      </th>
+                      <th className="text-left px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">Contractor</th>
+                      <th className="text-right px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">Value</th>
+                      <th className="text-right px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-600">Awards</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {data.topContractors.map((contractor, idx) => (
-                      <tr 
-                        key={contractor.name}
-                        className="border-b border-slate-100 hover:bg-slate-50 transition"
-                      >
+                    {data.topContractors.map((contractor) => (
+                      <tr key={contractor.name} className="border-b border-slate-100 hover:bg-slate-50 transition">
                         <td className="px-6 py-4 text-sm text-slate-700">
                           {contractor.name}
                           {contractor.is_small && (
-                            <span className="ml-2 inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-semibold text-green-700">
-                              Small
-                            </span>
+                            <span className="ml-2 inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-semibold text-green-700">Small</span>
                           )}
                         </td>
-                        <td className="px-6 py-4 text-sm font-semibold text-right text-gov-blue">
-                          {usd(contractor.value)}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-right text-slate-600">
-                          {contractor.count.toLocaleString()}
-                        </td>
+                        <td className="px-6 py-4 text-sm font-semibold text-right text-gov-blue">{usd(contractor.value)}</td>
+                        <td className="px-6 py-4 text-sm text-right text-slate-600">{contractor.count.toLocaleString()}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -523,8 +525,7 @@ export default function ContractDataExplorer() {
           </div>
           <h3 className="mt-6 text-xl font-bold text-gov-navy">Ready to explore contract data?</h3>
           <p className="mt-2 text-slate-600 max-w-md mx-auto">
-            Use the filters above to search federal contract awards by NAICS code, state, 
-            set-aside type, or keyword.
+            Use the filters above to search federal contract awards by NAICS code, state, set-aside type, or keyword.
           </p>
         </Card>
       )}

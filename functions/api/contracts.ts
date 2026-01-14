@@ -1,5 +1,6 @@
-// functions/api/contracts.ts
-// Enhanced version with BigQuery authentication + Rate Limiting (150 req/day per IP)
+// worker.ts
+// Cloudflare Worker replacement for contracts.php
+// Matches exact logic: govspend1.cc.cc table, 'S' code checks, and specific date math.
 
 interface Env {
   BIGQUERY_CREDENTIALS: string; // JSON service account key
@@ -421,10 +422,10 @@ function transformBigQueryData(bigQueryData: any) {
         small_business_value: 0,
         small_business_percentage: 0,
       },
-      timeline: [],
-      setAsideDistribution: [],
+      monthlySpendingBySize: [],
+      business_types: {},
       topAgencies: [],
-      topContractors: [],
+      topVendors: [],
     };
   }
   
@@ -438,25 +439,25 @@ function transformBigQueryData(bigQueryData: any) {
   const smallBusinessValue = parseFloat(getFieldValue(1) || 0);
   const smallBusinessCount = parseInt(getFieldValue(2) || 0);
   
-  // Timeline data (field 4)
+  // Timeline data (field 4 - renamed to monthlySpendingBySize for API)
   const timelineRaw = getFieldValue(4);
-  const timelineData = Array.isArray(timelineRaw) 
+  const monthlySpendingBySize = Array.isArray(timelineRaw) 
     ? transformTimelineData(timelineRaw)
     : [];
   
-  // Set-aside data (field 3)
+  // Set-aside data (field 3 - renamed to business_types for API)
   const setAsideRaw = getFieldValue(3);
-  const setAsideData = transformSetAsideData(setAsideRaw || {});
+  const business_types = transformSetAsideData(setAsideRaw || {});
   
   // Top agencies (field 5)
   const agenciesRaw = getFieldValue(5);
-  const agencies = Array.isArray(agenciesRaw) 
+  const topAgencies = Array.isArray(agenciesRaw) 
     ? transformTopList(agenciesRaw)
     : [];
   
   // Top vendors (field 6)
   const vendorsRaw = getFieldValue(6);
-  const vendors = Array.isArray(vendorsRaw) 
+  const topVendors = Array.isArray(vendorsRaw) 
     ? transformTopList(vendorsRaw, true)
     : [];
   
@@ -467,10 +468,10 @@ function transformBigQueryData(bigQueryData: any) {
       small_business_value: smallBusinessValue,
       small_business_percentage: totalValue > 0 ? (smallBusinessValue / totalValue) * 100 : 0,
     },
-    timeline: timelineData && timelineData.length > 0 ? timelineData : [],
-    setAsideDistribution: setAsideData && setAsideData.length > 0 ? setAsideData : [],
-    topAgencies: agencies && agencies.length > 0 ? agencies : [],
-    topContractors: vendors && vendors.length > 0 ? vendors : [],
+    monthlySpendingBySize,
+    business_types,
+    topAgencies,
+    topVendors,
   };
 }
 
@@ -485,16 +486,14 @@ function transformTimelineData(data: any[]): any[] {
     const monthValue = getField(0);
     return {
       month: monthValue?.toString() || '',
-      small_business: parseFloat(getField(1) || 0),
-      other_than_small: parseFloat(getField(2) || 0),
-      total: parseFloat(getField(3) || 0),
+      small_business_spending: parseFloat(getField(1) || 0),
+      other_than_small_spending: parseFloat(getField(2) || 0),
+      total_spending: parseFloat(getField(3) || 0),
     };
   }).filter(item => item.month && item.month.length > 0);
 }
 
-function transformSetAsideData(data: any): any[] {
-  const colors = ['#2563eb', '#7c3aed', '#ec4899', '#f59e0b'];
-  
+function transformSetAsideData(data: any): any {
   // Handle nested f/v structure from BigQuery
   const getValue = (key: string) => {
     if (data[key] !== undefined) return data[key];
@@ -505,12 +504,12 @@ function transformSetAsideData(data: any): any[] {
     return 0;
   };
   
-  return [
-    { label: '8(a) Program', value: parseFloat(getValue('eight_a_value') || 0), color: colors[0] },
-    { label: 'HUBZone', value: parseFloat(getValue('hubzone_value') || 0), color: colors[1] },
-    { label: 'Women-Owned', value: parseFloat(getValue('wosb_value') || 0), color: colors[2] },
-    { label: 'Veteran-Owned', value: parseFloat(getValue('sdvosb_value') || 0), color: colors[3] },
-  ].filter(item => item.value > 0);
+  return {
+    eight_a: { value: parseFloat(getValue('eight_a_value') || 0) },
+    hubzone: { value: parseFloat(getValue('hubzone_value') || 0) },
+    wosb: { value: parseFloat(getValue('wosb_value') || 0) },
+    sdvosb: { value: parseFloat(getValue('sdvosb_value') || 0) },
+  };
 }
 
 function transformTopList(data: any[], isContractors = false): any[] {
@@ -523,10 +522,10 @@ function transformTopList(data: any[], isContractors = false): any[] {
     
     return {
       name: getField(0)?.toString() || '',
-      count: parseInt(getField(1) || 0),
+      award_count: parseInt(getField(1) || 0),
       value: parseFloat(getField(2) || 0),
       ...(isContractors && {
-        is_small: (getField(3)?.toString() || '').includes('S')
+        business_size: (getField(3)?.toString() || '')
       })
     };
   }).filter(item => item.name && item.name.length > 0);
