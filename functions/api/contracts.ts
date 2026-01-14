@@ -448,37 +448,66 @@ function transformBigQueryData(bigQueryData: any) {
     };
   }
   
-  // Handle both nested f/v structure and direct values
-  const getFieldValue = (fieldIndex: number) => {
-    const field = row.f?.[fieldIndex];
-    return field?.v !== undefined ? field.v : field;
+  // Helper to safely extract field values from BigQuery row
+  const getFieldByName = (fieldName: string) => {
+    if (!row.f) return null;
+    
+    // Get the schema from the query result
+    const schema = bigQueryData.schema?.fields || [];
+    const fieldIndex = schema.findIndex((f: any) => f.name.toLowerCase() === fieldName.toLowerCase());
+    
+    if (fieldIndex === -1) {
+      console.warn(`Field "${fieldName}" not found in schema`);
+      return null;
+    }
+    
+    const field = row.f[fieldIndex];
+    if (!field) return null;
+    
+    // Handle nested f/v structure from BigQuery
+    if (field.v !== undefined) {
+      return field.v;
+    }
+    return field;
   };
+
+  console.log('BigQuery schema:', JSON.stringify(bigQueryData.schema));
+  console.log('BigQuery row:', JSON.stringify(row));
   
-  const totalValue = parseFloat(getFieldValue(0) || 0);
-  const smallBusinessValue = parseFloat(getFieldValue(1) || 0);
-  const smallBusinessCount = parseInt(getFieldValue(2) || 0);
+  const totalValue = parseFloat(getFieldByName('total_contract_value') || 0);
+  const smallBusinessValue = parseFloat(getFieldByName('small_business_value') || 0);
+  const smallBusinessCount = parseInt(getFieldByName('small_business_count') || 0);
   
-  // Timeline data (field 4 - renamed to monthlySpendingBySize for API)
-  const timelineRaw = getFieldValue(4);
+  // Timeline data
+  const timelineRaw = getFieldByName('monthly_spending_by_size');
+  console.log('Raw timeline from BigQuery:', JSON.stringify(timelineRaw));
   const monthlySpendingBySize = Array.isArray(timelineRaw) 
     ? transformTimelineData(timelineRaw)
     : [];
   
-  // Set-aside data (field 3 - renamed to business_types for API)
-  const setAsideRaw = getFieldValue(3);
+  // Set-aside data
+  const setAsideRaw = getFieldByName('business_types');
+  console.log('Raw set-aside from BigQuery:', JSON.stringify(setAsideRaw));
   const business_types = transformSetAsideData(setAsideRaw || {});
   
-  // Top agencies (field 5)
-  const agenciesRaw = getFieldValue(5);
+  // Top agencies
+  const agenciesRaw = getFieldByName('top_agencies');
+  console.log('Raw agencies from BigQuery:', JSON.stringify(agenciesRaw));
   const topAgencies = Array.isArray(agenciesRaw) 
     ? transformTopList(agenciesRaw)
     : [];
   
-  // Top vendors (field 6)
-  const vendorsRaw = getFieldValue(6);
+  // Top vendors
+  const vendorsRaw = getFieldByName('top_vendors');
+  console.log('Raw vendors from BigQuery:', JSON.stringify(vendorsRaw));
   const topVendors = Array.isArray(vendorsRaw) 
     ? transformTopList(vendorsRaw, true)
     : [];
+
+  console.log('Transformed timeline:', JSON.stringify(monthlySpendingBySize));
+  console.log('Transformed business_types:', JSON.stringify(business_types));
+  console.log('Transformed topAgencies:', JSON.stringify(topAgencies));
+  console.log('Transformed topVendors:', JSON.stringify(topVendors));
 
   return {
     metrics: {
@@ -496,55 +525,72 @@ function transformBigQueryData(bigQueryData: any) {
 
 function transformTimelineData(data: any[]): any[] {
   return (data || []).map((item: any) => {
-    // Handle both nested f/v structure and direct object access
-    const getField = (index: number) => {
-      const field = item.f?.[index];
-      return field?.v !== undefined ? field.v : field;
-    };
+    // Handle both direct object and nested f/v structure
+    const month = item.f?.[0]?.v ?? item.f?.[0] ?? item.month ?? '';
+    const smallBusiness = parseFloat(item.f?.[1]?.v ?? item.f?.[1] ?? item.small_business_spending ?? 0);
+    const otherThanSmall = parseFloat(item.f?.[2]?.v ?? item.f?.[2] ?? item.other_than_small_spending ?? 0);
+    const total = parseFloat(item.f?.[3]?.v ?? item.f?.[3] ?? item.total_spending ?? 0);
     
-    const monthValue = getField(0);
     return {
-      month: monthValue?.toString() || '',
-      small_business_spending: parseFloat(getField(1) || 0),
-      other_than_small_spending: parseFloat(getField(2) || 0),
-      total_spending: parseFloat(getField(3) || 0),
+      month: month?.toString() || '',
+      small_business_spending: smallBusiness,
+      other_than_small_spending: otherThanSmall,
+      total_spending: total,
     };
   }).filter(item => item.month && item.month.length > 0);
 }
 
 function transformSetAsideData(data: any): any {
-  // Handle nested f/v structure from BigQuery
+  console.log('transformSetAsideData input:', JSON.stringify(data));
+  
+  if (!data) return {
+    eight_a: { value: 0 },
+    hubzone: { value: 0 },
+    wosb: { value: 0 },
+    sdvosb: { value: 0 },
+  };
+  
+  // If it's an array from BigQuery's nested structure, get first element
+  const setAsideObj = Array.isArray(data) ? data[0] : data;
+  
+  // Try to extract values from both f/v structure and direct properties
   const getValue = (key: string) => {
-    if (data[key] !== undefined) return data[key];
-    if (data.f && Array.isArray(data.f)) {
-      const field = data.f.find((f: any) => f?.v?.[key]);
-      if (field?.v?.[key]) return field.v[key];
+    if (setAsideObj[key] !== undefined) {
+      const val = setAsideObj[key];
+      // Handle f/v structure
+      if (val && typeof val === 'object' && val.v !== undefined) {
+        return parseFloat(val.v || 0);
+      }
+      return parseFloat(val || 0);
     }
     return 0;
   };
   
-  return {
-    eight_a: { value: parseFloat(getValue('eight_a_value') || 0) },
-    hubzone: { value: parseFloat(getValue('hubzone_value') || 0) },
-    wosb: { value: parseFloat(getValue('wosb_value') || 0) },
-    sdvosb: { value: parseFloat(getValue('sdvosb_value') || 0) },
+  const result = {
+    eight_a: { value: getValue('eight_a_value') },
+    hubzone: { value: getValue('hubzone_value') },
+    wosb: { value: getValue('wosb_value') },
+    sdvosb: { value: getValue('sdvosb_value') },
   };
+  
+  console.log('transformSetAsideData output:', JSON.stringify(result));
+  return result;
 }
 
 function transformTopList(data: any[], isContractors = false): any[] {
   return (data || []).map((item: any) => {
-    // Handle both nested f/v structure and direct object access
-    const getField = (index: number) => {
-      const field = item.f?.[index];
-      return field?.v !== undefined ? field.v : field;
-    };
+    // Handle both direct object and nested f/v structure
+    const name = item.f?.[0]?.v ?? item.f?.[0] ?? item.name ?? '';
+    const awardCount = parseInt(item.f?.[1]?.v ?? item.f?.[1] ?? item.award_count ?? 0);
+    const value = parseFloat(item.f?.[2]?.v ?? item.f?.[2] ?? item.value ?? 0);
+    const businessSize = item.f?.[3]?.v ?? item.f?.[3] ?? item.business_size ?? '';
     
     return {
-      name: getField(0)?.toString() || '',
-      award_count: parseInt(getField(1) || 0),
-      value: parseFloat(getField(2) || 0),
+      name: name?.toString() || '',
+      award_count: awardCount,
+      value: value,
       ...(isContractors && {
-        business_size: (getField(3)?.toString() || '')
+        business_size: (businessSize?.toString() || '')
       })
     };
   }).filter(item => item.name && item.name.length > 0);
