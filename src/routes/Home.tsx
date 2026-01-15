@@ -92,7 +92,7 @@ export default function Home() {
         />
         <meta 
           name="keywords" 
-          content="government contracts, GSA Schedule, SAM.gov registration, 8(a) certification, FCP catalog management, federal contracting, government procurement, GSA MAS, proposal writing, capture management, FAS Catalog Platform" 
+          content="government contracts, GSA Schedule, SAM.gov registration, 8(a) certification, FCP catalog, federal contracting, government procurement, GSA MAS, proposal writing, capture management, FAS Catalog Platform" 
         />
         <link rel="canonical" href="https://govcon.info/" />
         <meta property="og:title" content="GovCon Inc — Win Government Contracts" />
@@ -114,7 +114,7 @@ export default function Home() {
             >
               <div className="inline-flex items-center gap-2 rounded-full bg-gov-crimson/10 px-4 py-1.5 text-sm font-bold text-gov-crimson border border-gov-crimson/20">
                 <Zap size={14} className="animate-pulse-subtle" />
-                Government Contracting Consulting
+                Solutions for Government Business
               </div>
               
               <h1 className="mt-6 font-display text-4xl font-black tracking-tight text-gov-navy sm:text-5xl lg:text-6xl leading-tight">
@@ -330,7 +330,7 @@ export default function Home() {
           <div className="bg-gradient-to-r from-gov-blue to-gov-navy rounded-2xl p-8 lg:p-12 text-white">
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div>
-                <h3 className="text-2xl font-bold mb-4">Avoid Contract Cancellation</h3>
+                <h3 className="text-2xl font-bold mb-4">Avoid GSA Contract Cancellation</h3>
                 <p className="text-slate-200 leading-relaxed mb-6">
                   GSA requires FCP baseline migration within 60 days of notification. Missing this deadline 
                   can result in contract suspension or cancellation. We complete migrations in 7-14 days.
@@ -342,23 +342,23 @@ export default function Home() {
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="text-gov-gold shrink-0 mt-0.5" size={20} />
-                    <span>Automated GSA Advantage publishing</span>
+                    <span>Compliance & Pricing (C&P) reporting </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="text-gov-gold shrink-0 mt-0.5" size={20} />
-                    <span>Monthly catalog maintenance & compliance</span>
+                    <span>Performance Assessment & Training</span>
                   </li>
                 </ul>
               </div>
               <div className="lg:pl-8">
                 <Card className="p-8 bg-white/10 border-white/20">
-                  <div className="text-5xl font-black text-gov-gold mb-2">60 Days</div>
+                  <div className="text-5xl font-black text-gov-gold mb-2">14 Days. Guarunteed.</div>
                   <div className="text-white font-bold mb-4">To Complete FCP Migration</div>
                   <p className="text-slate-300 text-sm mb-6">
-                    Don't risk losing your GSA Schedule. We handle the entire transition.
+                    Don't risk losing your GSA Schedule. We handle the entire transition within 2 weeks - or your money back.
                   </p>
                   <LinkButton href="/services" variant="secondary" className="w-full">
-                    Get FCP Support
+                    Get Started Now
                   </LinkButton>
                 </Card>
               </div>

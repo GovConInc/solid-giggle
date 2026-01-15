@@ -4,27 +4,22 @@ import {
   ArrowRight, 
   CheckCircle, 
   Shield, 
-  Target, 
-  Search, 
-  Users, 
   Building2,
   MapPin,
   Award,
-  Clock,
   AlertTriangle,
   ChevronDown,
   ChevronRight,
-  Zap,
   Phone,
   Mail,
   Calendar,
   Sparkles,
   TrendingUp,
   Lock,
-  FileCheck,
   Globe,
-  Briefcase,
-  BarChart3
+  Zap,
+  Target,
+  Clock
 } from "lucide-react";
 import Section from "../../components/Section";
 import Card from "../../components/Card";
@@ -134,80 +129,6 @@ const certifications = [
   }
 ];
 
-const captureProcess = [
-  {
-    phase: "1",
-    name: "Discovery",
-    description: "Understanding your capabilities, past performance, and ideal customer profile",
-    activities: [
-      "Capability assessment and gap analysis",
-      "Competitive landscape mapping",
-      "Agency spending pattern analysis",
-      "Incumbent contract research"
-    ],
-    deliverables: ["Capability Matrix", "Target Agency List", "Competitive Intel Report"],
-    icon: Search
-  },
-  {
-    phase: "2",
-    name: "Intelligence",
-    description: "Finding opportunities before they hit the street",
-    activities: [
-      "Pre-solicitation monitoring",
-      "Sources sought response tracking",
-      "RFI analysis and positioning",
-      "Subcontracting opportunity identification"
-    ],
-    deliverables: ["Opportunity Pipeline", "Market Intel Brief", "Upcoming Procurement Calendar"],
-    icon: Target
-  },
-  {
-    phase: "3",
-    name: "Engagement",
-    description: "Building relationships with decision makers",
-    activities: [
-      "Contracting Officer introductions",
-      "Industry day attendance and follow-up",
-      "Capability briefing scheduling",
-      "Teaming partner identification"
-    ],
-    deliverables: ["CO Contact Log", "Meeting Notes", "Teaming MOU Templates"],
-    icon: Users
-  },
-  {
-    phase: "4",
-    name: "Positioning",
-    description: "Setting you up to win before the RFP drops",
-    activities: [
-      "Bid/no-bid decision framework",
-      "Win probability assessment",
-      "Competitive pricing intelligence",
-      "Draft proposal strategy"
-    ],
-    deliverables: ["Bid Decision Matrix", "Win Strategy Document", "Proposal Outline"],
-    icon: TrendingUp
-  }
-];
-
-const comparisonData = {
-  aiAlerts: [
-    "Keyword matching only",
-    "100+ irrelevant bids daily",
-    "No analysis or context",
-    "Self-service platform",
-    "No relationship building",
-    "Generic email notifications"
-  ],
-  govcon: [
-    "Human-reviewed opportunities",
-    "3-5 qualified bids weekly",
-    "Full SOW analysis included",
-    "Dedicated capture manager",
-    "CO introductions arranged",
-    "Strategic bid recommendations"
-  ]
-};
-
 const managedItems = [
   { name: "SAM.gov", category: "Federal" },
   { name: "SBA DSBS", category: "Federal" },
@@ -223,11 +144,34 @@ const managedItems = [
   { name: "Representations", category: "Federal" }
 ];
 
-export default function ServicesCompliance() {
+const faqs = [
+  {
+    q: "How do I know which certifications I qualify for?",
+    a: "We offer a free eligibility assessment. We'll review your ownership structure, financials, and location to determine which certifications you can pursue."
+  },
+  {
+    q: "What happens if my SAM registration expires?",
+    a: "You become ineligible to receive federal contracts or payments. We monitor all expiration dates and handle renewals automatically before they lapse."
+  },
+  {
+    q: "Can you help with certification annual reviews?",
+    a: "Yes. Many certifications require annual updates and documentation. We track these deadlines and prepare all necessary submissions."
+  },
+  {
+    q: "How long does it take to get certified?",
+    a: "It varies by certification. WOSB can be 30-60 days, while 8(a) typically takes 90-180 days. We provide realistic timelines upfront."
+  },
+  {
+    q: "What if my certification application is denied?",
+    a: "We analyze the denial reason, help you address any deficiencies, and resubmit. Many denials are due to documentation issues we can fix."
+  }
+];
+
+export default function ServicesCertifications() {
   const [activeRegistration, setActiveRegistration] = useState(0);
   const [activeCertification, setActiveCertification] = useState<number | null>(null);
-  const [activePhase, setActivePhase] = useState(0);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   const filteredItems = activeCategory === "all" 
     ? managedItems 
@@ -236,8 +180,8 @@ export default function ServicesCompliance() {
   return (
     <>
       <Helmet>
-        <title>Compliance & Capture — GovCon Inc.</title>
-        <meta name="description" content="Registration management keeps you legal. Capture management finds you work. Together, they form the foundation of a winning government business." />
+        <title>Certifications & Compliance — GovCon Inc.</title>
+        <meta name="description" content="SBA certifications, SAM.gov registration, and compliance management. Get certified and stay compliant with our expert support." />
       </Helmet>
 
       {/* Hero */}
@@ -254,22 +198,22 @@ export default function ServicesCompliance() {
               </div>
               
               <h1 className="font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl lg:text-6xl">
-                Compliance & Capture
+                Certifications & Compliance
               </h1>
               
               <p className="mt-6 text-xl text-slate-600 leading-relaxed">
-                Registration management keeps you legal. Capture management finds you work. 
-                Together, they form the foundation of every winning government contractor.
+                Get the certifications that unlock set-aside contracts. Stay compliant so you never 
+                miss an opportunity. We handle the paperwork so you can focus on winning.
               </p>
               
               <div className="mt-8 grid grid-cols-2 gap-4">
-                <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 group hover:border-gov-blue/30 transition-colors">
-                  <div className="font-display text-3xl font-bold text-gov-crimson group-hover:scale-105 transition-transform">2,500+</div>
-                  <div className="text-sm text-slate-600 mt-1">Registrations Managed</div>
+                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                  <div className="font-display text-3xl font-bold text-gov-crimson">2,500+</div>
+                  <div className="text-sm text-slate-700 mt-1">Registrations Managed</div>
                 </div>
-                <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 group hover:border-gov-blue/30 transition-colors">
-                  <div className="font-display text-3xl font-bold text-gov-crimson group-hover:scale-105 transition-transform">$50M+</div>
-                  <div className="text-sm text-slate-600 mt-1">Contracts Captured</div>
+                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                  <div className="font-display text-3xl font-bold text-gov-crimson">$50M+</div>
+                  <div className="text-sm text-slate-700 mt-1">Contracts Captured</div>
                 </div>
               </div>
 
@@ -278,35 +222,36 @@ export default function ServicesCompliance() {
                   Get Compliant Today
                   <ArrowRight size={18} className="ml-2" />
                 </LinkButton>
-                <LinkButton href="#capture" variant="secondary" size="lg">
-                  Explore Capture Services
+                <LinkButton href="#certifications" variant="secondary" size="lg">
+                  View Certifications
                 </LinkButton>
               </div>
             </div>
             
+            {/* The Compliance Problem Card */}
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-br from-gov-blue/10 via-gov-crimson/5 to-transparent rounded-3xl" />
-              <Card className="relative p-8" hover={false}>
+              <Card className="relative p-8 bg-white" hover={false}>
                 <h3 className="font-bold text-lg text-gov-navy flex items-center gap-2">
                   <Lock size={20} className="text-gov-green" />
                   The Compliance Problem
                 </h3>
                 <div className="mt-6 space-y-4">
-                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-50">
                     <AlertTriangle size={20} className="text-gov-crimson shrink-0 mt-0.5" />
                     <div>
                       <div className="font-semibold text-gov-navy">Expired SAM = No Contracts</div>
                       <p className="text-sm text-slate-600">Your registration expires annually. Miss it, and you're invisible to every federal buyer.</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-50">
                     <AlertTriangle size={20} className="text-gov-crimson shrink-0 mt-0.5" />
                     <div>
                       <div className="font-semibold text-gov-navy">Wrong NAICS = Wrong Opportunities</div>
                       <p className="text-sm text-slate-600">Agencies search by NAICS code. Wrong codes mean you never appear in their results.</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-50">
                     <AlertTriangle size={20} className="text-gov-crimson shrink-0 mt-0.5" />
                     <div>
                       <div className="font-semibold text-gov-navy">Missing Certs = Missed Set-Asides</div>
@@ -384,7 +329,7 @@ export default function ServicesCompliance() {
 
             {/* Registration Details */}
             <div className="lg:col-span-3">
-              <Card className="p-8 h-full" hover={false}>
+              <Card className="p-8 h-full bg-white" hover={false}>
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gov-blue text-white">
                     {(() => {
@@ -445,7 +390,7 @@ export default function ServicesCompliance() {
                     "px-4 py-2 rounded-lg text-sm font-medium transition-all",
                     activeCategory === cat 
                       ? "bg-gov-blue text-white" 
-                      : "bg-white text-slate-600 hover:bg-slate-100"
+                      : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                   )}
                 >
                   {cat === "all" ? "All Items" : cat}
@@ -457,7 +402,7 @@ export default function ServicesCompliance() {
               {filteredItems.map((item) => (
                 <div 
                   key={item.name} 
-                  className="flex items-center gap-2 bg-white p-3 rounded-lg border border-slate-100 hover:border-gov-blue/30 hover:shadow-md transition-all cursor-default"
+                  className="flex items-center gap-2 bg-white p-3 rounded-lg border border-slate-200 hover:border-gov-blue/30 hover:shadow-md transition-all"
                 >
                   <div className={cn(
                     "h-2 w-2 rounded-full",
@@ -465,7 +410,7 @@ export default function ServicesCompliance() {
                     item.category === "State" && "bg-gov-gold",
                     item.category === "Certification" && "bg-gov-green"
                   )} />
-                  <span className="text-sm text-slate-700">{item.name}</span>
+                  <span className="text-sm text-slate-700 font-medium">{item.name}</span>
                 </div>
               ))}
             </div>
@@ -474,9 +419,10 @@ export default function ServicesCompliance() {
       </section>
 
       {/* Certifications Section */}
-      <section className="bg-white py-20">
+      <section id="certifications" className="bg-white py-20 scroll-mt-20">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+            {/* Left Column - Sticky */}
             <div className="lg:sticky lg:top-8">
               <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">SBA Certifications</p>
               <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
@@ -488,33 +434,34 @@ export default function ServicesCompliance() {
                 We handle the application, documentation, and annual reviews.
               </p>
               
-              <div className="mt-8 p-6 bg-gov-navy rounded-2xl text-white">
-                <h3 className="font-bold text-lg">Why Certifications Matter</h3>
+              {/* Why Certifications Matter Card */}
+              <div className="mt-8 p-6 bg-gov-navy rounded-2xl">
+                <h3 className="font-bold text-lg text-white">Why Certifications Matter</h3>
                 <div className="mt-4 space-y-4">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                      <Zap size={20} />
+                      <Zap size={20} className="text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold">Sole-Source Authority</div>
+                      <div className="font-semibold text-white">Sole-Source Authority</div>
                       <p className="text-sm text-slate-300">Win contracts without competition</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                      <Target size={20} />
+                      <Target size={20} className="text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold">Set-Aside Eligibility</div>
+                      <div className="font-semibold text-white">Set-Aside Eligibility</div>
                       <p className="text-sm text-slate-300">Less competition, higher win rates</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                      <TrendingUp size={20} />
+                      <TrendingUp size={20} className="text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold">Price Preferences</div>
+                      <div className="font-semibold text-white">Price Preferences</div>
                       <p className="text-sm text-slate-300">Up to 10% evaluation advantage</p>
                     </div>
                   </div>
@@ -531,6 +478,7 @@ export default function ServicesCompliance() {
               </div>
             </div>
 
+            {/* Right Column - Certification List */}
             <div className="space-y-4">
               {certifications.map((cert, idx) => (
                 <div 
@@ -595,7 +543,8 @@ export default function ServicesCompliance() {
                 </div>
               ))}
               
-              <Card className="p-6 bg-slate-50 border-dashed" hover={false}>
+              {/* Free Assessment Card */}
+              <Card className="p-6 bg-slate-50 border-dashed border-2 border-slate-300" hover={false}>
                 <div className="flex items-center gap-4">
                   <Sparkles size={24} className="text-gov-gold" />
                   <div>
@@ -609,219 +558,107 @@ export default function ServicesCompliance() {
         </div>
       </section>
 
-      {/* Capture Section */}
-      <section id="capture" className="bg-gov-navy py-20 scroll-mt-20">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-semibold text-white mb-6">
-              <Target size={16} />
-              Capture Management
-            </div>
-            <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">
-              Find Work Before It's Posted
-            </h2>
-            <p className="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
-              This isn't another AI bid alert. We follow a simple principle: 
-              <span className="text-white font-semibold"> People → Process → Technology</span>. 
-              In that order.
-            </p>
-          </div>
-
-          {/* Process Steps */}
-          <div className="grid gap-8 lg:grid-cols-4">
-            {captureProcess.map((step, idx) => (
-              <div 
-                key={step.phase}
-                className="relative"
-                onMouseEnter={() => setActivePhase(idx)}
-              >
-                {idx < captureProcess.length - 1 && (
-                  <div className="hidden lg:block absolute top-12 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-white/20 to-transparent" />
-                )}
-                <Card 
-                  className={cn(
-                    "p-6 h-full transition-all duration-300 cursor-pointer",
-                    activePhase === idx 
-                      ? "bg-white border-gov-crimson ring-2 ring-gov-crimson/20" 
-                      : "bg-white/5 border-white/10 hover:bg-white/10"
-                  )}
-                  hover={false}
-                >
-                  <div className={cn(
-                    "flex h-12 w-12 items-center justify-center rounded-xl font-display text-2xl font-bold transition-colors",
-                    activePhase === idx 
-                      ? "bg-gov-crimson text-white" 
-                      : "bg-white/10 text-white"
-                  )}>
-                    {step.phase}
-                  </div>
-                  
-                  <h3 className={cn(
-                    "mt-4 font-bold text-lg transition-colors",
-                    activePhase === idx ? "text-gov-navy" : "text-white"
-                  )}>
-                    {step.name}
-                  </h3>
-                  
-                  <p className={cn(
-                    "mt-2 text-sm transition-colors",
-                    activePhase === idx ? "text-slate-600" : "text-slate-400"
-                  )}>
-                    {step.description}
-                  </p>
-                  
-                  <ul className="mt-4 space-y-2">
-                    {step.activities.map((activity, aIdx) => (
-                      <li 
-                        key={aIdx}
-                        className={cn(
-                          "flex items-center gap-2 text-sm transition-colors",
-                          activePhase === idx ? "text-slate-700" : "text-slate-400"
-                        )}
-                      >
-                        <CheckCircle size={14} className={activePhase === idx ? "text-gov-green" : "text-white/40"} />
-                        {activity}
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  {activePhase === idx && (
-                    <div className="mt-4 pt-4 border-t border-slate-200">
-                      <div className="text-xs font-semibold text-gov-blue uppercase tracking-wider mb-2">Deliverables</div>
-                      <div className="flex flex-wrap gap-2">
-                        {step.deliverables.map((del) => (
-                          <span key={del} className="text-xs bg-gov-blue/10 text-gov-blue px-2 py-1 rounded">
-                            {del}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </Card>
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-12 text-center">
-            <div className="inline-block p-6 bg-white/5 rounded-2xl border border-white/10">
-              <div className="text-sm text-slate-400">Capture Management</div>
-              <div className="mt-1">
-                <span className="text-sm text-slate-400">Starting at </span>
-                <span className="font-display text-3xl font-bold text-white">$1,500</span>
-                <span className="text-slate-400">/month</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Includes dedicated capture manager and bi-weekly strategy calls</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* AI vs Us Comparison */}
-      <section className="bg-slate-50 py-20">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">The Difference</p>
-            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-              AI Bid Alerts vs. Real Capture Management
-            </h2>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-2">
-            {/* AI Alerts */}
-            <Card className="p-8 bg-slate-100 border-slate-200" hover={false}>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-300">
-                  <Mail size={24} className="text-slate-600" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-600">Typical AI Bid Alert</h3>
-                  <p className="text-sm text-slate-500">What you're probably getting now</p>
-                </div>
-              </div>
-              
-              <div className="space-y-3">
-                {comparisonData.aiAlerts.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-3 text-slate-600">
-                    <div className="h-2 w-2 rounded-full bg-slate-400" />
-                    {item}
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-8 p-4 bg-white rounded-lg">
-                <p className="text-sm text-slate-600 italic">
-                  "Here are 50 bids that match the keyword 'Cleaning'. Good luck."
-                </p>
-              </div>
-            </Card>
-
-            {/* GovCon Capture */}
-            <Card className="p-8 bg-gov-navy text-white border-gov-crimson ring-2 ring-gov-crimson/20" hover={false}>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-crimson">
-                  <Target size={24} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg text-white">GovCon Capture Management</h3>
-                  <p className="text-sm text-slate-300">What winning looks like</p>
-                </div>
-              </div>
-              
-              <div className="space-y-3">
-                {comparisonData.govcon.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-3 text-white">
-                    <CheckCircle size={18} className="text-gov-green shrink-0" />
-                    {item}
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-8 p-4 bg-white/10 rounded-lg">
-                <p className="text-sm text-white">
-                  "Here are 3 bids. We called the CO on Bid #2—they're unhappy with the incumbent. 
-                  Bid #1 is a set-aside you qualify for. Skip Bid #3, it's wired."
-                </p>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       {/* Stats Section */}
-      <section className="bg-white py-16">
+      <section className="bg-slate-50 py-16">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <Card className="p-6 text-center group hover:border-gov-crimson transition-colors" hover>
-              <div className="font-display text-4xl font-bold text-gov-crimson group-hover:scale-110 transition-transform">87%</div>
-              <div className="mt-2 text-slate-600">Win Rate Within 12 Months</div>
+            <Card className="p-6 text-center bg-white" hover>
+              <div className="font-display text-4xl font-bold text-gov-crimson">98%</div>
+              <div className="mt-2 text-slate-700 font-medium">Certification Approval Rate</div>
             </Card>
-            <Card className="p-6 text-center group hover:border-gov-crimson transition-colors" hover>
-              <div className="font-display text-4xl font-bold text-gov-crimson group-hover:scale-110 transition-transform">3x</div>
-              <div className="mt-2 text-slate-600">More Qualified Opportunities</div>
+            <Card className="p-6 text-center bg-white" hover>
+              <div className="font-display text-4xl font-bold text-gov-crimson">0</div>
+              <div className="mt-2 text-slate-700 font-medium">Compliance Issues Under Management</div>
             </Card>
-            <Card className="p-6 text-center group hover:border-gov-crimson transition-colors" hover>
-              <div className="font-display text-4xl font-bold text-gov-crimson group-hover:scale-110 transition-transform">0</div>
-              <div className="mt-2 text-slate-600">Compliance Issues Under Management</div>
+            <Card className="p-6 text-center bg-white" hover>
+              <div className="font-display text-4xl font-bold text-gov-crimson">3x</div>
+              <div className="mt-2 text-slate-700 font-medium">More Qualified Opportunities</div>
             </Card>
-            <Card className="p-6 text-center group hover:border-gov-crimson transition-colors" hover>
-              <div className="font-display text-4xl font-bold text-gov-crimson group-hover:scale-110 transition-transform">15+</div>
-              <div className="mt-2 text-slate-600">Years of GovCon Experience</div>
+            <Card className="p-6 text-center bg-white" hover>
+              <div className="font-display text-4xl font-bold text-gov-crimson">15+</div>
+              <div className="mt-2 text-slate-700 font-medium">Years of Experience</div>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-white py-20">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+            <div className="lg:sticky lg:top-8">
+              <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">FAQ</p>
+              <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
+                Common Questions
+              </h2>
+              <p className="mt-4 text-slate-600">
+                Have a question that's not answered here? Book a call and we'll discuss 
+                your specific situation.
+              </p>
+              
+              <Card className="mt-8 p-6 bg-gov-navy" hover={false}>
+                <h3 className="font-semibold text-lg text-white">Need Help Getting Started?</h3>
+                <p className="mt-2 text-slate-300 text-sm">
+                  Book a free 30-minute consultation. We'll assess your current registrations 
+                  and certification eligibility at no cost.
+                </p>
+                <LinkButton 
+                  href={LINKS.booking} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="mt-4 bg-white text-gov-navy hover:bg-slate-100"
+                >
+                  Book Free Consultation
+                </LinkButton>
+              </Card>
+            </div>
+
+            <div className="space-y-4">
+              {faqs.map((faq, idx) => (
+                <div 
+                  key={idx}
+                  className="border border-slate-200 rounded-xl overflow-hidden bg-white hover:shadow-md transition-shadow"
+                >
+                  <button
+                    onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                    className="w-full p-5 flex items-center justify-between text-left hover:bg-slate-50 transition-colors"
+                  >
+                    <span className="font-semibold text-gov-navy pr-4">{faq.q}</span>
+                    <ChevronDown 
+                      size={20} 
+                      className={cn(
+                        "text-slate-400 transition-transform duration-300 shrink-0",
+                        activeFaq === idx && "rotate-180"
+                      )} 
+                    />
+                  </button>
+                  
+                  <div className={cn(
+                    "overflow-hidden transition-all duration-300",
+                    activeFaq === idx ? "max-h-96" : "max-h-0"
+                  )}>
+                    <div className="p-5 pt-0 text-slate-600">
+                      {faq.a}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <Section title="Ready to Build Your Pipeline?" kicker="Get Started" dark>
+      <Section title="Ready to Get Certified?" kicker="Get Started" dark>
         <Card className="p-8 bg-white/5 border-white/10" hover={false}>
           <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h3 className="font-display text-2xl font-bold text-white">
-                Let's assess your current position
+                Let's assess your eligibility
               </h3>
               <p className="mt-3 text-slate-300 max-w-xl">
                 We'll review your registrations, identify certification opportunities, and build 
-                a capture strategy tailored to your goals. The consultation is free.
+                a compliance strategy tailored to your goals. The consultation is free.
               </p>
               
               <div className="mt-6 flex flex-wrap gap-4 text-sm">

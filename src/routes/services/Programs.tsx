@@ -1,733 +1,679 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { 
-  ArrowRight, 
-  CheckCircle, 
-  Rocket, 
-  Crown, 
-  Shield,
-  ChevronDown,
-  ChevronRight,
-  Zap,
-  Users,
-  FileText,
-  Target,
-  Clock,
-  Phone,
-  Mail,
-  Calendar,
-  Star,
-  TrendingUp,
-  MessageSquare,
-  Award,
-  Briefcase,
-  BarChart3,
-  BookOpen,
-  Headphones,
-  RefreshCw,
-  X,
-  Check
+  ArrowRight, CheckCircle, FileText, Users, Award, Clock, 
+  Target, Lightbulb, Zap, BookOpen, TrendingUp, Shield,
+  ChevronDown, ChevronRight, Star, Sparkles, Download,
+  DollarSign, BarChart3, Rocket, Building2, FileCheck,
+  PenTool, Eye, ClipboardCheck, MessageSquare, Layers,
+  Calendar, Phone, Mail, BadgeCheck, Trophy, Briefcase
 } from "lucide-react";
 import Section from "../../components/Section";
 import Card from "../../components/Card";
-import { LinkButton, Button } from "../../components/Button";
+import { LinkButton } from "../../components/Button";
 import { LINKS } from "../../lib/constants";
 import { cn } from "../../components/cn";
 
-const packages = [
+// ============================================
+// PROGRAMS DATA - FedStart, FedScale, FedPrime
+// ============================================
+
+const programs = [
   {
+    id: "fedstart",
     name: "FedStart",
-    price: "$3,500",
-    originalPrice: "$4,500",
-    period: "one-time",
-    icon: Shield,
-    tagline: "The Compliance Foundation",
-    description: "Everything you need to get properly registered and positioned for federal contracting. Perfect for companies just entering the government market.",
-    highlight: false,
-    color: "gov-blue",
-    features: [
-      { name: "SAM.gov Registration & Optimization", included: true, detail: "Complete registration with NAICS code optimization" },
-      { name: "SBA DSBS Profile Setup", included: true, detail: "Searchable profile with capability narrative" },
-      { name: "FEMA Vendor Portal", included: true, detail: "Access to emergency and disaster contracts" },
-      { name: "Professional Capabilities Statement", included: true, detail: "Agency-ready marketing document" },
-      { name: "Bid Portal Access", included: true, detail: "3 months of curated opportunity alerts" },
-      { name: "Monthly Strategy Call", included: true, detail: "1 hour per month with your advisor" },
-      { name: "SBA Certification Support", included: true, detail: "Free eligibility assessment" },
-      { name: "Compliance Monitoring", included: true, detail: "Renewal reminders and alerts" },
-      { name: "Dedicated Capture Manager", included: false },
-      { name: "Proposal Writing", included: false },
-      { name: "GSA Schedule Support", included: false },
-    ],
-    timeline: "2-4 weeks",
-    ideal: ["New to government contracting", "Need proper registrations", "Want to test the market"]
-  },
-  {
-    name: "Growth",
-    price: "$7,500",
-    originalPrice: "$9,500",
-    period: "one-time",
+    tagline: "Launch into Federal Contracting",
     icon: Rocket,
-    tagline: "Active Opportunity Pursuit",
-    description: "Move from passive registration to active business development. We find opportunities, qualify them, and help you submit winning proposals.",
-    highlight: true,
+    color: "gov-blue",
+    price: "$2,400",
+    priceNote: "one-time",
+    idealFor: "New contractors entering the federal market",
+    description: "Everything you need to become a qualified federal contractor in 30 days or less.",
+    benefits: [
+      { title: "Win Your First Contract Faster", desc: "Average FedStart clients land their first opportunity within 90 days of completion" },
+      { title: "Avoid Costly Mistakes", desc: "Skip the 18-month learning curve that costs most new contractors $50K+ in wasted pursuit costs" },
+      { title: "Stand Out Immediately", desc: "Proper positioning means agencies find YOU instead of you chasing dead-end opportunities" },
+      { title: "Expert Guidance", desc: "Our consultants have helped 200+ contractors launch successfully—we know what works" },
+      { title: "Foundation for Growth", desc: "Everything built in FedStart supports your growth to FedScale and beyond" },
+      { title: "RFP-Ready Templates", desc: "Download professional RFP response templates customized to your business" }
+    ],
+    includes: [
+      "SAM.gov registration + profile optimization",
+      "NAICS code analysis and selection",
+      "Capability Statement creation",
+      "SBA certification eligibility review",
+      "Socioeconomic positioning strategy",
+      "Contract vehicle roadmap",
+      "30-day action plan",
+      "RFP Response Template Package",
+      "2 strategy calls with consultant"
+    ],
+    stats: [
+      { value: "30", label: "Days to Launch", icon: Calendar },
+      { value: "90", label: "Days to First Opp", icon: Target },
+      { value: "200+", label: "Contractors Launched", icon: Rocket }
+    ],
+    rfpTemplates: [
+      { name: "Technical Approach Template", desc: "Structured framework for articulating your solution", format: "DOCX" },
+      { name: "Past Performance Questionnaire", desc: "Professional PPQ form for collecting references", format: "PDF" },
+      { name: "Management Plan Template", desc: "Organizational approach and staffing framework", format: "DOCX" },
+      { name: "Compliance Matrix", desc: "Requirement tracking spreadsheet", format: "XLSX" },
+      { name: "Executive Summary Template", desc: "One-page capture document framework", format: "DOCX" },
+      { name: "Pricing Worksheet", desc: "Labor category and cost build-up template", format: "XLSX" }
+    ]
+  },
+  {
+    id: "fedscale",
+    name: "FedScale",
+    tagline: "Accelerate Your Growth",
+    icon: TrendingUp,
     color: "gov-crimson",
-    features: [
-      { name: "Everything in FedStart", included: true, detail: "Full compliance foundation" },
-      { name: "Bi-Weekly Strategy Calls", included: true, detail: "2 hours per month of dedicated time" },
-      { name: "Hand-Selected Bid Pipeline", included: true, detail: "Qualified opportunities with analysis" },
-      { name: "2 Email Marketing Campaigns", included: true, detail: "Agency outreach with follow-up" },
-      { name: "1 Full RFP Proposal", included: true, detail: "Complete proposal development" },
-      { name: "Priority Bid Support", included: true, detail: "Fast-track analysis and recommendations" },
-      { name: "Teaming Partner Identification", included: true, detail: "Prime/sub matching for larger bids" },
-      { name: "CO Outreach Assistance", included: true, detail: "Contracting officer introductions" },
-      { name: "Additional Proposals Available", included: true, detail: "Discounted rate for program members" },
-      { name: "GSA Schedule Support", included: false },
-      { name: "Unlimited Bid Reviews", included: false },
+    price: "$8,500",
+    priceNote: "one-time",
+    idealFor: "Contractors ready to expand beyond initial wins",
+    description: "Strategic expansion for contractors who have their foundation and are ready to scale.",
+    benefits: [
+      { title: "10X Your Pipeline", desc: "FedScale clients average 3-5X increase in qualified opportunities within 6 months" },
+      { title: "Higher Win Rates", desc: "Targeted pursuit strategy means you bid smarter—not just more often" },
+      { title: "Contract Vehicle Access", desc: "Get on the vehicles that matter for your market—GSA, OASIS+, agency-specific BPAs" },
+      { title: "Teaming That Works", desc: "We connect you with strategic partners who actually want to mentor and subcontract" },
+      { title: "Sustainable Growth", desc: "Build infrastructure that supports $1M, $5M, $10M+ revenue goals" },
+      { title: "Capture Management System", desc: "Process and tools to track and win opportunities consistently" }
     ],
-    timeline: "6-12 months",
-    ideal: ["Ready to win first contract", "Need proposal support", "Want active pipeline development"]
+    includes: [
+      "Pipeline development and qualification",
+      "Contract vehicle strategy + applications",
+      "GSA Schedule preparation support",
+      "Teaming partner identification",
+      "Capture management process setup",
+      "Competitive intelligence gathering",
+      "Past performance optimization",
+      "Quarterly business reviews",
+      "Priority proposal support queue"
+    ],
+    stats: [
+      { value: "3-5X", label: "Pipeline Growth", icon: TrendingUp },
+      { value: "40%", label: "Avg Win Rate Increase", icon: Trophy },
+      { value: "$50M+", label: "Client Contract Wins", icon: DollarSign }
+    ]
   },
   {
-    name: "Prime",
-    price: "$15,500",
-    originalPrice: "$19,500",
-    period: "one-time",
-    icon: Crown,
-    tagline: "Your Outsourced BD Department",
-    description: "Complete government contracting support. We become an extension of your team, handling everything from compliance to capture to proposal writing.",
-    highlight: false,
+    id: "fedprime",
+    name: "FedPrime",
+    tagline: "Dominate Your Market",
+    icon: Trophy,
     color: "gov-gold",
-    features: [
-      { name: "Everything in Growth", included: true, detail: "Full growth package included" },
-      { name: "Weekly Strategy Calls", included: true, detail: "4+ hours per month of dedicated time" },
-      { name: "GSA MAS Submission OR Maintenance", included: true, detail: "New schedule or ongoing management" },
-      { name: "3 Full RFP Proposal Walkthroughs", included: true, detail: "Complete proposal development" },
-      { name: "Unlimited Bid Reviews", included: true, detail: "Review any opportunity with us" },
-      { name: "Priority Hotline Access", included: true, detail: "Same-day response guarantee" },
-      { name: "Quarterly Business Reviews", included: true, detail: "Performance analysis and strategy adjustment" },
-      { name: "Process Documentation", included: true, detail: "SOPs for your BD operations" },
-      { name: "Subcontracting Opportunity Pipeline", included: true, detail: "Access to prime contractor network" },
-      { name: "Executive Coaching", included: true, detail: "Leadership development for GovCon" },
-      { name: "All Certifications Managed", included: true, detail: "SDVOSB, WOSB, 8(a), HUBZone support" },
+    price: "$15,500",
+    priceNote: "annual retainer",
+    idealFor: "Established contractors pursuing large prime contracts",
+    description: "Full-service strategic partnership for contractors pursuing multi-million dollar prime contracts.",
+    benefits: [
+      { title: "Prime Contract Ready", desc: "Position for and win prime contracts worth $5M-$50M+" },
+      { title: "Agency Relationships", desc: "Build the relationships and past performance that agencies require for large awards" },
+      { title: "Mentor-Protégé Opportunities", desc: "Connect with large primes seeking qualified small business partners" },
+      { title: "Competitive Intelligence", desc: "Know what your competitors are doing and position to beat them" },
+      { title: "Executive Advisory", desc: "Monthly strategic sessions with senior GovCon advisors" },
+      { title: "Unlimited Support", desc: "Priority access to all services—proposals, reviews, strategy calls" }
     ],
-    timeline: "12-18 months",
-    ideal: ["Serious about scaling", "Need comprehensive support", "Want GSA Schedule assistance"]
-  },
-];
-
-const comparisonFeatures = [
-  { name: "SAM.gov Registration", fedstart: true, growth: true, prime: true },
-  { name: "DSBS & FEMA Portals", fedstart: true, growth: true, prime: true },
-  { name: "Capabilities Statement", fedstart: true, growth: true, prime: true },
-  { name: "Bid Portal Access", fedstart: "3 months", growth: "6 months", prime: "12 months" },
-  { name: "Strategy Calls", fedstart: "Monthly", growth: "Bi-Weekly", prime: "Weekly" },
-  { name: "Certification Support", fedstart: "Assessment", growth: "Application", prime: "Full Management" },
-  { name: "Bid Pipeline", fedstart: false, growth: true, prime: true },
-  { name: "Proposal Writing", fedstart: false, growth: "1 Full RFP", prime: "3 Full RFPs" },
-  { name: "Email Campaigns", fedstart: false, growth: "2 Campaigns", prime: "Unlimited" },
-  { name: "GSA Schedule", fedstart: false, growth: false, prime: "Included" },
-  { name: "Priority Support", fedstart: false, growth: true, prime: "Same-Day" },
-  { name: "Bid Reviews", fedstart: false, growth: "Limited", prime: "Unlimited" },
-];
-
-const whatsIncluded = [
-  { 
-    title: "Dedicated Advisor", 
-    desc: "Direct access to a government contracting expert who knows your business",
-    icon: Users
-  },
-  { 
-    title: "Strategy Sessions", 
-    desc: "Regular calls to review progress, adjust strategy, and plan next steps",
-    icon: Target
-  },
-  { 
-    title: "Document Support", 
-    desc: "Professional templates, reviews, and formatting for all deliverables",
-    icon: FileText
-  },
-  { 
-    title: "Priority Response", 
-    desc: "24-48 hour turnaround on questions, reviews, and support requests",
-    icon: Zap
-  },
-  { 
-    title: "Resource Library", 
-    desc: "Access to templates, guides, and training materials",
-    icon: BookOpen
-  },
-  { 
-    title: "Partner Network", 
-    desc: "Introductions to teaming partners, mentors, and primes",
-    icon: Briefcase
+    includes: [
+      "Dedicated account executive",
+      "Monthly executive strategy sessions",
+      "Unlimited proposal reviews",
+      "Priority capture support",
+      "Mentor-Protégé matching",
+      "Agency relationship facilitation",
+      "Competitive intelligence reports",
+      "All FedScale deliverables included",
+      "VIP event access and introductions"
+    ],
+    stats: [
+      { value: "100%", label: "Client Retention", icon: BadgeCheck },
+      { value: "$109M+", label: "Awards Facilitated", icon: DollarSign },
+      { value: "87%", label: "Client Win Rate", icon: Trophy }
+    ]
   }
 ];
 
-const successStories = [
+// ============================================
+// PROPOSAL WRITING DATA
+// ============================================
+
+const proposalServices = [
   {
-    company: "Security Services Firm",
-    result: "$2.4M contract in 8 months",
-    program: "Growth",
-    quote: "They found an opportunity we never would have seen and helped us win it."
+    id: "full",
+    name: "Full Proposal Development",
+    icon: FileText,
+    price: "$5,000+",
+    timeline: "2-4 weeks",
+    description: "End-to-end proposal writing from RFP analysis to submission-ready package.",
+    benefits: [
+      "87% client win rate vs 30% industry average",
+      "Fixed pricing—no surprise overruns",
+      "Never missed a deadline in 15 years",
+      "Debrief analysis if you don't win"
+    ],
+    includes: [
+      "RFP analysis and compliance matrix",
+      "Win theme development",
+      "Technical approach writing",
+      "Management plan and org charts",
+      "Past performance volume",
+      "Pricing volume support",
+      "All color team reviews",
+      "Final production and formatting"
+    ]
   },
   {
-    company: "IT Consulting Company",
-    result: "GSA Schedule + 3 task orders",
-    program: "Prime",
-    quote: "Having GovCon handle our GSA let us focus on delivery. We've grown 300%."
+    id: "red",
+    name: "Red Team Review",
+    icon: Users,
+    price: "$1,500",
+    timeline: "3-5 days",
+    description: "Independent evaluation scored exactly like government evaluators.",
+    benefits: [
+      "Find gaps before the government does",
+      "Prioritized fix list you can action",
+      "Written report + 90-min debrief",
+      "Fresh expert eyes on your work"
+    ],
+    includes: [
+      "Compliance matrix verification",
+      "Evaluation factor scoring",
+      "Strengths/weaknesses analysis",
+      "Specific improvement recommendations",
+      "Prioritized fix list",
+      "90-minute debrief call"
+    ]
   },
   {
-    company: "Facilities Management",
-    result: "First contract in 6 months",
-    program: "FedStart",
-    quote: "We went from zero registrations to our first federal contract in under a year."
+    id: "past",
+    name: "Past Performance Support",
+    icon: Award,
+    price: "$750/ref",
+    timeline: "1-2 weeks",
+    description: "PPQ collection, reference formatting, and relevance mapping.",
+    benefits: [
+      "Professional references that score well",
+      "Relevance mapping to requirements",
+      "Reference coaching available",
+      "CPARS/PPIRS research support"
+    ],
+    includes: [
+      "PPQ questionnaire creation",
+      "Reference interview coordination",
+      "Narrative drafting",
+      "Relevance mapping to RFP",
+      "Reference coaching (optional)"
+    ]
+  },
+  {
+    id: "technical",
+    name: "Technical Writing",
+    icon: PenTool,
+    price: "$2,500/vol",
+    timeline: "1-2 weeks",
+    description: "Focused writing support for specific proposal volumes.",
+    benefits: [
+      "Expert SME interview extraction",
+      "Graphics development support",
+      "One revision round included",
+      "Format compliance guaranteed"
+    ],
+    includes: [
+      "SME interviews and content gathering",
+      "Technical approach narrative",
+      "Solution descriptions",
+      "Graphics recommendations",
+      "One round of revisions"
+    ]
   }
 ];
 
-const faqs = [
-  { 
-    q: "Can I upgrade my program later?", 
-    a: "Yes. You can upgrade at any time and we'll credit 100% of what you've already paid toward the higher tier. Many clients start with FedStart and upgrade to Growth once they're ready to actively pursue contracts." 
-  },
-  { 
-    q: "Is there a payment plan available?", 
-    a: "We offer 2-3 month payment plans for Growth and Prime packages. FedStart can be split into 2 payments. Contact us to discuss payment options that work for your budget." 
-  },
-  { 
-    q: "What if I need more proposals than included?", 
-    a: "Additional proposals can be purchased at a discounted rate for program members. Growth members get 25% off, Prime members get 40% off our standard proposal rates." 
-  },
-  { 
-    q: "How long do the programs last?", 
-    a: "FedStart is typically completed in 2-4 weeks. Growth is designed for 6-12 months of active pursuit. Prime is a 12-18 month engagement designed for comprehensive support and scaling." 
-  },
-  { 
-    q: "What happens after my program ends?", 
-    a: "You keep everything we've built together—registrations, documents, strategies, relationships. Many clients transition to our ongoing Compliance & Capture retainer for continued support, or re-engage when they have specific needs." 
-  },
-  { 
-    q: "Do you guarantee results?", 
-    a: "We guarantee our work—every registration, every document, every submission will be done correctly. We focus on the quality of submissions that get you in the door. Contract awards depend on your capabilities and the market, but proper positioning and strategy dramatically improve your odds." 
-  }
+const colorTeams = [
+  { name: "Blue", color: "bg-blue-600", phase: "Strategy & Planning", timing: "Start" },
+  { name: "Pink", color: "bg-pink-400", phase: "Storyboard Review", timing: "60%" },
+  { name: "Red", color: "bg-red-600", phase: "Evaluation Simulation", timing: "90%" },
+  { name: "Gold", color: "bg-yellow-500", phase: "Final Quality Check", timing: "Pre-Submit" },
 ];
 
-export default function ServicesPrograms() {
-  const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
-  const [showComparison, setShowComparison] = useState(false);
-  const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState<"features" | "ideal">("features");
+const heroStats = [
+  { value: "$109M+", label: "Awards Facilitated" },
+  { value: "87%", label: "Client Win Rate" },
+  { value: "200+", label: "Contractors Launched" },
+  { value: "15yrs", label: "Federal Experience" }
+];
+
+export default function Contractors() {
+  const [activeProgram, setActiveProgram] = useState<string>("fedstart");
+  const [activeProposalService, setActiveProposalService] = useState<string>("full");
+  const [expandedBenefit, setExpandedBenefit] = useState<number | null>(null);
+  const [showRfpTemplates, setShowRfpTemplates] = useState(false);
+
+  const selectedProgram = programs.find(p => p.id === activeProgram)!;
+  const selectedProposalService = proposalServices.find(s => s.id === activeProposalService)!;
 
   return (
     <>
       <Helmet>
-        <title>GovCon Programs — GovCon Inc.</title>
-        <meta name="description" content="Comprehensive government contracting programs designed for every stage of your journey. From compliance foundation to full business development support." />
+        <title>Contractor Services — GovCon Inc.</title>
+        <meta name="description" content="Launch, scale, and dominate federal contracting. FedStart for new contractors, FedScale for growth, FedPrime for primes. Professional proposal writing with 87% win rate." />
       </Helmet>
 
-      {/* Hero */}
+      {/* ============================================ */}
+      {/* HERO SECTION */}
+      {/* ============================================ */}
       <section className="bg-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-50" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-gov-blue/5 to-transparent rounded-full" />
+        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-tl from-gov-crimson/5 to-transparent" />
         
         <div className="relative mx-auto w-full max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
-          <div className="text-center max-w-3xl mx-auto">
+          <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full bg-gov-crimson/10 px-4 py-1.5 text-sm font-semibold text-gov-crimson mb-6">
-              <Award size={16} />
-              Contractor Programs
+              <Briefcase size={16} />
+              Federal Contractor Services
             </div>
             
             <h1 className="font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl lg:text-6xl">
-              Your Roadmap to <span className="text-gov-crimson">Winning</span> Government Contracts
+              Win Federal Contracts. <span className="text-gov-crimson">Grow Your Business.</span>
             </h1>
             
             <p className="mt-6 text-xl text-slate-600 leading-relaxed">
-              Comprehensive packages designed for every stage of your government contracting journey. 
-              Choose the level of support that matches your goals.
+              Whether you're launching your first federal pursuit or scaling to $50M+, 
+              we have the programs, expertise, and track record to get you there.
             </p>
             
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <LinkButton href="#packages" size="lg">
-                View Programs
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+              <LinkButton href="#programs" size="lg">
+                Explore Programs
                 <ArrowRight size={18} className="ml-2" />
               </LinkButton>
-              <Button 
-                variant="secondary" 
-                size="lg"
-                onClick={() => setShowComparison(true)}
-              >
-                Compare All Programs
-              </Button>
+              <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer" variant="secondary" size="lg">
+                Free Consultation
+              </LinkButton>
             </div>
           </div>
 
-          {/* Quick Stats */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="p-5 text-center" hover>
-              <div className="font-display text-3xl font-bold text-gov-crimson">24hrs</div>
-              <div className="text-sm text-slate-600 mt-1">Win within 12 months</div>
-            </Card>
-            <Card className="p-5 text-center" hover>
-              <div className="font-display text-3xl font-bold text-gov-crimson">$50M+</div>
-              <div className="text-sm text-slate-600 mt-1">Contracts won for clients</div>
-            </Card>
-            <Card className="p-5 text-center" hover>
-              <div className="font-display text-3xl font-bold text-gov-crimson">200+</div>
-              <div className="text-sm text-slate-600 mt-1">Program graduates</div>
-            </Card>
-            <Card className="p-5 text-center" hover>
-              <div className="font-display text-3xl font-bold text-gov-crimson">15+</div>
-              <div className="text-sm text-slate-600 mt-1">Years of experience</div>
-            </Card>
+          {/* Hero Stats */}
+          <div className="mt-16 grid grid-cols-2 gap-6 sm:grid-cols-4">
+            {heroStats.map((stat, idx) => (
+              <div 
+                key={stat.label}
+                className="text-center p-6 bg-white rounded-2xl border border-slate-100 shadow-sm animate-fade-in-up"
+                style={{ animationDelay: `${idx * 100}ms` }}
+              >
+                <div className="font-display text-3xl font-bold text-gov-crimson">{stat.value}</div>
+                <div className="text-sm text-slate-600 mt-1">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Packages */}
-      <section id="packages" className="bg-slate-50 py-20 scroll-mt-20">
+      {/* ============================================ */}
+      {/* PROGRAMS SECTION */}
+      {/* ============================================ */}
+      <section id="programs" className="bg-slate-50 py-20 scroll-mt-20">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Choose Your Program</p>
-            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-              Three Paths to Government Success
+            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Growth Programs</p>
+            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy sm:text-4xl">
+              Choose Your Path to Federal Success
             </h2>
+            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+              Three proven programs designed to meet you where you are and take you where you want to go.
+            </p>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-3">
-            {packages.map((pkg, idx) => (
-              <div 
-                key={pkg.name} 
+          {/* Program Selector */}
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {programs.map((program) => (
+              <button
+                key={program.id}
+                onClick={() => setActiveProgram(program.id)}
                 className={cn(
-                  "relative",
-                  pkg.highlight && "lg:-mt-4 lg:mb-4"
+                  "flex items-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all",
+                  activeProgram === program.id 
+                    ? "bg-gov-navy text-white shadow-lg scale-105" 
+                    : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                 )}
               >
-                {pkg.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                    <span className="rounded-full bg-gov-crimson px-4 py-1 text-xs font-bold text-white uppercase tracking-wider shadow-lg flex items-center gap-1">
-                      <Star size={12} className="fill-current" />
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-                
-                <Card 
-                  className={cn(
-                    "h-full flex flex-col overflow-hidden",
-                    pkg.highlight && "border-gov-crimson ring-2 ring-gov-crimson/20"
-                  )}
-                  hover={pkg.highlight}
-                >
-                  {/* Header */}
+                <program.icon size={20} />
+                <div className="text-left">
+                  <div className="font-bold">{program.name}</div>
+                  <div className="text-xs opacity-80">{program.tagline}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Selected Program Details */}
+          <div className="animate-fade-in-up">
+            {/* Program Header Card */}
+            <Card className="p-8 bg-white mb-8" hover={false}>
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <div className="flex items-center gap-4">
                   <div className={cn(
-                    "p-6 text-white",
-                    pkg.color === "gov-blue" && "bg-gov-blue",
-                    pkg.color === "gov-crimson" && "bg-gov-crimson",
-                    pkg.color === "gov-gold" && "bg-gov-navy"
+                    "flex h-16 w-16 items-center justify-center rounded-2xl text-white",
+                    selectedProgram.color === "gov-blue" && "bg-gov-blue",
+                    selectedProgram.color === "gov-crimson" && "bg-gov-crimson",
+                    selectedProgram.color === "gov-gold" && "bg-gov-gold"
                   )}>
+                    <selectedProgram.icon size={32} />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-2xl font-bold text-gov-navy">{selectedProgram.name}</h3>
+                    <p className="text-slate-600">{selectedProgram.tagline}</p>
+                    <p className="text-sm text-gov-blue font-medium mt-1">
+                      Ideal for: {selectedProgram.idealFor}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm text-slate-500">{selectedProgram.priceNote}</div>
+                  <div className="font-display text-4xl font-bold text-gov-crimson">{selectedProgram.price}</div>
+                  <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer" className="mt-3">
+                    Get Started
+                    <ArrowRight size={16} className="ml-2" />
+                  </LinkButton>
+                </div>
+              </div>
+            </Card>
+
+            {/* Stats Row */}
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              {selectedProgram.stats.map((stat) => (
+                <Card key={stat.label} className="p-5 text-center" hover>
+                  <stat.icon size={24} className="mx-auto text-gov-blue" />
+                  <div className="font-display text-2xl font-bold text-gov-navy mt-2">{stat.value}</div>
+                  <div className="text-sm text-slate-600">{stat.label}</div>
+                </Card>
+              ))}
+            </div>
+
+            <div className="grid gap-8 lg:grid-cols-2">
+              {/* Benefits - THE MAIN FOCUS */}
+              <Card className="p-8 bg-gov-navy text-white" hover={false}>
+                <div className="flex items-center gap-2 mb-6">
+                  <Star size={20} className="text-gov-gold" />
+                  <h4 className="font-display text-xl font-bold">Why {selectedProgram.name}?</h4>
+                </div>
+                <div className="space-y-4">
+                  {selectedProgram.benefits.map((benefit, idx) => (
+                    <button
+                      key={benefit.title}
+                      onClick={() => setExpandedBenefit(expandedBenefit === idx ? null : idx)}
+                      className="w-full text-left p-4 bg-white/10 rounded-xl hover:bg-white/15 transition-all"
+                    >
+                      <div className="flex items-start gap-3">
+                        <CheckCircle size={20} className="text-gov-green shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <div className="font-semibold">{benefit.title}</div>
+                          <div className={cn(
+                            "text-sm text-slate-300 mt-1 transition-all",
+                            expandedBenefit === idx ? "opacity-100" : "opacity-70"
+                          )}>
+                            {benefit.desc}
+                          </div>
+                        </div>
+                        <ChevronDown size={18} className={cn(
+                          "text-slate-400 transition-transform shrink-0",
+                          expandedBenefit === idx && "rotate-180"
+                        )} />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </Card>
+
+              {/* What's Included */}
+              <Card className="p-8" hover={false}>
+                <h4 className="font-display text-xl font-bold text-gov-navy mb-6">What's Included</h4>
+                <div className="space-y-3">
+                  {selectedProgram.includes.map((item, idx) => (
+                    <div 
+                      key={idx}
+                      className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg"
+                    >
+                      <CheckCircle size={18} className="text-gov-green shrink-0" />
+                      <span className="text-slate-700">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </div>
+
+            {/* RFP Templates Section - FedStart Only */}
+            {activeProgram === "fedstart" && selectedProgram.rfpTemplates && (
+              <div className="mt-8">
+                <Card className="p-8 bg-gradient-to-br from-gov-blue/5 to-gov-crimson/5 border-gov-blue/20" hover={false}>
+                  <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20">
-                        <pkg.icon size={28} />
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue text-white">
+                        <FileText size={24} />
                       </div>
                       <div>
-                        <h3 className="font-display text-2xl font-bold">{pkg.name}</h3>
-                        <p className="text-sm text-white/80">{pkg.tagline}</p>
+                        <h4 className="font-display text-xl font-bold text-gov-navy">RFP Response Template Package</h4>
+                        <p className="text-slate-600">Professional templates to jumpstart your proposal writing</p>
                       </div>
                     </div>
-                    
-                    <div className="mt-6">
-                      {pkg.originalPrice && (
-                        <span className="text-sm text-white/60 line-through mr-2">{pkg.originalPrice}</span>
-                      )}
-                      <span className="font-display text-4xl font-bold">{pkg.price}</span>
-                      <span className="text-white/80">/{pkg.period}</span>
-                    </div>
+                    <button
+                      onClick={() => setShowRfpTemplates(!showRfpTemplates)}
+                      className="flex items-center gap-2 px-4 py-2 bg-gov-blue text-white rounded-lg hover:bg-gov-blue/90 transition"
+                    >
+                      <Download size={18} />
+                      {showRfpTemplates ? "Hide Templates" : "View Templates"}
+                    </button>
                   </div>
-                  
-                  {/* Body */}
-                  <div className="p-6 flex-1 flex flex-col">
-                    <p className="text-slate-600 mb-6">{pkg.description}</p>
-                    
-                    {/* Tab Toggle */}
-                    <div className="flex gap-2 mb-4">
-                      <button
-                        onClick={() => setActiveTab("features")}
-                        className={cn(
-                          "flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all",
-                          activeTab === "features" 
-                            ? "bg-gov-navy text-white" 
-                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                        )}
-                      >
-                        Features
-                      </button>
-                      <button
-                        onClick={() => setActiveTab("ideal")}
-                        className={cn(
-                          "flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all",
-                          activeTab === "ideal" 
-                            ? "bg-gov-navy text-white" 
-                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                        )}
-                      >
-                        Ideal For
-                      </button>
-                    </div>
-                    
-                    {activeTab === "features" ? (
-                      <ul className="space-y-2 flex-1">
-                        {pkg.features.slice(0, 8).map((feature) => (
-                          <li 
-                            key={feature.name} 
-                            className={cn(
-                              "flex items-start gap-2 text-sm",
-                              feature.included ? "text-slate-700" : "text-slate-400"
-                            )}
-                          >
-                            {feature.included ? (
-                              <CheckCircle className="h-5 w-5 shrink-0 text-gov-green" />
-                            ) : (
-                              <X className="h-5 w-5 shrink-0 text-slate-300" />
-                            )}
-                            <span>{feature.name}</span>
-                          </li>
-                        ))}
-                        {pkg.features.length > 8 && (
-                          <li className="text-sm text-gov-blue font-medium pt-2">
-                            + {pkg.features.length - 8} more features
-                          </li>
-                        )}
-                      </ul>
-                    ) : (
-                      <ul className="space-y-3 flex-1">
-                        {pkg.ideal.map((item) => (
-                          <li key={item} className="flex items-start gap-2 text-sm text-slate-700">
-                            <Target className="h-5 w-5 shrink-0 text-gov-crimson" />
-                            {item}
-                          </li>
-                        ))}
-                        <li className="pt-4 flex items-center gap-2 text-sm text-slate-500">
-                          <Clock size={16} />
-                          Typical timeline: {pkg.timeline}
-                        </li>
-                      </ul>
-                    )}
 
-                    <div className="mt-6 pt-6 border-t border-slate-200">
-                      <LinkButton 
-                        href={LINKS.booking}
-                        target="_blank"
-                        rel="noreferrer"
-                        variant={pkg.highlight ? "primary" : "secondary"}
-                        className="w-full justify-center"
-                      >
-                        Get Started with {pkg.name}
-                      </LinkButton>
-                      
-                      <button
-                        onClick={() => setSelectedPackage(selectedPackage === idx ? null : idx)}
-                        className="w-full mt-3 text-sm text-gov-blue hover:text-gov-navy font-medium flex items-center justify-center gap-1"
-                      >
-                        View full details
-                        <ChevronDown size={16} className={cn(
-                          "transition-transform",
-                          selectedPackage === idx && "rotate-180"
-                        )} />
-                      </button>
+                  {showRfpTemplates && (
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
+                      {selectedProgram.rfpTemplates.map((template) => (
+                        <div 
+                          key={template.name}
+                          className="p-4 bg-white rounded-xl border border-slate-200 hover:shadow-md transition-all"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <div className="font-semibold text-gov-navy">{template.name}</div>
+                              <p className="text-sm text-slate-600 mt-1">{template.desc}</p>
+                            </div>
+                            <span className="text-xs font-bold text-gov-blue bg-gov-blue/10 px-2 py-1 rounded">
+                              {template.format}
+                            </span>
+                          </div>
+                          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-2 text-sm text-gov-blue">
+                            <Download size={14} />
+                            Included with FedStart
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="mt-6 p-4 bg-gov-gold/10 rounded-xl border border-gov-gold/20">
+                    <div className="flex items-center gap-3">
+                      <Sparkles size={20} className="text-gov-gold" />
+                      <div>
+                        <div className="font-semibold text-gov-navy">These templates alone save you 40+ hours</div>
+                        <p className="text-sm text-slate-600">
+                          Professionally structured and proven formats that government evaluators expect to see.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </Card>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
 
-      {/* Expanded Package Details Modal */}
-      {selectedPackage !== null && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedPackage(null)}>
-          <Card 
-            className="max-w-2xl w-full max-h-[80vh] overflow-auto p-0" 
-            hover={false}
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          >
-            <div className={cn(
-              "p-6 text-white sticky top-0",
-              packages[selectedPackage].color === "gov-blue" && "bg-gov-blue",
-              packages[selectedPackage].color === "gov-crimson" && "bg-gov-crimson",
-              packages[selectedPackage].color === "gov-gold" && "bg-gov-navy"
-            )}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  {(() => {
-                    const Icon = packages[selectedPackage].icon;
-                    return <Icon size={28} />;
-                  })()}
-                  <div>
-                    <h3 className="font-display text-2xl font-bold">{packages[selectedPackage].name}</h3>
-                    <p className="text-white/80">{packages[selectedPackage].price}</p>
-                  </div>
-                </div>
-                <button 
-                  onClick={() => setSelectedPackage(null)}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-            </div>
-            
-            <div className="p-6 space-y-6">
-              <div>
-                <h4 className="font-semibold text-gov-navy mb-4">Complete Feature List</h4>
-                <ul className="space-y-3">
-                  {packages[selectedPackage].features.map((feature) => (
-                    <li 
-                      key={feature.name} 
-                      className={cn(
-                        "flex items-start gap-3 p-3 rounded-lg",
-                        feature.included ? "bg-gov-green/5" : "bg-slate-50"
-                      )}
-                    >
-                      {feature.included ? (
-                        <CheckCircle className="h-5 w-5 shrink-0 text-gov-green" />
-                      ) : (
-                        <X className="h-5 w-5 shrink-0 text-slate-300" />
-                      )}
-                      <div>
-                        <span className={cn(
-                          "font-medium",
-                          feature.included ? "text-slate-700" : "text-slate-400"
-                        )}>
-                          {feature.name}
-                        </span>
-                        {feature.detail && feature.included && (
-                          <p className="text-sm text-slate-500 mt-0.5">{feature.detail}</p>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              <div className="flex gap-4">
-                <LinkButton 
-                  href={LINKS.booking}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 justify-center"
-                >
-                  Get Started
-                </LinkButton>
-              </div>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {/* Comparison Modal */}
-      {showComparison && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowComparison(false)}>
-          <Card 
-            className="max-w-4xl w-full max-h-[80vh] overflow-auto p-6" 
-            hover={false}
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-display text-2xl font-bold text-gov-navy">Compare All Programs</h3>
-              <button 
-                onClick={() => setShowComparison(false)}
-                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-              >
-                <X size={24} />
-              </button>
-            </div>
-            
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="text-left py-3 px-2 font-semibold text-gov-navy">Feature</th>
-                    <th className="text-center py-3 px-2 font-semibold text-gov-blue">FedStart</th>
-                    <th className="text-center py-3 px-2 font-semibold text-gov-crimson">Growth</th>
-                    <th className="text-center py-3 px-2 font-semibold text-gov-navy">Prime</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {comparisonFeatures.map((feature, idx) => (
-                    <tr key={feature.name} className={cn("border-b border-slate-100", idx % 2 === 0 && "bg-slate-50/50")}>
-                      <td className="py-3 px-2 text-sm text-slate-700">{feature.name}</td>
-                      <td className="py-3 px-2 text-center">
-                        {typeof feature.fedstart === "boolean" ? (
-                          feature.fedstart ? <Check className="mx-auto text-gov-green" size={18} /> : <X className="mx-auto text-slate-300" size={18} />
-                        ) : (
-                          <span className="text-sm text-slate-600">{feature.fedstart}</span>
-                        )}
-                      </td>
-                      <td className="py-3 px-2 text-center">
-                        {typeof feature.growth === "boolean" ? (
-                          feature.growth ? <Check className="mx-auto text-gov-green" size={18} /> : <X className="mx-auto text-slate-300" size={18} />
-                        ) : (
-                          <span className="text-sm text-slate-600">{feature.growth}</span>
-                        )}
-                      </td>
-                      <td className="py-3 px-2 text-center">
-                        {typeof feature.prime === "boolean" ? (
-                          feature.prime ? <Check className="mx-auto text-gov-green" size={18} /> : <X className="mx-auto text-slate-300" size={18} />
-                        ) : (
-                          <span className="text-sm text-slate-600">{feature.prime}</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                  <tr className="bg-slate-100">
-                    <td className="py-4 px-2 font-semibold text-gov-navy">Investment</td>
-                    <td className="py-4 px-2 text-center font-display font-bold text-gov-blue">$3,500</td>
-                    <td className="py-4 px-2 text-center font-display font-bold text-gov-crimson">$7,500</td>
-                    <td className="py-4 px-2 text-center font-display font-bold text-gov-navy">$15,500</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {/* What's Included */}
-      <section className="bg-white py-20">
+      {/* ============================================ */}
+      {/* PROPOSAL WRITING SECTION */}
+      {/* ============================================ */}
+      <section id="proposals" className="bg-white py-20">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Core Value</p>
-            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-              What's Included in Every Program
+            <p className="text-sm font-bold uppercase tracking-wider text-gov-crimson">Proposal Services</p>
+            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy sm:text-4xl">
+              Proposal Writing That Wins
             </h2>
             <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-              Regardless of which program you choose, you get access to our full support infrastructure.
+              We don't just write proposals—we engineer wins. 87% win rate using the proven 
+              Shipley methodology tailored to your business.
             </p>
           </div>
-          
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {whatsIncluded.map((item) => (
-              <Card key={item.title} className="p-6 group" hover>
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue/10 text-gov-blue group-hover:bg-gov-blue group-hover:text-white transition-colors">
-                  <item.icon size={24} />
-                </div>
-                <h3 className="mt-4 font-semibold text-gov-navy">{item.title}</h3>
-                <p className="mt-2 text-sm text-slate-600">{item.desc}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Success Stories */}
-      <section className="bg-slate-50 py-20">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Results</p>
-            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-              Client Success Stories
-            </h2>
-          </div>
-          
-          <div className="grid gap-6 lg:grid-cols-3">
-            {successStories.map((story) => (
-              <Card key={story.company} className="p-6" hover>
-                <div className="flex items-center gap-2 mb-4">
-                  <span className={cn(
-                    "text-xs font-semibold px-2 py-1 rounded-full",
-                    story.program === "FedStart" && "bg-gov-blue/10 text-gov-blue",
-                    story.program === "Growth" && "bg-gov-crimson/10 text-gov-crimson",
-                    story.program === "Prime" && "bg-gov-navy/10 text-gov-navy"
-                  )}>
-                    {story.program}
-                  </span>
-                </div>
-                <h3 className="font-semibold text-gov-navy">{story.company}</h3>
-                <p className="mt-1 font-display text-2xl font-bold text-gov-crimson">{story.result}</p>
-                <p className="mt-4 text-sm text-slate-600 italic">"{story.quote}"</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="bg-white py-20">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-            <div className="lg:sticky lg:top-8">
-              <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">FAQ</p>
-              <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-                Common Questions
-              </h2>
-              <p className="mt-4 text-slate-600">
-                Have a question that's not answered here? Book a call and we'll discuss 
-                your specific situation.
-              </p>
-              
-              <Card className="mt-8 p-6 bg-gov-navy text-white" hover={false}>
-                <h3 className="font-semibold text-lg">Not Sure Which Program?</h3>
-                <p className="mt-2 text-slate-300 text-sm">
-                  Book a free 30-minute consultation. We'll assess your current position, 
-                  understand your goals, and recommend the right program for your situation.
-                </p>
-                <LinkButton 
-                  href={LINKS.booking} 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="mt-4 bg-white text-gov-navy hover:bg-slate-100"
-                >
-                  Book Free Consultation
-                </LinkButton>
-              </Card>
+          {/* Color Team Process Visual */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-semibold text-slate-600">Our Review Process</span>
+              <span className="text-sm text-slate-500">Industry-Standard Color Team Reviews</span>
             </div>
-
-            <div className="space-y-4">
-              {faqs.map((faq, idx) => (
-                <div 
-                  key={idx}
-                  className="border border-slate-200 rounded-xl overflow-hidden bg-white hover:shadow-md transition-shadow"
-                >
-                  <button
-                    onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
-                    className="w-full p-5 flex items-center justify-between text-left hover:bg-slate-50 transition-colors"
-                  >
-                    <span className="font-semibold text-gov-navy pr-4">{faq.q}</span>
-                    <ChevronDown 
-                      size={20} 
-                      className={cn(
-                        "text-slate-400 transition-transform duration-300 shrink-0",
-                        activeFaq === idx && "rotate-180"
-                      )} 
-                    />
-                  </button>
-                  
-                  <div className={cn(
-                    "overflow-hidden transition-all duration-300",
-                    activeFaq === idx ? "max-h-96" : "max-h-0"
-                  )}>
-                    <div className="p-5 pt-0 text-slate-600">
-                      {faq.a}
-                    </div>
+            <div className="flex gap-1">
+              {colorTeams.map((team) => (
+                <div key={team.name} className="flex-1 group">
+                  <div className={cn("h-3 rounded-full transition-all group-hover:scale-y-150", team.color)} />
+                  <div className="mt-2 text-center">
+                    <div className="text-xs font-bold text-slate-700">{team.name}</div>
+                    <div className="text-xs text-slate-500">{team.timing}</div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Service Selector */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+            {proposalServices.map((service) => (
+              <button
+                key={service.id}
+                onClick={() => setActiveProposalService(service.id)}
+                className={cn(
+                  "p-5 rounded-xl text-left transition-all",
+                  activeProposalService === service.id 
+                    ? "bg-gov-navy text-white shadow-lg" 
+                    : "bg-white border border-slate-200 hover:border-gov-blue"
+                )}
+              >
+                <service.icon size={24} className={activeProposalService === service.id ? "text-gov-gold" : "text-gov-blue"} />
+                <div className="mt-3 font-bold">{service.name}</div>
+                <div className={cn(
+                  "text-sm mt-1",
+                  activeProposalService === service.id ? "text-slate-300" : "text-slate-600"
+                )}>
+                  {service.price} • {service.timeline}
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Selected Service Details */}
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* Benefits */}
+            <Card className="p-8 bg-gov-crimson text-white" hover={false}>
+              <div className="flex items-center gap-2 mb-6">
+                <Trophy size={20} className="text-gov-gold" />
+                <h4 className="font-display text-xl font-bold">Why Choose This Service</h4>
+              </div>
+              <div className="space-y-4">
+                {selectedProposalService.benefits.map((benefit, idx) => (
+                  <div key={idx} className="flex items-start gap-3 p-3 bg-white/10 rounded-lg">
+                    <CheckCircle size={20} className="text-gov-green shrink-0 mt-0.5" />
+                    <span>{benefit}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 pt-6 border-t border-white/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm text-white/70">Starting at</div>
+                    <div className="font-display text-3xl font-bold">{selectedProposalService.price}</div>
+                  </div>
+                  <LinkButton 
+                    href={LINKS.booking} 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="bg-white text-gov-crimson hover:bg-white/90"
+                  >
+                    Get Quote
+                  </LinkButton>
+                </div>
+              </div>
+            </Card>
+
+            {/* What's Included */}
+            <Card className="p-8" hover={false}>
+              <h4 className="font-display text-xl font-bold text-gov-navy mb-2">{selectedProposalService.name}</h4>
+              <p className="text-slate-600 mb-6">{selectedProposalService.description}</p>
+              <div className="space-y-3">
+                {selectedProposalService.includes.map((item, idx) => (
+                  <div 
+                    key={idx}
+                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg"
+                  >
+                    <CheckCircle size={18} className="text-gov-green shrink-0" />
+                    <span className="text-slate-700">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          {/* Differentiator */}
+          <div className="mt-12 grid gap-6 lg:grid-cols-2">
+            <Card className="p-6 border-l-4 border-l-slate-300" hover={false}>
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Other Firms</div>
+              <ul className="space-y-2">
+                {[
+                  "Junior writers with templates",
+                  "One-size-fits-all approach",
+                  "Miss submission deadlines",
+                  "Charge by the hour (scope creep)",
+                  "No debrief support"
+                ].map(item => (
+                  <li key={item} className="flex items-center gap-2 text-slate-600">
+                    <div className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+
+            <Card className="p-6 border-l-4 border-l-gov-crimson bg-white" hover={false}>
+              <div className="text-xs font-bold uppercase tracking-wider text-gov-crimson mb-3">GovCon Inc.</div>
+              <ul className="space-y-2">
+                {[
+                  "Senior writers with evaluation experience",
+                  "Shipley method tailored to your business",
+                  "Never missed a deadline in 15 years",
+                  "Fixed-price quotes (no surprises)",
+                  "Win or we analyze why and help improve"
+                ].map(item => (
+                  <li key={item} className="flex items-center gap-2 text-gov-navy">
+                    <CheckCircle size={16} className="text-gov-green" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <Section title="Ready to Start Winning?" kicker="Let's Talk" dark>
+      {/* ============================================ */}
+      {/* CTA SECTION */}
+      {/* ============================================ */}
+      <Section title="Ready to Win Federal Contracts?" kicker="Let's Talk" dark>
         <Card className="p-8 bg-white/5 border-white/10" hover={false}>
           <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h3 className="font-display text-2xl font-bold text-white">
-                Book your free strategy consultation
+                Free 30-Minute Strategy Call
               </h3>
               <p className="mt-3 text-slate-300 max-w-xl">
-                We'll assess your current position, understand your goals, and recommend 
-                the program that makes sense. No pressure, no obligation.
+                We'll review your situation, identify the right program, and outline your 
+                path to federal contracting success. No obligation, no pressure.
               </p>
               
               <div className="mt-6 flex flex-wrap gap-4 text-sm">
@@ -741,7 +687,7 @@ export default function ServicesPrograms() {
                 </div>
                 <div className="flex items-center gap-2 text-slate-300">
                   <Calendar size={16} />
-                  30-minute strategy call
+                  Same-day availability
                 </div>
               </div>
             </div>
@@ -753,7 +699,7 @@ export default function ServicesPrograms() {
               size="lg"
               className="shrink-0"
             >
-              Book Consultation
+              Book Free Consultation
               <ArrowRight size={18} className="ml-2" />
             </LinkButton>
           </div>
