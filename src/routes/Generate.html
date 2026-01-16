@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Marketing Agreement Builder — GovCon Inc.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a2234;
+            --navy-light: #243044;
+            --wine: #8B2B4B;
+            --wine-dark: #6d2239;
+            --wine-light: #a33d5e;
+            --cream: #f8f6f3;
+            --gold: #c9a962;
+            --gold-light: #e8d9a8;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --radius-sm: 6px;
+            --radius: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: var(--navy);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header-top-bar {
+            background: var(--navy);
+            color: var(--gray-300);
+            font-size: 13px;
+            padding: 8px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header-top-bar a {
+            color: var(--gray-300);
+            text-decoration: none;
+            margin-right: 20px;
+        }
+
+        .header {
+            background: var(--navy);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--wine);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            color: white;
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: var(--gray-400);
+        }
+
+        /* Main Container */
+        .main-container {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            min-height: calc(100vh - 120px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            padding: 24px;
+            overflow-y: auto;
+            max-height: calc(100vh - 120px);
+            position: sticky;
+            top: 76px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 28px;
+        }
+
+        .sidebar-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--wine);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-section-title::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--wine);
+            box-shadow: 0 0 0 3px rgba(139, 43, 75, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--gray-400);
+        }
+
+        select.form-input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+        }
+
+        /* Package Cards */
+        .package-card {
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            margin-bottom: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--wine);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .package-card:hover {
+            border-color: var(--wine-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .package-card.selected {
+            border-color: var(--wine);
+        }
+
+        .package-card.selected::before {
+            opacity: 1;
+        }
+
+        .package-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: var(--gold);
+            color: var(--navy);
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .package-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .package-duration {
+            font-size: 11px;
+            color: var(--wine);
+            font-weight: 600;
+            background: rgba(139, 43, 75, 0.08);
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .package-pricing {
+            margin: 12px 0;
+        }
+
+        .package-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--wine);
+        }
+
+        .package-price-spot {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: 8px;
+        }
+
+        .package-price-spot strong {
+            color: var(--navy);
+        }
+
+        .package-desc {
+            font-size: 12px;
+            color: var(--gray-600);
+            line-height: 1.5;
+            padding-top: 10px;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        /* Addon Toggles */
+        .addon-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .addon-toggle:hover {
+            background: var(--gray-100);
+        }
+
+        .addon-toggle.active {
+            background: rgba(139, 43, 75, 0.05);
+            border-color: var(--wine-light);
+        }
+
+        .addon-info {
+            flex: 1;
+        }
+
+        .addon-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--navy);
+        }
+
+        .addon-desc {
+            font-size: 11px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .addon-price {
+            font-size: 12px;
+            color: var(--wine);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: var(--gray-300);
+            border-radius: 12px;
+            position: relative;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .addon-toggle.active .toggle-switch {
+            background: var(--wine);
+        }
+
+        .addon-toggle.active .toggle-switch::after {
+            transform: translateX(20px);
+        }
+
+        /* Upsell Notice */
+        .upsell-notice {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: white;
+            padding: 16px;
+            border-radius: var(--radius);
+            margin-top: 16px;
+        }
+
+        .upsell-notice h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upsell-notice p {
+            font-size: 12px;
+            color: var(--gray-300);
+            line-height: 1.5;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 36px 50px;
+            background: var(--cream);
+        }
+
+        .content-header {
+            margin-bottom: 32px;
+        }
+
+        .content-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(139, 43, 75, 0.08);
+            color: var(--wine);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 6px 14px;
+            border-radius: 30px;
+            margin-bottom: 14px;
+        }
+
+        .content-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--wine);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .content-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .content-subtitle {
+            font-size: 16px;
+            color: var(--gray-600);
+            max-width: 550px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--gray-100);
+            padding: 4px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            border: none;
+            background: transparent;
+            border-radius: calc(var(--radius) - 2px);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--gray-600);
+            font-family: inherit;
+        }
+
+        .tab:hover {
+            color: var(--navy);
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--navy);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Document Preview */
+        .document-preview {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .document-header {
+            background: var(--navy);
+            padding: 28px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .document-header-left h2 {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .document-header-left p {
+            color: var(--gray-400);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .document-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 30px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        .status-text {
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .document-body {
+            padding: 36px;
+        }
+
+        .document-section {
+            margin-bottom: 36px;
+            padding-bottom: 36px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .document-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            background: var(--wine);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-content {
+            color: var(--gray-700);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .section-content p {
+            margin-bottom: 14px;
+        }
+
+        /* Summary Table */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .summary-table th {
+            background: var(--gray-50);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-600);
+        }
+
+        .summary-table td {
+            font-size: 13px;
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table .total-row {
+            background: var(--navy);
+        }
+
+        .summary-table .total-row td {
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* Deliverables List */
+        .deliverables-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .deliverable-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+        }
+
+        .deliverable-item.not-included {
+            opacity: 0.5;
+            background: transparent;
+            border: 1px dashed var(--gray-300);
+        }
+
+        .deliverable-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--wine);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .deliverable-item.not-included .deliverable-icon {
+            background: var(--gray-300);
+        }
+
+        .deliverable-icon svg {
+            width: 14px;
+            height: 14px;
+            stroke: white;
+        }
+
+        .deliverable-text {
+            font-size: 13px;
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        .deliverable-detail {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 18px;
+            padding-bottom: 22px;
+            position: relative;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 30px;
+            bottom: 0;
+            width: 2px;
+            background: var(--gray-200);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-marker {
+            width: 30px;
+            height: 30px;
+            background: var(--wine);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .timeline-content p {
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .timeline-date {
+            font-size: 11px;
+            color: var(--wine);
+            font-weight: 500;
+            margin-top: 6px;
+            background: rgba(139, 43, 75, 0.08);
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: var(--gray-50);
+            padding: 18px;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--wine);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+
+        .comparison-table th {
+            background: var(--navy);
+            color: white;
+            padding: 14px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .comparison-table th:first-child {
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--gray-100);
+            text-align: center;
+        }
+
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: var(--gray-50);
+        }
+
+        .check-icon {
+            color: var(--wine);
+            font-weight: 700;
+        }
+
+        .x-icon {
+            color: var(--gray-300);
+        }
+
+        /* Signature Block */
+        .signature-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 36px;
+            padding-top: 36px;
+            border-top: 2px solid var(--navy);
+        }
+
+        .signature-area {
+            padding-top: 18px;
+        }
+
+        .signature-line {
+            border-bottom: 1px solid var(--navy);
+            height: 50px;
+            margin-bottom: 6px;
+        }
+
+        .signature-label {
+            font-size: 11px;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .signature-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-top: 6px;
+        }
+
+        /* Action Buttons */
+        .action-bar {
+            display: flex;
+            gap: 14px;
+            justify-content: flex-end;
+            padding: 20px 36px;
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--wine);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--wine-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--navy);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--wine);
+            border: 2px solid var(--wine);
+        }
+
+        .btn-outline:hover {
+            background: var(--wine);
+            color: white;
+        }
+
+        /* Footer */
+        .document-footer {
+            background: var(--gray-50);
+            padding: 20px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+
+        .footer-legal {
+            max-width: 60%;
+        }
+
+        .footer-branding {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo {
+            width: 28px;
+            height: 28px;
+            background: var(--wine);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        /* Watermark */
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--navy);
+            color: white;
+            padding: 10px 18px;
+            border-radius: var(--radius);
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+        }
+
+        .watermark-logo {
+            width: 22px;
+            height: 22px;
+            background: var(--wine);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+        /* Print Styles */
+        @media print {
+            .sidebar, .header, .header-top-bar, .action-bar, .watermark {
+                display: none !important;
+            }
+            .main-container {
+                display: block;
+            }
+            .content-area {
+                padding: 0;
+            }
+            .document-preview {
+                box-shadow: none;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: relative;
+                top: 0;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-200);
+            }
+            .content-area {
+                padding: 24px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-top-bar">
+        <div>
+            <a href="tel:8136650308">📞 (813) 665-0308</a>
+            <a href="mailto:Info@GovCon.Info">✉️ Info@GovCon.Info</a>
+        </div>
+        <div>Tampa, FL</div>
+    </div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">G</div>
+            <div class="logo-text">
+                <h1>GovCon Inc.</h1>
+                <p>Win Government Contracts</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar" id="sidebar">
+            <!-- Client Information -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Client Information</div>
+                <div class="form-group">
+                    <label class="form-label">Company Name</label>
+                    <input type="text" class="form-input" id="companyName" placeholder="Enter company name" oninput="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Name</label>
+                    <input type="text" class="form-input" id="contactName" placeholder="Primary contact" oninput="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="email" placeholder="email@company.com" oninput="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" id="phone" placeholder="(000) 000-0000" oninput="updatePreview()">
+                </div>
+            </div>
+
+            <!-- Select Program -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Select Program</div>
+                
+                <div class="package-card selected" data-package="fedstart" onclick="selectPackage(this)">
+                    <div class="package-header">
+                        <div>
+                            <div class="package-name">FedStart</div>
+                            <div class="package-duration">3 Month Program</div>
+                        </div>
+                    </div>
+                    <div class="package-pricing">
+                        <span class="package-price">$3,200</span>
+                        <span class="package-price-spot">or <strong>$2,700</strong> spot</span>
+                    </div>
+                    <div class="package-desc">Your compliance foundation. SAM.gov, DSBS, FEMA registrations plus SBA certifications, capabilities statement, marketing strategy with 1,000 contacts, and monthly capture support with one RFP review.</div>
+                </div>
+
+                <div class="package-card" data-package="growth" onclick="selectPackage(this)">
+                    <div class="package-badge">Popular</div>
+                    <div class="package-header">
+                        <div>
+                            <div class="package-name">Growth</div>
+                            <div class="package-duration">6 Month Program</div>
+                        </div>
+                    </div>
+                    <div class="package-pricing">
+                        <span class="package-price">$6,500</span>
+                        <span class="package-price-spot">or <strong>$5,900</strong> spot</span>
+                    </div>
+                    <div class="package-desc">Everything in FedStart plus GovCon Portal access (2,200 bid portals), 2 marketing campaigns (2,000 total contacts), and professional RFP reviews with gold team analysis.</div>
+                </div>
+
+                <div class="package-card" data-package="prime" onclick="selectPackage(this)">
+                    <div class="package-badge" style="background: var(--gold);">Premium</div>
+                    <div class="package-header">
+                        <div>
+                            <div class="package-name">Prime</div>
+                            <div class="package-duration">12 Month Program</div>
+                        </div>
+                    </div>
+                    <div class="package-pricing">
+                        <span class="package-price">$15,500</span>
+                        <span class="package-price-spot">or <strong>$12,500</strong> spot</span>
+                    </div>
+                    <div class="package-desc">Everything in Growth plus dedicated capture management, quarterly marketing campaigns, and full proposal development for up to 5 professional RFPs.</div>
+                </div>
+            </div>
+
+            <!-- Add-on Services -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Additional Services</div>
+                
+                <div class="addon-toggle" data-addon="stateLocal" data-price="500" onclick="toggleAddon(this)">
+                    <div class="addon-info">
+                        <div class="addon-name">State/Local Certification Coverage</div>
+                        <div class="addon-desc">Additional state and local certifications</div>
+                        <div class="addon-price">+$500</div>
+                    </div>
+                    <div class="toggle-switch"></div>
+                </div>
+
+                <div class="addon-toggle" data-addon="gsaSchedule" data-price="5500" onclick="toggleAddon(this)">
+                    <div class="addon-info">
+                        <div class="addon-name">GSA MAS Schedule Submission</div>
+                        <div class="addon-desc">Full GSA Schedule application & support</div>
+                        <div class="addon-price">+$5,500</div>
+                    </div>
+                    <div class="toggle-switch"></div>
+                </div>
+
+                <div class="addon-toggle" data-addon="fullRfpReview" data-price="999" onclick="toggleAddon(this)">
+                    <div class="addon-info">
+                        <div class="addon-name">Full RFP Review</div>
+                        <div class="addon-desc">Comprehensive RFP analysis and review</div>
+                        <div class="addon-price">+$999</div>
+                    </div>
+                    <div class="toggle-switch"></div>
+                </div>
+            </div>
+
+            <!-- Contract Terms -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Contract Terms</div>
+                <div class="form-group">
+                    <label class="form-label">Pricing Type</label>
+                    <select class="form-input" id="pricingType" onchange="updatePreview()">
+                        <option value="standard" selected>Standard Pricing</option>
+                        <option value="spot">Spot Purchase (Pay in Full)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Payment Terms</label>
+                    <select class="form-input" id="paymentTerms" onchange="updatePreview()">
+                        <option value="full">Full Payment Upfront</option>
+                        <option value="50-50" selected>50% Now / 50% in 2 Months</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Agreement Date</label>
+                    <input type="date" class="form-input" id="startDate" onchange="updatePreview()">
+                </div>
+            </div>
+
+            <!-- Upsell Notice -->
+            <div class="upsell-notice">
+                <h4>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                    Upgrade Anytime
+                </h4>
+                <p>Clients can upgrade to a higher program tier at any time. 100% of amounts paid will be credited toward the upgraded program.</p>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <div class="content-header">
+                <div class="content-badge">Agreement Preview</div>
+                <h1 class="content-title">Executive Marketing Agreement</h1>
+                <p class="content-subtitle">Review your customized agreement below. All terms update in real-time as you make selections.</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('agreement')">Agreement</button>
+                <button class="tab" onclick="switchTab('deliverables')">Deliverables</button>
+                <button class="tab" onclick="switchTab('timeline')">Timeline</button>
+                <button class="tab" onclick="switchTab('comparison')">Comparison</button>
+                <button class="tab" onclick="switchTab('terms')">Terms</button>
+            </div>
+
+            <div class="document-preview" id="documentPreview">
+                <div class="document-header">
+                    <div class="document-header-left">
+                        <h2>GovCon Marketing Services Agreement</h2>
+                        <p>Agreement #<span id="agreementNumber">GCI-2026-0001</span></p>
+                    </div>
+                    <div class="document-status">
+                        <div class="status-dot"></div>
+                        <span class="status-text">Draft</span>
+                    </div>
+                </div>
+
+                <div class="document-body" id="tabContent">
+                    <!-- Agreement Tab -->
+                    <div id="agreementTab">
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">1</span>
+                                Parties to the Agreement
+                            </h3>
+                            <div class="section-content">
+                                <p>This Marketing Services Agreement ("Agreement") is entered into as of <strong id="previewStartDate">[Agreement Date]</strong> by and between:</p>
+                                <p><strong>Service Provider:</strong><br>
+                                GovCon Inc.<br>
+                                Tampa, FL<br>
+                                (813) 665-0308 | Info@GovCon.Info</p>
+                                <p><strong>Client:</strong><br>
+                                <span id="previewCompany">[Company Name]</span><br>
+                                Contact: <span id="previewContact">[Contact Name]</span><br>
+                                <span id="previewEmail">[Email]</span> | <span id="previewPhone">[Phone]</span></p>
+                            </div>
+                        </div>
+
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">2</span>
+                                Scope of Services
+                            </h3>
+                            <div class="section-content">
+                                <p>GovCon Inc. agrees to provide the following government contracting business development services as outlined in the <strong id="previewPackage">FedStart</strong> program (<strong id="previewDuration">3 Month</strong> engagement), along with any selected add-on services:</p>
+                                
+                                <table class="summary-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>Description</th>
+                                            <th style="text-align: right;">Investment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="servicesList">
+                                        <tr>
+                                            <td><strong>FedStart Program</strong></td>
+                                            <td>3 Month Program</td>
+                                            <td style="text-align: right;">$3,200</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="total-row">
+                                            <td colspan="2"><strong>Total Investment</strong></td>
+                                            <td style="text-align: right;"><strong id="previewTotal">$3,200</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">3</span>
+                                Payment Terms
+                            </h3>
+                            <div class="section-content">
+                                <p>The total investment for the services described herein is <strong id="previewTotalPayment">$3,200</strong>, payable according to the following schedule:</p>
+                                <div id="paymentSchedule">
+                                    <p><strong>Payment Structure:</strong> 50% Upfront / 50% upon Completion</p>
+                                    <p>• Initial Payment: $1,600 due upon execution of this Agreement</p>
+                                    <p>• Final Payment: $1,600 due upon completion of all deliverables</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">4</span>
+                                Program Duration & Standing Meetings
+                            </h3>
+                            <div class="section-content">
+                                <p>The <strong id="previewPackage2">FedStart</strong> program is a <strong id="previewDuration2">3 month</strong> engagement. Services shall commence upon receipt of initial payment and required documentation from Client.</p>
+                                <p><strong>All programs include standing meetings.</strong> Regularly scheduled strategy sessions are included to review progress, discuss opportunities, and adjust approach as needed.</p>
+                                
+                                <div class="stats-grid">
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="statDuration">3</div>
+                                        <div class="stat-label">Month Program</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="statServices">1</div>
+                                        <div class="stat-label">Services Selected</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="statContacts">1,000</div>
+                                        <div class="stat-label">Contacts Included</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="signature-block">
+                            <div class="signature-area">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">Service Provider Signature</div>
+                                <div class="signature-name">GovCon Inc.</div>
+                                <div class="signature-label" style="margin-top: 6px;">Date: ________________</div>
+                            </div>
+                            <div class="signature-area">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">Client Signature</div>
+                                <div class="signature-name" id="signatureClient">[Client Name]</div>
+                                <div class="signature-label" style="margin-top: 6px;">Date: ________________</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deliverables Tab -->
+                    <div id="deliverablesTab" style="display: none;">
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">1</span>
+                                <span id="deliverablesPackage">FedStart</span> Program Deliverables
+                            </h3>
+                            <div class="section-content">
+                                <p>The following deliverables are included in your selected program:</p>
+                                <div class="deliverables-list" id="packageDeliverables">
+                                    <!-- Populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="document-section" id="addonDeliverablesSection" style="display: none;">
+                            <h3 class="section-title">
+                                <span class="section-number">2</span>
+                                Add-on Service Deliverables
+                            </h3>
+                            <div class="section-content">
+                                <div class="deliverables-list" id="addonDeliverables">
+                                    <!-- Populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Tab -->
+                    <div id="timelineTab" style="display: none;">
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">1</span>
+                                Project Timeline
+                            </h3>
+                            <div class="section-content">
+                                <p>Estimated project milestones for your <strong id="timelinePackage">FedStart</strong> program:</p>
+                                
+                                <div class="timeline" id="projectTimeline">
+                                    <!-- Populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Tab -->
+                    <div id="comparisonTab" style="display: none;">
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">1</span>
+                                Program Comparison
+                            </h3>
+                            <div class="section-content">
+                                <p>See what's included in each program tier. Your selected program (<strong id="comparisonSelected">FedStart</strong>) is highlighted.</p>
+                                
+                                <table class="comparison-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature</th>
+                                            <th>FedStart<br><span style="font-weight: 400; font-size: 11px;">3 Months</span></th>
+                                            <th>Growth<br><span style="font-weight: 400; font-size: 11px;">6 Months</span></th>
+                                            <th>Prime<br><span style="font-weight: 400; font-size: 11px;">12 Months</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>SAM.gov Registration</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                        </tr>
+                                        <tr>
+                                            <td>DSBS & FEMA Registration</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SBA Certification (14 Days)</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Capabilities Statement</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Marketing Strategy</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Contacts Included</td>
+                                            <td>1,000</td>
+                                            <td>2,000</td>
+                                            <td>Quarterly</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Capture Support</td>
+                                            <td>Monthly</td>
+                                            <td>Monthly</td>
+                                            <td>Dedicated Manager</td>
+                                        </tr>
+                                        <tr>
+                                            <td>RFP Review</td>
+                                            <td>1 Review</td>
+                                            <td>Gold Team Reviews</td>
+                                            <td>Gold Team Reviews</td>
+                                        </tr>
+                                        <tr>
+                                            <td>GovCon Portal Access</td>
+                                            <td class="x-icon">—</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Marketing Campaigns</td>
+                                            <td class="x-icon">—</td>
+                                            <td>2 Campaigns</td>
+                                            <td>Quarterly</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Proposal Development</td>
+                                            <td class="x-icon">—</td>
+                                            <td class="x-icon">—</td>
+                                            <td>Up to 5 RFPs</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Standing Meetings</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                            <td class="check-icon">✓</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms Tab -->
+                    <div id="termsTab" style="display: none;">
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">1</span>
+                                Service Delivery Guarantees
+                            </h3>
+                            <div class="section-content">
+                                <p><strong>SAM.gov Registration:</strong> Submitted within 5 business days of receiving all required documentation.</p>
+                                <p><strong>DSBS & FEMA Registration:</strong> Submitted within 14 business days.</p>
+                                <p><strong>SBA Certifications:</strong> All certifications you qualify for, submitted within 14 days.</p>
+                                <p>GovCon Inc. handles all compliance updates throughout the program duration, regardless of program tier selected.</p>
+                            </div>
+                        </div>
+
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">2</span>
+                                Client Responsibilities
+                            </h3>
+                            <div class="section-content">
+                                <p>Client agrees to provide timely access to all required documentation, respond to information requests within 48 business hours, and participate in scheduled standing meetings. Delays in providing required materials may extend project timelines.</p>
+                            </div>
+                        </div>
+
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">3</span>
+                                Program Upgrades
+                            </h3>
+                            <div class="section-content">
+                                <p>Client may upgrade to a higher program tier at any time during the engagement. GovCon Inc. will credit 100% of amounts already paid toward the upgraded program. Many clients start with FedStart and upgrade to Growth once they're ready to actively pursue contracts.</p>
+                            </div>
+                        </div>
+
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">4</span>
+                                Confidentiality
+                            </h3>
+                            <div class="section-content">
+                                <p>Both parties agree to maintain the confidentiality of all proprietary information, business strategies, client lists, and other sensitive materials disclosed during the course of this engagement. This obligation shall survive the termination of this Agreement.</p>
+                            </div>
+                        </div>
+
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">5</span>
+                                Intellectual Property
+                            </h3>
+                            <div class="section-content">
+                                <p>Upon full payment, all deliverables created specifically for Client (capabilities statements, proposals, marketing materials) shall become the property of Client. GovCon Inc. retains the right to use generic templates, methodologies, and processes for future clients.</p>
+                            </div>
+                        </div>
+
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">6</span>
+                                Termination
+                            </h3>
+                            <div class="section-content">
+                                <p>Either party may terminate this Agreement with 30 days written notice. In the event of termination, Client shall pay for all services rendered through the termination date. Refunds for prepaid services shall be prorated based on work completed.</p>
+                            </div>
+                        </div>
+
+                        <div class="document-section">
+                            <h3 class="section-title">
+                                <span class="section-number">7</span>
+                                Governing Law
+                            </h3>
+                            <div class="section-content">
+                                <p>This Agreement shall be governed by and construed in accordance with the laws of the State of Florida. Any disputes arising under this Agreement shall be resolved in the courts of Hillsborough County, Florida.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="saveDraft()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Save Draft
+                    </button>
+                    <button class="btn btn-secondary" onclick="printDocument()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
+                        </svg>
+                        Print
+                    </button>
+                    <button class="btn btn-outline" onclick="exportPDF()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Export PDF
+                    </button>
+                    <button class="btn btn-primary" onclick="sendForSignature()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                        Send for Signature
+                    </button>
+                </div>
+
+                <div class="document-footer">
+                    <div class="footer-legal">
+                        This agreement is generated by GovCon Inc.'s Executive Marketing Agreement Builder. All terms are customizable and subject to final review before execution.
+                    </div>
+                    <div class="footer-branding">
+                        <div class="footer-logo">G</div>
+                        <span>© 2026 GovCon Inc.</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="watermark">
+        <div class="watermark-logo">G</div>
+        <span>GovCon Agreement Builder</span>
+    </div>
+
+    <script>
+        // Package definitions based on actual service descriptions
+        const packages = {
+            fedstart: {
+                name: 'FedStart',
+                duration: '3 Month',
+                durationNum: 3,
+                price: 3200,
+                spotPrice: 2700,
+                contacts: '1,000',
+                features: [
+                    { name: 'SAM.gov Registration, DSBS, & FEMA Registration', included: true, detail: 'SAM.gov submitted within 5 business days, DSBS and FEMA within 14 business days. Compliance updated throughout the year.' },
+                    { name: 'SBA Certification (14 Days)', included: true, detail: 'All SBA certifications you qualify for, submitted within the first 14 days.' },
+                    { name: 'Capabilities Statement', included: true, detail: 'Professional capabilities statement designed by our consultants.' },
+                    { name: 'Marketing Strategy with 1,000 Contacts', included: true, detail: 'Your top agencies, contracting officers, upcoming opportunities, and how-to approach guide.' },
+                    { name: 'Capture Support (Monthly)', included: true, detail: 'Monthly capture support with standing meetings.' },
+                    { name: 'One RFP Review', included: true, detail: 'One professional RFP review included.' },
+                    { name: 'GovCon Portal Access', included: false },
+                    { name: 'Marketing Campaigns', included: false },
+                    { name: 'Proposal Development', included: false }
+                ],
+                milestones: [
+                    { phase: 'Kickoff & Document Collection', days: 'Days 1-5', desc: 'Initial consultation, gather company information, begin SAM.gov registration' },
+                    { phase: 'SAM.gov Submission', days: 'Days 5-7', desc: 'SAM.gov registration submitted with optimized entity information' },
+                    { phase: 'DSBS & FEMA Registration', days: 'Days 7-14', desc: 'Complete DSBS profile and FEMA vendor portal registration' },
+                    { phase: 'SBA Certification Submission', days: 'Days 7-14', desc: 'All qualifying SBA certifications submitted' },
+                    { phase: 'Capabilities Statement & Marketing Strategy', days: 'Weeks 3-4', desc: 'Professional capabilities statement, agency targeting, 1,000 contact list' },
+                    { phase: 'Ongoing Capture Support', days: 'Months 2-3', desc: 'Monthly standing meetings, RFP review, compliance monitoring' }
+                ]
+            },
+            growth: {
+                name: 'Growth',
+                duration: '6 Month',
+                durationNum: 6,
+                price: 6500,
+                spotPrice: 5900,
+                contacts: '2,000',
+                features: [
+                    { name: 'Everything in FedStart', included: true, detail: 'Full compliance foundation with SAM.gov, DSBS, FEMA, SBA certifications, capabilities statement, and marketing strategy.' },
+                    { name: 'GovCon Portal Access', included: true, detail: 'Access to 2,200 bid portals with federal and state contract data, contracting officers, prime contractors, award data, forecasts, and daily bid alerts.' },
+                    { name: '2 Marketing Campaigns (2,000 Contacts)', included: true, detail: 'Two special marketing campaigns, up to 1,000 contacts each. Targeting contracting officers or prime contractors.' },
+                    { name: 'RFP Reviews (Gold Team)', included: true, detail: 'Gold team reviews with occasional red team support. Professional analysis ensuring accuracy and win likelihood.' },
+                    { name: 'Standing Meetings', included: true, detail: 'Regular strategy sessions throughout the 6-month engagement.' },
+                    { name: 'Capture Management', included: false },
+                    { name: 'Quarterly Marketing Campaigns', included: false },
+                    { name: 'Proposal Development (5 RFPs)', included: false }
+                ],
+                milestones: [
+                    { phase: 'FedStart Foundation', days: 'Month 1', desc: 'Complete all FedStart deliverables: registrations, certifications, capabilities statement' },
+                    { phase: 'Portal Setup & Training', days: 'Weeks 4-5', desc: 'GovCon Portal access, bid alert configuration, opportunity identification training' },
+                    { phase: 'First Marketing Campaign', days: 'Month 2', desc: 'First campaign to 1,000 targeted contacts (COs or primes)' },
+                    { phase: 'Active Pursuit & Reviews', days: 'Months 3-4', desc: 'RFP reviews, bid analysis, opportunity qualification' },
+                    { phase: 'Second Marketing Campaign', days: 'Month 4-5', desc: 'Second campaign to additional 1,000 contacts' },
+                    { phase: 'Ongoing Support', days: 'Month 6', desc: 'Continued reviews, strategy sessions, transition planning' }
+                ]
+            },
+            prime: {
+                name: 'Prime',
+                duration: '12 Month',
+                durationNum: 12,
+                price: 15500,
+                spotPrice: 12500,
+                contacts: 'Quarterly',
+                features: [
+                    { name: 'Everything in Growth', included: true, detail: 'Full Growth package: registrations, certifications, portal access, marketing campaigns, RFP reviews.' },
+                    { name: 'Capture Management', included: true, detail: 'Dedicated pipeline management. We identify the right bids and maintain a pipeline of opportunities always available to you.' },
+                    { name: 'Quarterly Marketing Campaigns', included: true, detail: 'Quarterly marketing campaigns with reply management, tailored to unique verticals that our experts identify and you approve.' },
+                    { name: 'Proposal Development (Up to 5 RFPs)', included: true, detail: 'Creation and development of up to 5 professional RFP responses.' },
+                    { name: 'Standing Meetings', included: true, detail: 'Regular strategy sessions throughout the 12-month engagement.' },
+                    { name: 'Compliance Management', included: true, detail: 'All compliance handled and updated throughout the year.' }
+                ],
+                milestones: [
+                    { phase: 'Foundation & Setup', days: 'Month 1', desc: 'Complete FedStart deliverables, portal access, capture management setup' },
+                    { phase: 'Pipeline Development', days: 'Months 2-3', desc: 'Build qualified opportunity pipeline, first quarterly campaign' },
+                    { phase: 'First Proposals', days: 'Months 3-5', desc: 'First 1-2 proposal developments based on pipeline' },
+                    { phase: 'Mid-Year Review', days: 'Month 6', desc: 'Strategy adjustment, second quarterly campaign, continued proposals' },
+                    { phase: 'Continued Pursuit', days: 'Months 7-9', desc: 'Additional proposals (3-4 total), third quarterly campaign' },
+                    { phase: 'Year-End & Transition', days: 'Months 10-12', desc: 'Final proposals (up to 5), fourth quarterly campaign, renewal planning' }
+                ]
+            }
+        };
+
+        // Addon definitions
+        const addons = {
+            stateLocal: { name: 'State/Local Certification Coverage', price: 500, desc: 'Additional state and local certifications beyond SBA' },
+            gsaSchedule: { name: 'GSA MAS Schedule Submission', price: 5500, desc: 'Full GSA Schedule application and support' },
+            fullRfpReview: { name: 'Full RFP Review', price: 999, desc: 'Comprehensive RFP analysis and review' }
+        };
+
+        // State
+        let selectedPackage = 'fedstart';
+        let selectedAddons = [];
+        let currentTab = 'agreement';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+            
+            const agreementNum = 'GCI-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9999)).padStart(4, '0');
+            document.getElementById('agreementNumber').textContent = agreementNum;
+            
+            updatePreview();
+        });
+
+        // Package selection
+        function selectPackage(element) {
+            document.querySelectorAll('.package-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPackage = element.dataset.package;
+            updatePreview();
+        }
+
+        // Addon toggle
+        function toggleAddon(element) {
+            element.classList.toggle('active');
+            const addonKey = element.dataset.addon;
+            
+            if (element.classList.contains('active')) {
+                if (!selectedAddons.includes(addonKey)) {
+                    selectedAddons.push(addonKey);
+                }
+            } else {
+                selectedAddons = selectedAddons.filter(a => a !== addonKey);
+            }
+            
+            updatePreview();
+        }
+
+        // Tab switching
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('agreementTab').style.display = tab === 'agreement' ? 'block' : 'none';
+            document.getElementById('deliverablesTab').style.display = tab === 'deliverables' ? 'block' : 'none';
+            document.getElementById('timelineTab').style.display = tab === 'timeline' ? 'block' : 'none';
+            document.getElementById('comparisonTab').style.display = tab === 'comparison' ? 'block' : 'none';
+            document.getElementById('termsTab').style.display = tab === 'terms' ? 'block' : 'none';
+            
+            if (tab === 'deliverables') updateDeliverables();
+            if (tab === 'timeline') updateTimeline();
+            if (tab === 'comparison') updateComparison();
+        }
+
+        // Update preview
+        function updatePreview() {
+            const pkg = packages[selectedPackage];
+            const pricingType = document.getElementById('pricingType').value;
+            const paymentTerms = document.getElementById('paymentTerms').value;
+            
+            // Get price based on pricing type
+            const basePrice = pricingType === 'spot' ? pkg.spotPrice : pkg.price;
+            
+            // Calculate totals
+            let total = basePrice;
+            selectedAddons.forEach(addon => {
+                total += addons[addon].price;
+            });
+            
+            // Update client info
+            document.getElementById('previewCompany').textContent = document.getElementById('companyName').value || '[Company Name]';
+            document.getElementById('previewContact').textContent = document.getElementById('contactName').value || '[Contact Name]';
+            document.getElementById('previewEmail').textContent = document.getElementById('email').value || '[Email]';
+            document.getElementById('previewPhone').textContent = document.getElementById('phone').value || '[Phone]';
+            document.getElementById('signatureClient').textContent = document.getElementById('contactName').value || '[Client Name]';
+            
+            // Update dates
+            const startDate = document.getElementById('startDate').value;
+            const formattedDate = startDate ? new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '[Agreement Date]';
+            document.getElementById('previewStartDate').textContent = formattedDate;
+            
+            // Update package info
+            document.getElementById('previewPackage').textContent = pkg.name;
+            document.getElementById('previewPackage2').textContent = pkg.name;
+            document.getElementById('previewDuration').textContent = pkg.duration;
+            document.getElementById('previewDuration2').textContent = pkg.duration.toLowerCase();
+            document.getElementById('statDuration').textContent = pkg.durationNum;
+            document.getElementById('statServices').textContent = 1 + selectedAddons.length;
+            document.getElementById('statContacts').textContent = pkg.contacts;
+            
+            // Update services table
+            const pricingLabel = pricingType === 'spot' ? ' (Spot)' : '';
+            let servicesHTML = `
+                <tr>
+                    <td><strong>${pkg.name} Program${pricingLabel}</strong></td>
+                    <td>${pkg.duration} Program</td>
+                    <td style="text-align: right;">$${basePrice.toLocaleString()}</td>
+                </tr>
+            `;
+            
+            selectedAddons.forEach(addon => {
+                const a = addons[addon];
+                servicesHTML += `
+                    <tr>
+                        <td>${a.name}</td>
+                        <td>${a.desc}</td>
+                        <td style="text-align: right;">$${a.price.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+            
+            document.getElementById('servicesList').innerHTML = servicesHTML;
+            
+            // Update totals
+            document.getElementById('previewTotal').textContent = '$' + total.toLocaleString();
+            document.getElementById('previewTotalPayment').textContent = '$' + total.toLocaleString();
+            
+            // Update payment schedule
+            let paymentHTML = '';
+            switch(paymentTerms) {
+                case 'full':
+                    paymentHTML = `<p><strong>Payment Structure:</strong> Full Payment Upfront</p>
+                        <p>• Total Payment: $${total.toLocaleString()} due upon execution of this Agreement</p>`;
+                    break;
+                case '50-50':
+                    const half = Math.round(total / 2);
+                    paymentHTML = `<p><strong>Payment Structure:</strong> 50% Now / 50% in 2 Months</p>
+                        <p>• Initial Payment: $${half.toLocaleString()} due upon execution of this Agreement</p>
+                        <p>• Final Payment: $${(total - half).toLocaleString()} due 60 days after execution</p>`;
+                    break;
+            }
+            document.getElementById('paymentSchedule').innerHTML = paymentHTML;
+        }
+
+        // Update deliverables tab
+        function updateDeliverables() {
+            const pkg = packages[selectedPackage];
+            
+            document.getElementById('deliverablesPackage').textContent = pkg.name;
+            
+            let packageHTML = '';
+            pkg.features.forEach(f => {
+                const includedClass = f.included ? '' : 'not-included';
+                const icon = f.included ? '<polyline points="20 6 9 17 4 12"></polyline>' : '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+                packageHTML += `
+                    <div class="deliverable-item ${includedClass}">
+                        <div class="deliverable-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                ${icon}
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="deliverable-text">${f.name}</div>
+                            ${f.detail ? `<div class="deliverable-detail">${f.detail}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('packageDeliverables').innerHTML = packageHTML;
+            
+            // Addon deliverables
+            if (selectedAddons.length > 0) {
+                document.getElementById('addonDeliverablesSection').style.display = 'block';
+                let addonHTML = '';
+                selectedAddons.forEach(addon => {
+                    const a = addons[addon];
+                    addonHTML += `
+                        <div class="deliverable-item">
+                            <div class="deliverable-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="deliverable-text">${a.name}</div>
+                                <div class="deliverable-detail">${a.desc}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                document.getElementById('addonDeliverables').innerHTML = addonHTML;
+            } else {
+                document.getElementById('addonDeliverablesSection').style.display = 'none';
+            }
+        }
+
+        // Update timeline tab
+        function updateTimeline() {
+            const pkg = packages[selectedPackage];
+            
+            document.getElementById('timelinePackage').textContent = pkg.name;
+            
+            let timelineHTML = '';
+            pkg.milestones.forEach((m, i) => {
+                timelineHTML += `
+                    <div class="timeline-item">
+                        <div class="timeline-marker">${i + 1}</div>
+                        <div class="timeline-content">
+                            <h4>${m.phase}</h4>
+                            <p>${m.desc}</p>
+                            <div class="timeline-date">${m.days}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('projectTimeline').innerHTML = timelineHTML;
+        }
+
+        // Update comparison tab
+        function updateComparison() {
+            document.getElementById('comparisonSelected').textContent = packages[selectedPackage].name;
+        }
+
+        // Action functions
+        function saveDraft() {
+            const data = {
+                companyName: document.getElementById('companyName').value,
+                contactName: document.getElementById('contactName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                package: selectedPackage,
+                addons: selectedAddons,
+                pricingType: document.getElementById('pricingType').value,
+                paymentTerms: document.getElementById('paymentTerms').value,
+                startDate: document.getElementById('startDate').value
+            };
+            
+            localStorage.setItem('govcon_agreement_draft', JSON.stringify(data));
+            alert('Draft saved successfully!');
+        }
+
+        function printDocument() {
+            window.print();
+        }
+
+        function exportPDF() {
+            alert('PDF export would be triggered here. In production, this would generate a professionally formatted PDF document.');
+        }
+
+        function sendForSignature() {
+            const email = document.getElementById('email').value;
+            if (!email) {
+                alert('Please enter a client email address before sending for signature.');
+                return;
+            }
+            alert(`Agreement would be sent to ${email} for electronic signature.`);
+        }
+    </script>
+</body>
+</html>
