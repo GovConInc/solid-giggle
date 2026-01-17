@@ -374,9 +374,9 @@ export default function ServicesGSA() {
                     <AlertTriangle size={24} />
                   </div>
                   <div className="flex-1">
-                    <div className="text-xs font-bold uppercase tracking-wider text-white/80 mb-1">CRITICAL UPDATE</div>
-                    <h3 className="font-display text-lg font-bold">SIP is Dead. FCP is Here.</h3>
-                    <p className="mt-2 text-white/90 text-sm leading-relaxed">
+                    <div className="text-3xl font-bold uppercase tracking-wider text-black/80 mb-1">FY26 Critical Update</div>
+                    <h3 className="font-display text-black font-bold">SIP is Dead. FCP is Here.</h3>
+                    <p className="mt-2 text-black/90 text-sm leading-relaxed">
                       GSA retired the Schedule Input Program (SIP). If you haven't completed your 
                       FCP Baseline upload, your catalog will be removed from GSA Advantage.
                     </p>
@@ -384,7 +384,7 @@ export default function ServicesGSA() {
                       href={LINKS.booking} 
                       target="_blank" 
                       rel="noreferrer"
-                      className="mt-4 bg-white text-gov-crimson hover:bg-white/90 inline-flex"
+                      className="mt-4 bg-black text-gov-crimson hover:bg-white/90 inline-flex"
                     >
                       Secure My FCP Baseline
                     </LinkButton>
@@ -1009,7 +1009,7 @@ export default function ServicesGSA() {
                       href={LINKS.booking} 
                       target="_blank" 
                       rel="noreferrer"
-                      className="w-full bg-white text-gov-navy hover:bg-white/90 justify-center"
+                      className="w-full bg-black text-gov-navy hover:bg-white/90 justify-center"
                     >
                       Start FCP Migration
                       <ArrowRight size={18} className="ml-2" />
@@ -1146,7 +1146,7 @@ export default function ServicesGSA() {
               target="_blank" 
               rel="noreferrer" 
               size="lg"
-              className="shrink-0 bg-white text-gov-navy hover:bg-white/90 self-start lg:self-auto"
+              className="shrink-0 bg-white text-black hover:bg-white/90 self-start lg:self-auto"
             >
               Schedule Now
               <ArrowRight size={18} className="ml-2" />

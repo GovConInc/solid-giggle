@@ -391,10 +391,10 @@ export default function InformationCertification() {
         <Card className="mt-6 p-8 bg-gov-navy border-2 border-gov-crimson" hover={false}>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h3 className="font-display text-2xl font-bold text-white">
+              <h3 className="font-display text-2xl font-bold text-black">
                 We handle everything
               </h3>
-              <p className="mt-3 text-slate-300 max-w-xl">
+              <p className="mt-3 text-black max-w-xl">
                 Eligibility verification, document collection, application completion, submission, and ongoing 
                 support—all completed in 14 days. You just need to say yes.
               </p>
