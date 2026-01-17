@@ -134,11 +134,12 @@ export default function ContractDataExplorer() {
     const sbPercent = total > 0 ? (sbValue / total) * 100 : 0;
 
     // Transform Timeline
+    // Accept both *_spending and the shorter keys in case the API returns different shapes
     const timeline = (apiData.monthlySpendingBySize || []).map((item: any) => ({
       month: item.month,
-      small_business: item.small_business_spending || 0,
-      other_than_small: item.other_than_small_spending || 0,
-      total: item.total_spending || 0
+      small_business: item.small_business_spending ?? item.small_business ?? 0,
+      other_than_small: item.other_than_small_spending ?? item.other_than_small ?? 0,
+      total: item.total_spending ?? item.total ?? 0
     }));
 
     // Transform Set Asides
@@ -214,9 +215,9 @@ export default function ContractDataExplorer() {
       
       // Transform the data before setting state
       const formattedData = transformApiResponse(result.data);
+      console.log('Search success - formatted data:', formattedData);
       setData(formattedData);
       setHasSearched(true);
-      
     } catch (error: any) {
       console.error('Search failed:', error);
       setError(error.message || 'An unknown error occurred');
@@ -229,7 +230,12 @@ export default function ContractDataExplorer() {
   const getChartData = () => {
     return data.timeline.map(item => ({
       month: item.month,
-      value: chartView === "total" ? item.total : chartView === "small" ? item.small_business : item.other_than_small,
+      // Ensure numeric values (fallback to 0) so Recharts always receives valid numbers
+      value: chartView === "total"
+        ? Number(item.total || 0)
+        : chartView === "small"
+        ? Number(item.small_business || 0)
+        : Number(item.other_than_small || 0),
     }));
   };
 
