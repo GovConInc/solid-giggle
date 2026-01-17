@@ -14,7 +14,6 @@ async function getAccessToken(credentials) {
   const base64url = (obj) => btoa(JSON.stringify(obj)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
   const unsignedToken = `${base64url(header)}.${base64url(payload)}`;
 
-  // Import the private key and sign
   const pemContents = credentials.private_key
     .replace('-----BEGIN PRIVATE KEY-----', '')
     .replace('-----END PRIVATE KEY-----', '')
@@ -41,7 +40,6 @@ async function getAccessToken(credentials) {
 
   const jwt = `${unsignedToken}.${signatureBase64}`;
 
-  // Exchange JWT for access token
   const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -77,7 +75,6 @@ async function runQuery(projectId, query, accessToken) {
     throw new Error(`BigQuery error: ${JSON.stringify(data.error)}`);
   }
 
-  // Transform BigQuery response to simple array of objects
   if (!data.rows) return [];
   
   const fields = data.schema.fields.map(f => f.name);
@@ -139,7 +136,7 @@ export async function onRequestGet(context) {
 
     const whereClause = `WHERE ${conditions.join(' AND ')}`;
 
-    // Run all queries
+    // Metrics query
     const metricsQuery = `
       SELECT
         SUM(federal_action_obligation) as total_contract_value,
@@ -149,18 +146,27 @@ export async function onRequestGet(context) {
       ${whereClause}
     `;
 
+    // Monthly query - FIXED: GROUP BY must match SELECT expression
     const monthlyQuery = `
       SELECT
-        FORMAT_DATE('%b %Y', DATE_TRUNC(initial_report_date, MONTH)) as month,
-        SUM(CASE WHEN contracting_officers_determination_of_business_size_code = 'S' THEN federal_action_obligation ELSE 0 END) as small_business,
-        SUM(CASE WHEN contracting_officers_determination_of_business_size_code != 'S' THEN federal_action_obligation ELSE 0 END) as other_than_small,
-        SUM(federal_action_obligation) as total
-      FROM \`govspend1.cc.cc3\`
-      ${whereClause}
-      GROUP BY DATE_TRUNC(initial_report_date, MONTH)
-      ORDER BY DATE_TRUNC(initial_report_date, MONTH)
+        month,
+        SUM(small_business) as small_business,
+        SUM(other_than_small) as other_than_small,
+        SUM(total) as total
+      FROM (
+        SELECT
+          FORMAT_DATE('%Y-%m', initial_report_date) as month,
+          CASE WHEN contracting_officers_determination_of_business_size_code = 'S' THEN federal_action_obligation ELSE 0 END as small_business,
+          CASE WHEN contracting_officers_determination_of_business_size_code != 'S' THEN federal_action_obligation ELSE 0 END as other_than_small,
+          federal_action_obligation as total
+        FROM \`govspend1.cc.cc3\`
+        ${whereClause}
+      )
+      GROUP BY month
+      ORDER BY month
     `;
 
+    // Vendors query
     const vendorsQuery = `
       SELECT
         recipient_name as name,
@@ -174,6 +180,7 @@ export async function onRequestGet(context) {
       LIMIT 10
     `;
 
+    // Agencies query
     const agenciesQuery = `
       SELECT
         awarding_sub_agency_name as name,
@@ -186,6 +193,7 @@ export async function onRequestGet(context) {
       LIMIT 10
     `;
 
+    // Business types query
     const businessTypesQuery = `
       SELECT
         SUM(CASE WHEN c8a_program_participant = TRUE THEN federal_action_obligation ELSE 0 END) as eight_a_value,
