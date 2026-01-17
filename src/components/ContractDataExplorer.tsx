@@ -74,55 +74,57 @@ export default function ContractDataExplorer() {
   const [chartView, setChartView] = useState<"total" | "small" | "other">("total");
   const [error, setError] = useState<string | null>(null);
 
-  // Transform API response to UI format
+  // Transform API response to UI format with null safety
   const transformApiResponse = (apiData: any): AppData => {
-    if (!apiData || !apiData.metrics) {
-      throw new Error('Invalid API response structure');
+    if (!apiData) {
+      throw new Error('Invalid API response - no data');
     }
 
-    const total = apiData.metrics.total_contract_value || 0;
-    const sbValue = apiData.metrics.small_business_value || 0;
+    const metrics = apiData.metrics || {};
+    const total = Number(metrics.total_contract_value) || 0;
+    const sbValue = Number(metrics.small_business_value) || 0;
+    const sbCount = Number(metrics.small_business_count) || 0;
     const sbPercent = total > 0 ? (sbValue / total) * 100 : 0;
 
-    // Transform Timeline - use correct property names
+    // Transform Timeline with null safety
     const timeline = (apiData.monthlySpendingBySize || []).map((item: any) => ({
-      month: item.month,
-      small_business: item.small_business || 0,
-      other_than_small: item.other_than_small || 0,
-      total: item.total || 0
+      month: item.month || 'Unknown',
+      small_business: Number(item.small_business) || 0,
+      other_than_small: Number(item.other_than_small) || 0,
+      total: Number(item.total) || 0
     }));
 
-    // Transform Set Asides
+    // Transform Set Asides with null safety
     let setAsideDistribution: SetAsideItem[] = [];
     if (apiData.business_types) {
       const bt = apiData.business_types;
       setAsideDistribution = [
-        { label: "8(a) Program", value: bt.eight_a?.value || 0, color: "#2563eb" },
-        { label: "HUBZone", value: bt.hubzone?.value || 0, color: "#7c3aed" },
-        { label: "Women-Owned", value: bt.wosb?.value || 0, color: "#ec4899" },
-        { label: "Veteran-Owned", value: bt.sdvosb?.value || 0, color: "#f59e0b" },
+        { label: "8(a) Program", value: Number(bt.eight_a?.value) || 0, color: "#2563eb" },
+        { label: "HUBZone", value: Number(bt.hubzone?.value) || 0, color: "#7c3aed" },
+        { label: "Women-Owned", value: Number(bt.wosb?.value) || 0, color: "#ec4899" },
+        { label: "Veteran-Owned", value: Number(bt.sdvosb?.value) || 0, color: "#f59e0b" },
       ].filter(item => item.value > 0);
     }
 
-    // Transform Vendors
+    // Transform Vendors with null safety
     const topContractors = (apiData.topVendors || []).map((vendor: any) => ({
-      name: vendor.name,
-      value: vendor.value,
-      count: vendor.award_count,
-      is_small: (vendor.business_size || "").includes("S")
+      name: vendor.name || 'Unknown',
+      value: Number(vendor.value) || 0,
+      count: Number(vendor.award_count) || Number(vendor.count) || 0,
+      is_small: String(vendor.business_size || "").includes("S")
     }));
 
-    // Transform Agencies
+    // Transform Agencies with null safety
     const topAgencies = (apiData.topAgencies || []).map((agency: any) => ({
-      name: agency.name,
-      value: agency.value,
-      count: agency.count
+      name: agency.name || 'Unknown',
+      value: Number(agency.value) || 0,
+      count: Number(agency.count) || Number(agency.award_count) || 0
     }));
 
     return {
       metrics: {
         total_contract_value: total,
-        small_business_count: apiData.metrics.small_business_count || 0,
+        small_business_count: sbCount,
         small_business_value: sbValue,
         small_business_percentage: sbPercent
       },
@@ -183,6 +185,12 @@ export default function ContractDataExplorer() {
       month: item.month,
       value: chartView === "total" ? item.total : chartView === "small" ? item.small_business : item.other_than_small,
     }));
+  };
+
+  // Safe number formatting
+  const formatCount = (val: any) => {
+    const num = Number(val);
+    return isNaN(num) ? '0' : num.toLocaleString();
   };
 
   return (
@@ -303,7 +311,7 @@ export default function ContractDataExplorer() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Small Business Count</p>
-                  <p className="mt-2 text-2xl font-bold text-gov-navy">{data.metrics.small_business_count.toLocaleString()}</p>
+                  <p className="mt-2 text-2xl font-bold text-gov-navy">{formatCount(data.metrics.small_business_count)}</p>
                 </div>
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-green/10 text-gov-green">
                   <Users size={24} />
@@ -431,11 +439,11 @@ export default function ContractDataExplorer() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.topAgencies.map((agency) => (
-                      <tr key={agency.name} className="border-b border-slate-100 hover:bg-slate-50 transition">
-                        <td className="px-6 py-4 text-sm text-slate-700">{agency.name}</td>
+                    {data.topAgencies.map((agency, idx) => (
+                      <tr key={`${agency.name}-${idx}`} className="border-b border-slate-100 hover:bg-slate-50 transition">
+                        <td className="px-6 py-4 text-sm text-slate-700">{agency.name || 'Unknown'}</td>
                         <td className="px-6 py-4 text-sm font-semibold text-right text-gov-blue">{usd(agency.value)}</td>
-                        <td className="px-6 py-4 text-sm text-right text-slate-600">{agency.count.toLocaleString()}</td>
+                        <td className="px-6 py-4 text-sm text-right text-slate-600">{formatCount(agency.count)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -461,16 +469,16 @@ export default function ContractDataExplorer() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.topContractors.map((contractor) => (
-                      <tr key={contractor.name} className="border-b border-slate-100 hover:bg-slate-50 transition">
+                    {data.topContractors.map((contractor, idx) => (
+                      <tr key={`${contractor.name}-${idx}`} className="border-b border-slate-100 hover:bg-slate-50 transition">
                         <td className="px-6 py-4 text-sm text-slate-700">
-                          {contractor.name}
+                          {contractor.name || 'Unknown'}
                           {contractor.is_small && (
                             <span className="ml-2 inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-semibold text-green-700">Small</span>
                           )}
                         </td>
                         <td className="px-6 py-4 text-sm font-semibold text-right text-gov-blue">{usd(contractor.value)}</td>
-                        <td className="px-6 py-4 text-sm text-right text-slate-600">{contractor.count.toLocaleString()}</td>
+                        <td className="px-6 py-4 text-sm text-right text-slate-600">{formatCount(contractor.count)}</td>
                       </tr>
                     ))}
                   </tbody>
