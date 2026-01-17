@@ -29,6 +29,7 @@ export default function Navbar() {
           { label: "Finding Government Bids", to: "/information/finding-bids" },
           { label: "Writing Proposals 101", to: "/information/writing-proposals" },
           { label: "Contract Vehicles 101", to: "/information/contract-vehicles" },
+          { label: "Search Contracts", to: "/information/search-contracts" },
         ],
       },
       {
@@ -45,6 +46,7 @@ export default function Navbar() {
         label: "About Us",
         to: "/about",
         children: [
+          { label: "About Us", to: "/about" },
           { label: "Methodology", to: "/about/methodology" },
         ],
       },

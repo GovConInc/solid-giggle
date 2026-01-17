@@ -388,10 +388,10 @@ export default function About() {
           <Card className="p-8 lg:p-12" hover={false}>
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <h3 className="font-display text-2xl font-bold text-gov-navy">
-                  Ready to get started?
+                <h3 className="font-display text-2xl font-bold text-black">
+                  Get Started Today
                 </h3>
-                <p className="mt-3 text-slate-600 max-w-xl">
+                <p className="mt-3 text-black-600 max-w-xl">
                   Schedule a free consultation to discuss your business goals and explore how we can help 
                   you win your first government contract.
                 </p>
