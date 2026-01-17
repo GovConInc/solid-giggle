@@ -230,7 +230,8 @@ export default function ContractDataExplorer() {
     console.log('getChartData - timeline data:', data.timeline);
     const chartData = data.timeline.map(item => ({
       month: item.month,
-      value: chartView === "total" ? item.total_spending : chartView === "small" ? item.small_business_spending : item.other_than_small_spending,
+      // Use the actual timeline keys returned by the API / initial data
+      value: chartView === "total" ? Number(item.total || 0) : chartView === "small" ? Number(item.small_business || 0) : Number(item.other_than_small || 0),
     }));
     console.log('getChartData - formatted chart data:', chartData);
     return chartData;
