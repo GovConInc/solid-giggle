@@ -1,141 +1,152 @@
-// functions/api/contact.ts
+import { BigQuery } from '@google-cloud/bigquery';
 
-interface Env {
-  BIGQUERY_CREDENTIALS: string;
-  SPREADSHEET_ID: string;
-}
-
-export const onRequestPost: PagesFunction<Env> = async (context) => {
-  const { request, env } = context;
-
-  // 1. CORS Headers (Basic setup for Pages)
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
+export async function onRequestGet(context) {
+  const { searchParams } = new URL(context.request.url);
+  
+  const naics = searchParams.get('naics') || '';
+  const state = searchParams.get('state') || '';
+  const setAside = searchParams.get('setAside') || '';
+  const keyword = searchParams.get('keyword') || '';
+  const yearRange = parseInt(searchParams.get('yearRange') || '1');
 
   try {
-    const data: any = await request.json();
+    const credentials = JSON.parse(context.env.BIGQUERY_CREDENTIALS);
     
-    console.log('Contact form submission received:', { name: data.name, email: data.email });
+    const bigquery = new BigQuery({
+      projectId: credentials.project_id,
+      credentials: credentials,
+    });
 
-    // Basic Validation
-    if (!data.name || !data.email) {
-      console.error('Validation failed: Missing Name or Email');
-      return new Response(JSON.stringify({ error: "Missing Name or Email" }), {
-        status: 400,
-        headers: corsHeaders
-      });
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - yearRange;
+
+    // Build WHERE clauses
+    const conditions = [`action_date_fiscal_year >= ${startYear}`];
+    const params = {};
+
+    if (naics) {
+      conditions.push(`CAST(naics_code AS STRING) LIKE @naics`);
+      params.naics = `${naics}%`;
+    }
+    if (state) {
+      conditions.push(`primary_place_of_performance_state_code = @state`);
+      params.state = state.toUpperCase();
+    }
+    if (keyword) {
+      conditions.push(`LOWER(product_or_service_code_description) LIKE @keyword`);
+      params.keyword = `%${keyword.toLowerCase()}%`;
+    }
+    if (setAside) {
+      const setAsideMap = {
+        '8a': 'c8a_program_participant = TRUE',
+        'hubzone': 'historically_underutilized_business_zone_hubzone_firm = TRUE',
+        'wosb': 'woman_owned_business = TRUE',
+        'sdvosb': 'veteran_owned_business = TRUE',
+      };
+      if (setAsideMap[setAside]) {
+        conditions.push(setAsideMap[setAside]);
+      }
     }
 
-    // Check if credentials are configured
-    if (!env.BIGQUERY_CREDENTIALS || !env.SPREADSHEET_ID) {
-      console.error('Missing environment variables');
-      return new Response(JSON.stringify({ error: "Server not configured. Missing Google Sheets credentials." }), {
-        status: 500,
-        headers: corsHeaders
-      });
-    }
+    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
-    // 2. Get Access Token
-    const accessToken = await getAccessToken(env.BIGQUERY_CREDENTIALS);
-    console.log('Access token obtained successfully');
+    // Main metrics query
+    const metricsQuery = `
+      SELECT
+        SUM(federal_action_obligation) as total_contract_value,
+        COUNT(DISTINCT CASE WHEN contracting_officers_determination_of_business_size_code = 'S' THEN recipient_uei END) as small_business_count,
+        SUM(CASE WHEN contracting_officers_determination_of_business_size_code = 'S' THEN federal_action_obligation ELSE 0 END) as small_business_value
+      FROM \`govspend1.cc.cc3\`
+      ${whereClause}
+    `;
 
-    // 3. Map Data to Columns A -> G
-    // Columns: Name | Company | Email | Phone | CAGE | Interest | Best Time
-    const rowValues = [
-      data.name,
-      data.company || "N/A",
-      data.email,
-      data.phone || "N/A",
-      data.cage || "N/A",
-      data.interest || "General",
-      data.bestTime || "Anytime",
-      new Date().toISOString(), // Timestamp
-    ];
+    // Monthly spending query
+    const monthlyQuery = `
+      SELECT
+        FORMAT_DATE('%b %Y', DATE_TRUNC(initial_report_date, MONTH)) as month,
+        SUM(CASE WHEN contracting_officers_determination_of_business_size_code = 'S' THEN federal_action_obligation ELSE 0 END) as small_business,
+        SUM(CASE WHEN contracting_officers_determination_of_business_size_code != 'S' THEN federal_action_obligation ELSE 0 END) as other_than_small,
+        SUM(federal_action_obligation) as total
+      FROM \`govspend1.cc.cc3\`
+      ${whereClause}
+      GROUP BY DATE_TRUNC(initial_report_date, MONTH)
+      ORDER BY DATE_TRUNC(initial_report_date, MONTH)
+    `;
 
-    console.log('Appending to Google Sheets:', rowValues);
+    // Top vendors query
+    const vendorsQuery = `
+      SELECT
+        recipient_name as name,
+        SUM(federal_action_obligation) as value,
+        COUNT(*) as award_count,
+        MAX(contracting_officers_determination_of_business_size_code) as business_size
+      FROM \`govspend1.cc.cc3\`
+      ${whereClause}
+      GROUP BY recipient_name
+      ORDER BY value DESC
+      LIMIT 10
+    `;
 
-    // 4. Append to Sheet
-    const range = "Sheet1!A:H"; 
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${env.SPREADSHEET_ID}/values/${range}:append?valueInputOption=USER_ENTERED`;
+    // Top agencies query
+    const agenciesQuery = `
+      SELECT
+        awarding_sub_agency_name as name,
+        SUM(federal_action_obligation) as value,
+        COUNT(*) as count
+      FROM \`govspend1.cc.cc3\`
+      ${whereClause}
+      GROUP BY awarding_sub_agency_name
+      ORDER BY value DESC
+      LIMIT 10
+    `;
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${accessToken}`,
-        "Content-Type": "application/json"
+    // Business types query
+    const businessTypesQuery = `
+      SELECT
+        SUM(CASE WHEN c8a_program_participant = TRUE THEN federal_action_obligation ELSE 0 END) as eight_a_value,
+        SUM(CASE WHEN historically_underutilized_business_zone_hubzone_firm = TRUE THEN federal_action_obligation ELSE 0 END) as hubzone_value,
+        SUM(CASE WHEN woman_owned_business = TRUE THEN federal_action_obligation ELSE 0 END) as wosb_value,
+        SUM(CASE WHEN veteran_owned_business = TRUE THEN federal_action_obligation ELSE 0 END) as sdvosb_value
+      FROM \`govspend1.cc.cc3\`
+      ${whereClause}
+    `;
+
+    // Run all queries
+    const [metricsResult] = await bigquery.query({ query: metricsQuery, params });
+    const [monthlyResult] = await bigquery.query({ query: monthlyQuery, params });
+    const [vendorsResult] = await bigquery.query({ query: vendorsQuery, params });
+    const [agenciesResult] = await bigquery.query({ query: agenciesQuery, params });
+    const [businessTypesResult] = await bigquery.query({ query: businessTypesQuery, params });
+
+    const metrics = metricsResult[0] || {};
+    const businessTypes = businessTypesResult[0] || {};
+
+    const responseData = {
+      metrics: {
+        total_contract_value: metrics.total_contract_value || 0,
+        small_business_count: metrics.small_business_count || 0,
+        small_business_value: metrics.small_business_value || 0,
       },
-      body: JSON.stringify({ values: [rowValues] })
+      monthlySpendingBySize: monthlyResult || [],
+      topVendors: vendorsResult || [],
+      topAgencies: agenciesResult || [],
+      business_types: {
+        eight_a: { value: businessTypes.eight_a_value || 0 },
+        hubzone: { value: businessTypes.hubzone_value || 0 },
+        wosb: { value: businessTypes.wosb_value || 0 },
+        sdvosb: { value: businessTypes.sdvosb_value || 0 },
+      },
+    };
+
+    return new Response(JSON.stringify({ success: true, data: responseData }), {
+      headers: { 'Content-Type': 'application/json' },
     });
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('Google Sheets API error:', errText);
-      throw new Error(`Google Sheets API Error: ${errText}`);
-    }
-
-    const result = await response.json();
-    console.log('Google Sheets append successful:', result.updates);
-
-    return new Response(JSON.stringify({ 
-      success: true,
-      message: 'Thank you for your submission. We will be in touch soon!'
-    }), { 
-      headers: { ...corsHeaders, "Content-Type": "application/json" } 
-    });
-
-  } catch (error: any) {
-    console.error('Contact form error:', error);
-    return new Response(JSON.stringify({ 
-      success: false, 
-      error: error.message || 'Failed to submit contact form. Please try again later.'
-    }), { 
-      status: 500, 
-      headers: { ...corsHeaders, "Content-Type": "application/json" }
+  } catch (error) {
+    console.error('BigQuery error:', error);
+    return new Response(JSON.stringify({ success: false, error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
     });
   }
-};
-
-// Handle Preflight requests (CORS)
-export const onRequestOptions: PagesFunction = async () => {
-  return new Response(null, {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    },
-  });
-};
-
-// --- AUTH HELPER ---
-async function getAccessToken(credentialsJson: string): Promise<string> {
-  // Same helper function as before
-  const credentials = JSON.parse(credentialsJson);
-  const header = { alg: 'RS256', typ: 'JWT' };
-  const now = Math.floor(Date.now() / 1000);
-  const claimSet = {
-    iss: credentials.client_email,
-    scope: 'https://www.googleapis.com/auth/spreadsheets',
-    aud: 'https://oauth2.googleapis.com/token',
-    exp: now + 3600,
-    iat: now
-  };
-
-  const b64 = (obj: any) => btoa(JSON.stringify(obj)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  const toSign = `${b64(header)}.${b64(claimSet)}`;
-  const pem = credentials.private_key.replace(/-----BEGIN PRIVATE KEY-----|\n|-----END PRIVATE KEY-----/g, '');
-  const binaryKey = Uint8Array.from(atob(pem), c => c.charCodeAt(0));
-  const key = await crypto.subtle.importKey("pkcs8", binaryKey, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["sign"]);
-  const sig = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, new TextEncoder().encode(toSign));
-  const signature = btoa(String.fromCharCode(...new Uint8Array(sig))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-
-  const tokenResp = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${toSign}.${signature}`
-  });
-  const tokenData = await tokenResp.json();
-  return tokenData.access_token;
 }
