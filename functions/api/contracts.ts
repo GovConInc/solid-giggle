@@ -1,19 +1,17 @@
-// worker.ts
-// Cloudflare Worker replacement for contracts.php
-// Matches exact logic: govspend1.cc.cc table, 'S' code checks, and specific date math.
+// functions/api/contracts.ts
+// Cloudflare Pages Function - handles BigQuery contract data queries
 
 interface Env {
-  BIGQUERY_CREDENTIALS: string; // JSON service account key
+  BIGQUERY_CREDENTIALS: string;
 }
 
-const RATE_LIMIT = 150; // requests per day per IP
+const RATE_LIMIT = 150;
 const rateLimitCache = new Map<string, { count: number; date: string }>();
 
 export async function onRequestGet(context: { request: Request; env: Env }) {
   const { request, env } = context;
   const url = new URL(request.url);
   
-  // Validate environment
   if (!env.BIGQUERY_CREDENTIALS) {
     const headers = {
       'Content-Type': 'application/json',
@@ -29,22 +27,19 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     });
   }
   
-  // Get client IP
   const clientIP = request.headers.get('CF-Connecting-IP') || 
                    request.headers.get('X-Forwarded-For')?.split(',')[0] || 
                    'unknown';
   const todayDate = new Date();
-  const today = todayDate.toISOString().split('T')[0]; // YYYY-MM-DD
+  const today = todayDate.toISOString().split('T')[0];
   const rateLimitKey = `${clientIP}:${today}`;
   
-  // Helper to get end of day timestamp
   const getEndOfDayISO = () => {
     const eod = new Date(todayDate);
     eod.setHours(23, 59, 59, 999);
     return eod.toISOString();
   };
   
-  // Check rate limit
   const currentLimit = rateLimitCache.get(rateLimitKey);
   const requestCount = currentLimit?.date === today ? currentLimit.count : 0;
   
@@ -67,10 +62,8 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     });
   }
   
-  // Update rate limit counter
   rateLimitCache.set(rateLimitKey, { count: requestCount + 1, date: today });
   
-  // Clean up old entries (basic memory management)
   if (rateLimitCache.size > 10000) {
     const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
     for (const [key, value] of rateLimitCache.entries()) {
@@ -80,14 +73,12 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     }
   }
   
-  // Get query parameters
   const naics = url.searchParams.get('naics') || '';
   const state = url.searchParams.get('state') || '';
   const setAside = url.searchParams.get('setAside') || '';
   const keyword = url.searchParams.get('keyword') || '';
   const yearRange = parseInt(url.searchParams.get('yearRange') || '1');
 
-  // CORS headers
   const resetTime = getEndOfDayISO();
   const headers = {
     'Content-Type': 'application/json',
@@ -100,27 +91,16 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
   };
 
   try {
-    // Get access token from service account
     const accessToken = await getAccessToken(env.BIGQUERY_CREDENTIALS);
     
-    // Calculate date range
-    const today = new Date();
-    
-    // For 1-year: look back 12 months from today
-    // For 5-year: look back 60 months from today
+    const todayForCalc = new Date();
     const monthsBack = yearRange === 5 ? 60 : 12;
-    const startDate = new Date(today);
+    const startDate = new Date(todayForCalc);
     startDate.setMonth(startDate.getMonth() - monthsBack);
-    
-    const startDateStr = startDate.toISOString().split('T')[0]; // YYYY-MM-DD format
-    
-    console.log(`Date range calculation: yearRange=${yearRange}, monthsBack=${monthsBack}, startDate=${startDateStr}, today=${today.toISOString().split('T')[0]}`);
+    const startDateStr = startDate.toISOString().split('T')[0];
 
-    // Build and execute query
     const projectId = 'govspend1';
     const query = buildBigQuerySQL(naics, state, setAside, keyword, startDateStr);
-    
-    console.log(`BigQuery parameters: naics=${naics}, state=${state}, setAside=${setAside}, keyword=${keyword}, startDate=${startDateStr}`);
 
     const bigQueryUrl = `https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/queries`;
     
@@ -133,9 +113,8 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
       body: JSON.stringify({
         query: query,
         useLegacySql: false,
-        // Add timeout and max bytes to prevent runaway costs
-        timeoutMs: 30000, // 30 second timeout
-        maximumBytesBilled: '50000000000', // 50 GB max per query
+        timeoutMs: 30000,
+        maximumBytesBilled: '50000000000',
       }),
     });
 
@@ -147,19 +126,12 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
 
     const bigQueryData = await bigQueryResponse.json();
     
-    console.log(`BigQuery response - rows: ${bigQueryData.rows?.length || 0}, totalRows: ${bigQueryData.totalRows}`);
-    console.log(`BigQuery response full data:`, JSON.stringify(bigQueryData));
-    
-    // Check for query errors
     if (bigQueryData.errors) {
       console.error('BigQuery query errors:', bigQueryData.errors);
       throw new Error(`BigQuery query failed: ${bigQueryData.errors.map((e: any) => e.message).join(', ')}`);
     }
     
-    // Transform BigQuery response to match your frontend format
     const formattedData = transformBigQueryData(bigQueryData);
-    
-    console.log(`Formatted data:`, JSON.stringify(formattedData));
 
     return new Response(JSON.stringify({
       success: true,
@@ -188,7 +160,6 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
   }
 }
 
-// Handle OPTIONS request for CORS
 export async function onRequestOptions() {
   return new Response(null, {
     headers: {
@@ -199,17 +170,14 @@ export async function onRequestOptions() {
   });
 }
 
-// Get OAuth2 access token from service account
 async function getAccessToken(credentialsJson: string): Promise<string> {
   try {
     const credentials = JSON.parse(credentialsJson);
     
-    // Validate required fields
     if (!credentials.private_key || !credentials.client_email) {
       throw new Error('Missing required fields in credentials: private_key and client_email are required');
     }
     
-    // Create JWT
     const now = Math.floor(Date.now() / 1000);
     const header = {
       alg: 'RS256',
@@ -227,7 +195,6 @@ async function getAccessToken(credentialsJson: string): Promise<string> {
 
     const jwt = await signJWT(header, payload, credentials.private_key);
     
-    // Exchange JWT for access token
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -256,14 +223,12 @@ async function getAccessToken(credentialsJson: string): Promise<string> {
   }
 }
 
-// Sign JWT using Web Crypto API
 async function signJWT(header: any, payload: any, privateKey: string): Promise<string> {
   const encodedHeader = base64UrlEncode(JSON.stringify(header));
   const encodedPayload = base64UrlEncode(JSON.stringify(payload));
   const unsignedToken = `${encodedHeader}.${encodedPayload}`;
 
   try {
-    // Import private key
     const pemHeader = '-----BEGIN PRIVATE KEY-----';
     const pemFooter = '-----END PRIVATE KEY-----';
     
@@ -291,7 +256,6 @@ async function signJWT(header: any, payload: any, privateKey: string): Promise<s
       ['sign']
     );
 
-    // Sign the token
     const encoder = new TextEncoder();
     const data = encoder.encode(unsignedToken);
     const signature = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', cryptoKey, data);
@@ -336,7 +300,6 @@ function buildBigQuerySQL(
   keyword: string,
   startDate: string
 ): string {
-  // Sanitize inputs to prevent SQL injection
   const sanitizedNaics = naics.replace(/[^\d]/g, '');
   const sanitizedState = state.replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 2);
   const sanitizedKeyword = keyword.replace(/'/g, "''").slice(0, 100);
@@ -344,7 +307,7 @@ function buildBigQuerySQL(
   return `
     WITH FilteredData AS (
       SELECT *
-      FROM \`govspend1.cc.cc\`
+      FROM \`govspend1.cc.cc3\`
       WHERE 1=1
         AND ('${sanitizedState}' = '' OR UPPER(primary_place_of_performance_state_code) = '${sanitizedState}')
         AND ('${sanitizedKeyword}' = '' OR LOWER(prime_award_base_transaction_description) LIKE CONCAT('%', LOWER('${sanitizedKeyword}'), '%'))
@@ -433,7 +396,6 @@ function transformBigQueryData(bigQueryData: any) {
   const row = bigQueryData.rows?.[0];
   
   if (!row) {
-    console.log('No rows returned from BigQuery');
     return {
       metrics: {
         total_contract_value: 0,
@@ -442,72 +404,50 @@ function transformBigQueryData(bigQueryData: any) {
         small_business_percentage: 0,
       },
       monthlySpendingBySize: [],
-      business_types: {},
+      business_types: {
+        eight_a: { value: 0 },
+        hubzone: { value: 0 },
+        wosb: { value: 0 },
+        sdvosb: { value: 0 },
+      },
       topAgencies: [],
       topVendors: [],
     };
   }
   
-  // Helper to safely extract field values from BigQuery row
+  const schema = bigQueryData.schema?.fields || [];
+  
   const getFieldByName = (fieldName: string) => {
-    if (!row.f) return null;
-    
-    // Get the schema from the query result
-    const schema = bigQueryData.schema?.fields || [];
     const fieldIndex = schema.findIndex((f: any) => f.name.toLowerCase() === fieldName.toLowerCase());
-    
-    if (fieldIndex === -1) {
-      console.warn(`Field "${fieldName}" not found in schema`);
-      return null;
-    }
-    
-    const field = row.f[fieldIndex];
-    if (!field) return null;
-    
-    // Handle nested f/v structure from BigQuery
-    if (field.v !== undefined) {
-      return field.v;
-    }
-    return field;
+    if (fieldIndex === -1 || !row.f?.[fieldIndex]) return null;
+    return row.f[fieldIndex].v;
   };
 
-  console.log('BigQuery schema:', JSON.stringify(bigQueryData.schema));
-  console.log('BigQuery row:', JSON.stringify(row));
-  
   const totalValue = parseFloat(getFieldByName('total_contract_value') || 0);
   const smallBusinessValue = parseFloat(getFieldByName('small_business_value') || 0);
   const smallBusinessCount = parseInt(getFieldByName('small_business_count') || 0);
   
-  // Timeline data
+  // Timeline data - FIXED: unwrap the 'v' level
   const timelineRaw = getFieldByName('monthly_spending_by_size');
-  console.log('Raw timeline from BigQuery:', JSON.stringify(timelineRaw));
   const monthlySpendingBySize = Array.isArray(timelineRaw) 
     ? transformTimelineData(timelineRaw)
     : [];
   
-  // Set-aside data
+  // Set-aside data - FIXED: handle struct properly
   const setAsideRaw = getFieldByName('business_types');
-  console.log('Raw set-aside from BigQuery:', JSON.stringify(setAsideRaw));
-  const business_types = transformSetAsideData(setAsideRaw || {});
+  const business_types = transformSetAsideData(setAsideRaw);
   
-  // Top agencies
+  // Top agencies - FIXED: unwrap the 'v' level
   const agenciesRaw = getFieldByName('top_agencies');
-  console.log('Raw agencies from BigQuery:', JSON.stringify(agenciesRaw));
   const topAgencies = Array.isArray(agenciesRaw) 
     ? transformTopList(agenciesRaw)
     : [];
   
-  // Top vendors
+  // Top vendors - FIXED: unwrap the 'v' level
   const vendorsRaw = getFieldByName('top_vendors');
-  console.log('Raw vendors from BigQuery:', JSON.stringify(vendorsRaw));
   const topVendors = Array.isArray(vendorsRaw) 
     ? transformTopList(vendorsRaw, true)
     : [];
-
-  console.log('Transformed timeline:', JSON.stringify(monthlySpendingBySize));
-  console.log('Transformed business_types:', JSON.stringify(business_types));
-  console.log('Transformed topAgencies:', JSON.stringify(topAgencies));
-  console.log('Transformed topVendors:', JSON.stringify(topVendors));
 
   return {
     metrics: {
@@ -523,75 +463,83 @@ function transformBigQueryData(bigQueryData: any) {
   };
 }
 
+// FIXED: BigQuery array elements come as { v: { f: [...] } }
 function transformTimelineData(data: any[]): any[] {
   return (data || []).map((item: any) => {
-    // Handle both direct object and nested f/v structure
-    const month = item.f?.[0]?.v ?? item.f?.[0] ?? item.month ?? '';
-    const smallBusiness = parseFloat(item.f?.[1]?.v ?? item.f?.[1] ?? item.small_business_spending ?? 0);
-    const otherThanSmall = parseFloat(item.f?.[2]?.v ?? item.f?.[2] ?? item.other_than_small_spending ?? 0);
-    const total = parseFloat(item.f?.[3]?.v ?? item.f?.[3] ?? item.total_spending ?? 0);
+    // Unwrap: item is { v: { f: [...] } } OR { f: [...] }
+    const fields = item.v?.f || item.f;
+    
+    if (!fields || !Array.isArray(fields)) {
+      return null;
+    }
+    
+    // Fields order from SQL: month, small_business_spending, other_than_small_spending, total_spending, sort_date
+    const month = fields[0]?.v ?? '';
+    const smallBusiness = parseFloat(fields[1]?.v ?? 0);
+    const otherThanSmall = parseFloat(fields[2]?.v ?? 0);
+    const total = parseFloat(fields[3]?.v ?? 0);
     
     return {
-      month: month?.toString() || '',
+      month: String(month || ''),
       small_business_spending: smallBusiness,
       other_than_small_spending: otherThanSmall,
       total_spending: total,
     };
-  }).filter(item => item.month && item.month.length > 0);
+  }).filter((item): item is NonNullable<typeof item> => item !== null && item.month.length > 0);
 }
 
+// FIXED: BigQuery STRUCT comes as { v: { f: [...] } } or { f: [...] }
 function transformSetAsideData(data: any): any {
-  console.log('transformSetAsideData input:', JSON.stringify(data));
-  
-  if (!data) return {
+  const defaultResult = {
     eight_a: { value: 0 },
     hubzone: { value: 0 },
     wosb: { value: 0 },
     sdvosb: { value: 0 },
   };
   
-  // If it's an array from BigQuery's nested structure, get first element
-  const setAsideObj = Array.isArray(data) ? data[0] : data;
+  if (!data) return defaultResult;
   
-  // Try to extract values from both f/v structure and direct properties
-  const getValue = (key: string) => {
-    if (setAsideObj[key] !== undefined) {
-      const val = setAsideObj[key];
-      // Handle f/v structure
-      if (val && typeof val === 'object' && val.v !== undefined) {
-        return parseFloat(val.v || 0);
-      }
-      return parseFloat(val || 0);
-    }
-    return 0;
+  // Unwrap: data is { v: { f: [...] } } OR { f: [...] }
+  const fields = data.v?.f || data.f;
+  
+  if (!fields || !Array.isArray(fields)) {
+    return defaultResult;
+  }
+  
+  // Fields order from SQL:
+  // [0] eight_a_count, [1] eight_a_value, 
+  // [2] hubzone_count, [3] hubzone_value,
+  // [4] wosb_count, [5] wosb_value, 
+  // [6] sdvosb_count, [7] sdvosb_value
+  return {
+    eight_a: { value: parseFloat(fields[1]?.v ?? 0) },
+    hubzone: { value: parseFloat(fields[3]?.v ?? 0) },
+    wosb: { value: parseFloat(fields[5]?.v ?? 0) },
+    sdvosb: { value: parseFloat(fields[7]?.v ?? 0) },
   };
-  
-  const result = {
-    eight_a: { value: getValue('eight_a_value') },
-    hubzone: { value: getValue('hubzone_value') },
-    wosb: { value: getValue('wosb_value') },
-    sdvosb: { value: getValue('sdvosb_value') },
-  };
-  
-  console.log('transformSetAsideData output:', JSON.stringify(result));
-  return result;
 }
 
+// FIXED: BigQuery array elements come as { v: { f: [...] } }
 function transformTopList(data: any[], isContractors = false): any[] {
   return (data || []).map((item: any) => {
-    // Handle both direct object and nested f/v structure
-    const name = item.f?.[0]?.v ?? item.f?.[0] ?? item.name ?? '';
-    const awardCount = parseInt(item.f?.[1]?.v ?? item.f?.[1] ?? item.award_count ?? 0);
-    const value = parseFloat(item.f?.[2]?.v ?? item.f?.[2] ?? item.value ?? 0);
-    const businessSize = item.f?.[3]?.v ?? item.f?.[3] ?? item.business_size ?? '';
+    // Unwrap: item is { v: { f: [...] } } OR { f: [...] }
+    const fields = item.v?.f || item.f;
+    
+    if (!fields || !Array.isArray(fields)) {
+      return null;
+    }
+    
+    // Fields order from SQL: name, award_count, value, [business_size for vendors]
+    const name = fields[0]?.v ?? '';
+    const awardCount = parseInt(fields[1]?.v ?? 0);
+    const value = parseFloat(fields[2]?.v ?? 0);
+    const businessSize = fields[3]?.v ?? '';
     
     return {
-      name: name?.toString() || '',
+      name: String(name || ''),
       award_count: awardCount,
       value: value,
-      ...(isContractors && {
-        business_size: (businessSize?.toString() || '')
-      })
+      ...(isContractors && { business_size: String(businessSize || '') })
     };
-  }).filter(item => item.name && item.name.length > 0);
+  }).filter((item): item is NonNullable<typeof item> => item !== null && item.name.length > 0);
 }
