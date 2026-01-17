@@ -24,22 +24,22 @@ export default function Navbar() {
         label: "Information",
         to: "/information",
         children: [
-          { label: "SAM / DSBS / FEMA", to: "/information/sam-dsbs-fema" },
+          { label: "SAM, DSBS & FEMA Guide", to: "/information/sam-dsbs-fema" },
           { label: "Certification Data", to: "/information/certification-data" },
           { label: "Finding Government Bids", to: "/information/finding-bids" },
           { label: "Writing Proposals 101", to: "/information/writing-proposals" },
           { label: "Contract Vehicles 101", to: "/information/contract-vehicles" },
-          { label: "Search Contracts", to: "/information/search-contracts" },
+          { label: "Contract Award History", to: "/information/search-contracts" },
         ],
       },
       {
         label: "Services",
         to: "/services",
         children: [
-          { label: "GSA Contractors", to: "/services/gsa-contractors" },
-          { label: "Programs", to: "/services/programs" },
-          { label: "Compliance & Capture", to: "/services/compliance-capture" },
-          { label: "Proposal Writing", to: "/services/proposal-writing" },
+          { label: "GSA Schedule Services", to: "/services/gsa-contractors" },
+          { label: "Federal Contractor Programs", to: "/services/programs" },
+          { label: "Certifications & Compliance", to: "/services/compliance-capture" },
+          { label: "Proposal Writing That Wins", to: "/services/proposal-writing" },
         ],
       },
       {
@@ -47,7 +47,7 @@ export default function Navbar() {
         to: "/about",
         children: [
           { label: "About Us", to: "/about" },
-          { label: "Methodology", to: "/about/methodology" },
+          { label: "Our Methodology", to: "/about/methodology" },
         ],
       },
       { label: "Contact Us", to: "/contact" },
