@@ -227,13 +227,10 @@ export default function ContractDataExplorer() {
   };
 
   const getChartData = () => {
-    console.log('getChartData - timeline data:', data.timeline);
-    const chartData = data.timeline.map(item => ({
+    return data.timeline.map(item => ({
       month: item.month,
-      value: chartView === "total" ? item.total_spending : chartView === "small" ? item.small_business_spending : item.other_than_small_spending,
+      value: chartView === "total" ? item.total : chartView === "small" ? item.small_business : item.other_than_small,
     }));
-    console.log('getChartData - formatted chart data:', chartData);
-    return chartData;
   };
 
   return (
