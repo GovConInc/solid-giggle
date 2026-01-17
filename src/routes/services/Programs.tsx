@@ -1,136 +1,216 @@
-// Replace the entire contents of src/routes/services/Programs.tsx with this:
-
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { 
-  ArrowRight, CheckCircle, FileText, Clock, 
-  Target, Rocket, Building2, Send, Printer, Download, Save,
-  Calendar, Phone, Mail, Users, BarChart3, Crown
+  ArrowRight, CheckCircle, Clock, Target, Rocket, Send, 
+  Calendar, Phone, Mail, BarChart3, Crown, X,
+  Zap, Shield, Star, TrendingUp, Check, FileText,
+  Users, Database, MessageSquare, ClipboardCheck, Award,
+  Building2, Briefcase, Globe, Search, PieChart
 } from "lucide-react";
 import { cn } from "../../components/cn";
+import { LinkButton } from "../../components/Button";
+import { LINKS } from "../../lib/constants";
 
 // ============================================
 // PROGRAM DATA
 // ============================================
 
-const packages = {
-  fedstart: {
+const programs = [
+  {
+    id: 'fedstart',
     name: 'FedStart',
-    duration: '3 Month',
+    tagline: 'Your Compliance Foundation',
+    duration: '3 Months',
     durationNum: 3,
     price: 3200,
     spotPrice: 2700,
-    contacts: '1,000',
     icon: Rocket,
-    color: 'gov-blue',
-    description: 'Your compliance foundation. SAM.gov, DSBS, FEMA registrations plus SBA certifications, capabilities statement, marketing strategy with 1,000 contacts, and monthly capture support with one RFP review.',
-    features: [
-      { name: 'SAM.gov Registration, DSBS, & FEMA Registration', included: true, detail: 'SAM.gov submitted within 5 business days, DSBS and FEMA within 14 business days. Compliance updated throughout the year.' },
-      { name: 'SBA Certification (14 Days)', included: true, detail: 'All SBA certifications you qualify for, submitted within the first 14 days.' },
-      { name: 'Capabilities Statement', included: true, detail: 'Professional capabilities statement designed by our consultants.' },
-      { name: 'Marketing Strategy with 1,000 Contacts', included: true, detail: 'Your top agencies, contracting officers, upcoming opportunities, and how-to approach guide.' },
-      { name: 'Capture Support (Monthly)', included: true, detail: 'Monthly capture support with standing meetings.' },
-      { name: 'One RFP Review', included: true, detail: 'One professional RFP review included.' },
-      { name: 'GovCon Portal Access', included: false },
-      { name: 'Marketing Campaigns', included: false },
-      { name: 'Proposal Development', included: false }
+    gradient: 'from-blue-600 to-indigo-700',
+    bgLight: 'bg-blue-50',
+    textColor: 'text-blue-600',
+    borderColor: 'border-blue-200',
+    idealFor: 'New contractors entering the federal market',
+    deliverables: [
+      {
+        icon: Globe,
+        title: 'SAM.gov Registration',
+        desc: 'Complete registration submitted within 5 business days with optimized entity profile',
+      },
+      {
+        icon: Database,
+        title: 'DSBS & FEMA Registration',
+        desc: 'SBA Dynamic Small Business Search and FEMA Vendor Portal setup within 14 days',
+      },
+      {
+        icon: Award,
+        title: 'SBA Certifications',
+        desc: 'All certifications you qualify for, submitted within 14 days of engagement start',
+      },
+      {
+        icon: FileText,
+        title: 'Capabilities Statement',
+        desc: 'Professional capabilities statement designed by our consultants',
+      },
+      {
+        icon: Target,
+        title: 'Marketing Strategy + 1,000 Contacts',
+        desc: 'Top agencies, contracting officers, upcoming opportunities, and approach guide',
+      },
+      {
+        icon: MessageSquare,
+        title: 'Monthly Capture Support',
+        desc: 'Standing meetings to review progress and strategy',
+      },
+      {
+        icon: ClipboardCheck,
+        title: 'One RFP Review',
+        desc: 'Professional review of your first proposal submission',
+      },
     ],
-    milestones: [
-      { phase: 'Kickoff & Document Collection', days: 'Days 1-5', desc: 'Initial consultation, gather company information, begin SAM.gov registration' },
-      { phase: 'SAM.gov Submission', days: 'Days 5-7', desc: 'SAM.gov registration submitted with optimized entity information' },
-      { phase: 'DSBS & FEMA Registration', days: 'Days 7-14', desc: 'Complete DSBS profile and FEMA vendor portal registration' },
-      { phase: 'SBA Certification Submission', days: 'Days 7-14', desc: 'All qualifying SBA certifications submitted' },
-      { phase: 'Capabilities Statement & Marketing Strategy', days: 'Weeks 3-4', desc: 'Professional capabilities statement, agency targeting, 1,000 contact list' },
-      { phase: 'Ongoing Capture Support', days: 'Months 2-3', desc: 'Monthly standing meetings, RFP review, compliance monitoring' }
-    ]
+    upgradeNote: 'Upgrade to Growth anytime with full credit applied',
   },
-  growth: {
+  {
+    id: 'growth',
     name: 'Growth',
-    duration: '6 Month',
+    tagline: 'Scale Your Pipeline',
+    duration: '6 Months',
     durationNum: 6,
     price: 6500,
     spotPrice: 5900,
-    contacts: '2,000',
     icon: BarChart3,
-    color: 'gov-crimson',
-    description: 'Everything in FedStart plus GovCon Portal access (2,200 bid portals), 2 marketing campaigns (2,000 total contacts), and professional RFP reviews with gold team analysis.',
-    features: [
-      { name: 'Everything in FedStart', included: true, detail: 'Full compliance foundation with SAM.gov, DSBS, FEMA, SBA certifications, capabilities statement, and marketing strategy.' },
-      { name: 'GovCon Portal Access', included: true, detail: 'Access to 2,200 bid portals with federal and state contract data, contracting officers, prime contractors, award data, forecasts, and daily bid alerts.' },
-      { name: '2 Marketing Campaigns (2,000 Contacts)', included: true, detail: 'Two special marketing campaigns, up to 1,000 contacts each. Targeting contracting officers or prime contractors.' },
-      { name: 'RFP Reviews (Gold Team)', included: true, detail: 'Gold team reviews with occasional red team support. Professional analysis ensuring accuracy and win likelihood.' },
-      { name: 'Standing Meetings', included: true, detail: 'Regular strategy sessions throughout the 6-month engagement.' },
-      { name: 'Capture Management', included: false },
-      { name: 'Quarterly Marketing Campaigns', included: false },
-      { name: 'Proposal Development (5 RFPs)', included: false }
+    gradient: 'from-rose-600 to-red-700',
+    bgLight: 'bg-rose-50',
+    textColor: 'text-rose-600',
+    borderColor: 'border-rose-200',
+    popular: true,
+    idealFor: 'Contractors ready to actively pursue opportunities',
+    deliverables: [
+      {
+        icon: CheckCircle,
+        title: 'Everything in FedStart',
+        desc: 'Complete compliance foundation including all registrations and certifications',
+      },
+      {
+        icon: Search,
+        title: 'GovCon Portal Access',
+        desc: '2,200 bid portals with federal and state contract data, award history, and forecasts',
+      },
+      {
+        icon: Zap,
+        title: 'Daily Bid Alerts',
+        desc: 'Automated opportunity notifications matched to your capabilities',
+      },
+      {
+        icon: Mail,
+        title: '2 Marketing Campaigns',
+        desc: '2,000 total contacts targeting contracting officers and prime contractors',
+      },
+      {
+        icon: Users,
+        title: 'Gold Team RFP Reviews',
+        desc: 'Professional evaluation with red team support ensuring accuracy and win likelihood',
+      },
+      {
+        icon: Building2,
+        title: 'Prime Contractor Targeting',
+        desc: 'Identify and connect with primes seeking small business partners',
+      },
+      {
+        icon: Calendar,
+        title: 'Regular Strategy Sessions',
+        desc: 'Standing meetings throughout the 6-month engagement',
+      },
     ],
-    milestones: [
-      { phase: 'FedStart Foundation', days: 'Month 1', desc: 'Complete all FedStart deliverables: registrations, certifications, capabilities statement' },
-      { phase: 'Portal Setup & Training', days: 'Weeks 4-5', desc: 'GovCon Portal access, bid alert configuration, opportunity identification training' },
-      { phase: 'First Marketing Campaign', days: 'Month 2', desc: 'First campaign to 1,000 targeted contacts (COs or primes)' },
-      { phase: 'Active Pursuit & Reviews', days: 'Months 3-4', desc: 'RFP reviews, bid analysis, opportunity qualification' },
-      { phase: 'Second Marketing Campaign', days: 'Month 4-5', desc: 'Second campaign to additional 1,000 contacts' },
-      { phase: 'Ongoing Support', days: 'Month 6', desc: 'Continued reviews, strategy sessions, transition planning' }
-    ]
+    upgradeNote: 'Upgrade to Prime anytime with full credit applied',
   },
-  prime: {
+  {
+    id: 'prime',
     name: 'Prime',
-    duration: '12 Month',
+    tagline: 'Full-Service Partnership',
+    duration: '12 Months',
     durationNum: 12,
     price: 15500,
     spotPrice: 12500,
-    contacts: 'Quarterly',
     icon: Crown,
-    color: 'gov-gold',
-    description: 'Everything in Growth plus dedicated capture management, quarterly marketing campaigns, and full proposal development for up to 5 professional RFPs.',
-    features: [
-      { name: 'Everything in Growth', included: true, detail: 'Full Growth package: registrations, certifications, portal access, marketing campaigns, RFP reviews.' },
-      { name: 'Capture Management', included: true, detail: 'Dedicated pipeline management. We identify the right bids and maintain a pipeline of opportunities always available to you.' },
-      { name: 'Quarterly Marketing Campaigns', included: true, detail: 'Quarterly marketing campaigns with reply management, tailored to unique verticals that our experts identify and you approve.' },
-      { name: 'Proposal Development (Up to 5 RFPs)', included: true, detail: 'Creation and development of up to 5 professional RFP responses.' },
-      { name: 'Standing Meetings', included: true, detail: 'Regular strategy sessions throughout the 12-month engagement.' },
-      { name: 'Compliance Management', included: true, detail: 'All compliance handled and updated throughout the year.' }
+    gradient: 'from-amber-500 to-orange-600',
+    bgLight: 'bg-amber-50',
+    textColor: 'text-amber-600',
+    borderColor: 'border-amber-200',
+    idealFor: 'Serious contractors ready to win multiple contracts',
+    deliverables: [
+      {
+        icon: CheckCircle,
+        title: 'Everything in Growth',
+        desc: 'Full Growth package including portal access, campaigns, and RFP reviews',
+      },
+      {
+        icon: PieChart,
+        title: 'Dedicated Capture Management',
+        desc: 'We build and maintain your opportunity pipeline, identifying the right bids for you',
+      },
+      {
+        icon: Mail,
+        title: 'Quarterly Marketing Campaigns',
+        desc: 'Ongoing outreach with reply management to verticals our experts identify',
+      },
+      {
+        icon: FileText,
+        title: 'Up to 5 Full RFP Proposals',
+        desc: 'Complete proposal development from outline to submission-ready package',
+      },
+      {
+        icon: Shield,
+        title: 'Year-Round Compliance',
+        desc: 'All registrations and certifications managed and updated throughout the year',
+      },
+      {
+        icon: Star,
+        title: 'Priority Support',
+        desc: 'Direct access to senior consultants with same-day response',
+      },
+      {
+        icon: TrendingUp,
+        title: 'Quarterly Business Reviews',
+        desc: 'Strategic planning sessions to adjust approach and maximize wins',
+      },
     ],
-    milestones: [
-      { phase: 'Foundation & Setup', days: 'Month 1', desc: 'Complete FedStart deliverables, portal access, capture management setup' },
-      { phase: 'Pipeline Development', days: 'Months 2-3', desc: 'Build qualified opportunity pipeline, first quarterly campaign' },
-      { phase: 'First Proposals', days: 'Months 3-5', desc: 'First 1-2 proposal developments based on pipeline' },
-      { phase: 'Mid-Year Review', days: 'Month 6', desc: 'Strategy adjustment, second quarterly campaign, continued proposals' },
-      { phase: 'Continued Pursuit', days: 'Months 7-9', desc: 'Additional proposals (3-4 total), third quarterly campaign' },
-      { phase: 'Year-End & Transition', days: 'Months 10-12', desc: 'Final proposals (up to 5), fourth quarterly campaign, renewal planning' }
-    ]
+    upgradeNote: null,
   }
-};
-
-const addons = {
-  stateLocal: { name: 'State/Local Certification Coverage', price: 500, desc: 'Additional state and local certifications beyond SBA' },
-  gsaSchedule: { name: 'GSA MAS Schedule Submission', price: 5500, desc: 'Full GSA Schedule application and support' },
-  fullRfpReview: { name: 'Full RFP Review', price: 999, desc: 'Comprehensive RFP analysis and review' }
-};
-
-const comparisonData = [
-  { feature: 'SAM.gov Registration', fedstart: true, growth: true, prime: true },
-  { feature: 'DSBS & FEMA Registration', fedstart: true, growth: true, prime: true },
-  { feature: 'SBA Certification (14 Days)', fedstart: true, growth: true, prime: true },
-  { feature: 'Capabilities Statement', fedstart: true, growth: true, prime: true },
-  { feature: 'Marketing Strategy', fedstart: true, growth: true, prime: true },
-  { feature: 'Contacts Included', fedstart: '1,000', growth: '2,000', prime: 'Quarterly' },
-  { feature: 'Capture Support', fedstart: 'Monthly', growth: 'Monthly', prime: 'Dedicated Manager' },
-  { feature: 'RFP Review', fedstart: '1 Review', growth: 'Gold Team Reviews', prime: 'Gold Team Reviews' },
-  { feature: 'GovCon Portal Access', fedstart: false, growth: true, prime: true },
-  { feature: 'Marketing Campaigns', fedstart: false, growth: '2 Campaigns', prime: 'Quarterly' },
-  { feature: 'Proposal Development', fedstart: false, growth: false, prime: 'Up to 5 RFPs' },
-  { feature: 'Standing Meetings', fedstart: true, growth: true, prime: true },
 ];
 
-type PackageKey = keyof typeof packages;
-type AddonKey = keyof typeof addons;
-type TabKey = 'agreement' | 'deliverables' | 'timeline' | 'comparison' | 'terms';
+const addons = [
+  { id: 'stateLocal', name: 'State/Local Certifications', price: 500, desc: 'Expand beyond federal to state and local markets' },
+  { id: 'gsaSchedule', name: 'GSA Schedule Submission', price: 5500, desc: 'Full GSA MAS application and support' },
+  { id: 'fullRfpReview', name: 'Full RFP Review', price: 999, desc: 'Comprehensive proposal analysis and recommendations' },
+];
+
+const comparisonFeatures = [
+  { name: 'SAM.gov + DSBS + FEMA', fedstart: true, growth: true, prime: true },
+  { name: 'SBA Certifications (14-Day Submission)', fedstart: true, growth: true, prime: true },
+  { name: 'Professional Capabilities Statement', fedstart: true, growth: true, prime: true },
+  { name: 'Marketing Contacts', fedstart: '1,000', growth: '2,000', prime: 'Quarterly Campaigns' },
+  { name: 'Capture Support', fedstart: 'Monthly', growth: 'Monthly', prime: 'Dedicated Manager' },
+  { name: 'RFP Support', fedstart: '1 Review', growth: 'Gold Team Reviews', prime: '5 Full Proposals' },
+  { name: 'GovCon Portal (2,200 Bid Sources)', fedstart: false, growth: true, prime: true },
+  { name: 'Marketing Campaigns', fedstart: false, growth: '2 Campaigns', prime: 'Quarterly' },
+  { name: 'Daily Bid Alerts', fedstart: false, growth: true, prime: true },
+  { name: 'Compliance Updates', fedstart: '3 Months', growth: '6 Months', prime: 'All Year' },
+  { name: 'Standing Meetings', fedstart: true, growth: true, prime: true },
+];
+
+const stats = [
+  { value: '200+', label: 'Contractors Launched', icon: Rocket },
+  { value: '87%', label: 'Client Win Rate', icon: Target },
+  { value: '$109M+', label: 'Awards Facilitated', icon: TrendingUp },
+  { value: '14 Days', label: 'Cert Turnaround', icon: Clock },
+];
+
+type ProgramId = 'fedstart' | 'growth' | 'prime';
 
 export default function Programs() {
-  const [selectedPackage, setSelectedPackage] = useState<PackageKey>('fedstart');
-  const [selectedAddons, setSelectedAddons] = useState<AddonKey[]>([]);
-  const [activeTab, setActiveTab] = useState<TabKey>('agreement');
+  const [selectedProgram, setSelectedProgram] = useState<ProgramId | null>(null);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const [pricingType, setPricingType] = useState<'standard' | 'spot'>('standard');
   const [paymentTerms, setPaymentTerms] = useState<'full' | '50-50'>('50-50');
   const [clientInfo, setClientInfo] = useState({
@@ -138,685 +218,500 @@ export default function Programs() {
     contactName: '',
     email: '',
     phone: '',
-    startDate: new Date().toISOString().split('T')[0]
   });
 
-  const pkg = packages[selectedPackage];
-  const basePrice = pricingType === 'spot' ? pkg.spotPrice : pkg.price;
-  const addonsTotal = selectedAddons.reduce((sum, key) => sum + addons[key].price, 0);
-  const total = basePrice + addonsTotal;
+  const comparisonRef = useRef<HTMLDivElement>(null);
 
-  const toggleAddon = (key: AddonKey) => {
+  const scrollToComparison = () => {
+    comparisonRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const openCheckout = (programId: ProgramId) => {
+    setSelectedProgram(programId);
+    setShowCheckout(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeCheckout = () => {
+    setShowCheckout(false);
+    document.body.style.overflow = '';
+  };
+
+  const toggleAddon = (id: string) => {
     setSelectedAddons(prev => 
-      prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]
+      prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]
     );
   };
 
-  const formatCurrency = (amount: number) => `$${amount.toLocaleString()}`;
+  const getTotal = () => {
+    if (!selectedProgram) return 0;
+    const program = programs.find(p => p.id === selectedProgram)!;
+    const base = pricingType === 'spot' ? program.spotPrice : program.price;
+    const addonTotal = selectedAddons.reduce((sum, id) => {
+      const addon = addons.find(a => a.id === id);
+      return sum + (addon?.price || 0);
+    }, 0);
+    return base + addonTotal;
+  };
 
-  const tabs: { key: TabKey; label: string }[] = [
-    { key: 'agreement', label: 'Agreement' },
-    { key: 'deliverables', label: 'Deliverables' },
-    { key: 'timeline', label: 'Timeline' },
-    { key: 'comparison', label: 'Comparison' },
-    { key: 'terms', label: 'Terms' },
-  ];
+  const getSavings = () => {
+    if (!selectedProgram || pricingType !== 'spot') return 0;
+    const program = programs.find(p => p.id === selectedProgram)!;
+    return program.price - program.spotPrice;
+  };
 
   return (
     <>
       <Helmet>
-        <title>Executive Marketing Agreement — GovCon Inc.</title>
-        <meta name="description" content="Build your customized government contracting marketing agreement. Choose from FedStart, Growth, or Prime programs." />
+        <title>Federal Contractor Programs — GovCon Inc.</title>
+        <meta name="description" content="Launch, grow, and dominate federal contracting with our proven programs. See exactly what you get with FedStart, Growth, and Prime packages." />
       </Helmet>
 
-      <div className="min-h-screen bg-slate-50">
-        {/* Header */}
-        <div className="bg-gov-navy text-white py-6 px-6">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold">Executive Marketing Agreement Builder</h1>
-              <p className="text-slate-400 text-sm mt-1">Customize your government contracting program</p>
-            </div>
-            <div className="flex items-center gap-4 text-sm text-slate-300">
-              <a href="tel:8136650308" className="flex items-center gap-2 hover:text-white">
-                <Phone size={14} /> (813) 665-0308
-              </a>
-              <a href="mailto:Info@GovCon.Info" className="flex items-center gap-2 hover:text-white">
-                <Mail size={14} /> Info@GovCon.Info
-              </a>
-            </div>
-          </div>
+      {/* HERO - Clean, focused on value prop */}
+      <section className="relative py-20 lg:py-28 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-rose-500/20 rounded-full blur-[120px]" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="grid lg:grid-cols-[400px_1fr] gap-8">
-            {/* Sidebar */}
-            <div className="space-y-6">
-              {/* Client Information */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gov-crimson mb-4 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-gov-gold rounded-full" />
-                  Client Information
-                </h3>
-                <div className="space-y-4">
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-sm text-white/80 mb-6">
+              <Briefcase size={16} className="text-amber-400" />
+              Federal Contractor Programs
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+              Everything You Need to
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+                Win Federal Contracts
+              </span>
+            </h1>
+
+            <p className="mt-6 text-xl text-slate-300 leading-relaxed">
+              Three programs. Clear deliverables. Proven results. See exactly what you get at each level.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <button
+                onClick={scrollToComparison}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-900 font-semibold rounded-lg hover:bg-slate-100 transition"
+              >
+                Compare Programs
+                <ArrowRight size={18} />
+              </button>
+              <LinkButton 
+                href={LINKS.booking} 
+                target="_blank"
+                className="px-6 py-3 bg-transparent border border-white/30 text-white hover:bg-white/10"
+              >
+                Free Consultation
+              </LinkButton>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {stats.map((stat) => {
+              const Icon = stat.icon;
+              return (
+                <div key={stat.label} className="p-5 rounded-xl bg-white/5 border border-white/10">
+                  <Icon size={20} className="text-amber-400 mb-2" />
+                  <div className="text-2xl font-bold text-white">{stat.value}</div>
+                  <div className="text-sm text-slate-400">{stat.label}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* DELIVERABLES SECTION - The Main Focus */}
+      {programs.map((program, programIndex) => {
+        const Icon = program.icon;
+        const isEven = programIndex % 2 === 0;
+        
+        return (
+          <section 
+            key={program.id}
+            className={cn(
+              "py-20 lg:py-28",
+              isEven ? "bg-white" : "bg-slate-50"
+            )}
+          >
+            <div className="max-w-7xl mx-auto px-6">
+              {/* Program Header */}
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br text-white", program.gradient)}>
+                      <Icon size={28} />
+                    </div>
+                    {program.popular && (
+                      <span className="px-3 py-1 bg-rose-100 text-rose-700 text-xs font-bold uppercase tracking-wide rounded-full">
+                        Most Popular
+                      </span>
+                    )}
+                  </div>
+                  <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">
+                    {program.name} <span className="text-slate-400 font-normal">— {program.tagline}</span>
+                  </h2>
+                  <p className="mt-2 text-lg text-slate-600">{program.duration} • {program.idealFor}</p>
+                </div>
+                <div className="text-left lg:text-right">
+                  <div className="text-4xl font-bold text-slate-900">${program.price.toLocaleString()}</div>
+                  <button
+                    onClick={() => openCheckout(program.id as ProgramId)}
+                    className={cn(
+                      "mt-3 inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition bg-gradient-to-r",
+                      program.gradient,
+                      "hover:opacity-90"
+                    )}
+                  >
+                    Get Started
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Deliverables Grid */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {program.deliverables.map((deliverable, i) => {
+                  const DeliverableIcon = deliverable.icon;
+                  return (
+                    <div 
+                      key={i}
+                      className={cn(
+                        "p-6 rounded-2xl border-2 transition-all hover:shadow-lg",
+                        program.bgLight,
+                        program.borderColor
+                      )}
+                    >
+                      <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-white shadow-sm", program.textColor)}>
+                        <DeliverableIcon size={22} />
+                      </div>
+                      <h3 className="text-lg font-bold text-slate-900">{deliverable.title}</h3>
+                      <p className="mt-2 text-slate-600 text-sm leading-relaxed">{deliverable.desc}</p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Upgrade Note */}
+              {program.upgradeNote && (
+                <div className="mt-8 p-4 bg-slate-100 rounded-xl flex items-center gap-3">
+                  <TrendingUp size={20} className="text-slate-500" />
+                  <span className="text-slate-600">{program.upgradeNote}</span>
+                </div>
+              )}
+            </div>
+          </section>
+        );
+      })}
+
+      {/* COMPARISON TABLE */}
+      <section ref={comparisonRef} className="py-20 lg:py-28 bg-slate-900 scroll-mt-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white">Side-by-Side Comparison</h2>
+            <p className="mt-3 text-slate-400">See exactly what's included at each level</p>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className="p-4 text-left text-slate-400 font-medium">What You Get</th>
+                  {programs.map((program) => (
+                    <th key={program.id} className="p-4 text-center">
+                      <div className={cn("inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold", program.bgLight, program.textColor)}>
+                        {program.name}
+                      </div>
+                      <div className="mt-2 text-white font-bold text-xl">${program.price.toLocaleString()}</div>
+                      <div className="text-slate-500 text-sm">{program.duration}</div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonFeatures.map((feature, idx) => (
+                  <tr key={feature.name} className={idx % 2 === 0 ? 'bg-slate-800/50' : 'bg-transparent'}>
+                    <td className="p-4 text-slate-300 font-medium">{feature.name}</td>
+                    {['fedstart', 'growth', 'prime'].map((programId) => {
+                      const value = feature[programId as keyof typeof feature];
+                      return (
+                        <td key={programId} className="p-4 text-center">
+                          {value === true ? (
+                            <Check size={20} className="mx-auto text-emerald-400" />
+                          ) : value === false ? (
+                            <span className="text-slate-600">—</span>
+                          ) : (
+                            <span className="text-white">{value}</span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="mt-12 flex flex-wrap justify-center gap-4">
+            {programs.map((program) => (
+              <button
+                key={program.id}
+                onClick={() => openCheckout(program.id as ProgramId)}
+                className={cn(
+                  "px-6 py-3 rounded-lg font-semibold text-white transition bg-gradient-to-r hover:opacity-90",
+                  program.gradient
+                )}
+              >
+                Start {program.name} — ${program.price.toLocaleString()}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ADD-ONS */}
+      <section className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900">Add to Any Program</h2>
+            <p className="mt-2 text-slate-600">Expand your capabilities with these add-on services</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {addons.map((addon) => (
+              <div 
+                key={addon.id}
+                className="p-6 rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all"
+              >
+                <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center mb-4">
+                  <Zap size={24} className="text-slate-700" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">{addon.name}</h3>
+                <p className="mt-2 text-sm text-slate-600">{addon.desc}</p>
+                <div className="mt-4 pt-4 border-t border-slate-100">
+                  <span className="text-2xl font-bold text-slate-900">+${addon.price.toLocaleString()}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FINAL CTA */}
+      <section className="py-20 bg-gradient-to-br from-slate-900 to-slate-800">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white">Ready to Get Started?</h2>
+          <p className="mt-4 text-xl text-slate-300">
+            Book a free consultation or give us a call. We'll help you choose the right program.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <LinkButton 
+              href={LINKS.booking} 
+              target="_blank"
+              className="px-8 py-4 bg-white text-slate-900 hover:bg-slate-100 font-semibold"
+            >
+              Book Free Consultation
+            </LinkButton>
+            <a 
+              href="tel:8136650308"
+              className="inline-flex items-center gap-2 px-8 py-4 border border-white/30 text-white hover:bg-white/10 rounded-lg font-semibold transition"
+            >
+              <Phone size={18} />
+              (813) 665-0308
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* CHECKOUT MODAL */}
+      {showCheckout && selectedProgram && (() => {
+        const program = programs.find(p => p.id === selectedProgram)!;
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeCheckout} />
+            
+            <div className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl">
+              {/* Header */}
+              <div className={cn("p-6 text-white bg-gradient-to-r", program.gradient)}>
+                <div className="flex items-center justify-between">
                   <div>
-                    <label className="block text-sm font-medium text-gov-navy mb-1">Company Name</label>
+                    <h3 className="text-2xl font-bold">{program.name} Program</h3>
+                    <p className="text-white/80">{program.duration} Engagement</p>
+                  </div>
+                  <button 
+                    onClick={closeCheckout}
+                    className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* Client Info */}
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-3">Your Information</h4>
+                  <div className="grid sm:grid-cols-2 gap-3">
                     <input
                       type="text"
+                      placeholder="Company Name"
                       value={clientInfo.companyName}
                       onChange={(e) => setClientInfo({ ...clientInfo, companyName: e.target.value })}
-                      placeholder="Enter company name"
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gov-crimson/20 focus:border-gov-crimson"
+                      className="px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-slate-400"
                     />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gov-navy mb-1">Contact Name</label>
                     <input
                       type="text"
+                      placeholder="Contact Name"
                       value={clientInfo.contactName}
                       onChange={(e) => setClientInfo({ ...clientInfo, contactName: e.target.value })}
-                      placeholder="Primary contact"
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gov-crimson/20 focus:border-gov-crimson"
+                      className="px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-slate-400"
                     />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gov-navy mb-1">Email Address</label>
                     <input
                       type="email"
+                      placeholder="Email Address"
                       value={clientInfo.email}
                       onChange={(e) => setClientInfo({ ...clientInfo, email: e.target.value })}
-                      placeholder="email@company.com"
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gov-crimson/20 focus:border-gov-crimson"
+                      className="px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-slate-400"
                     />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gov-navy mb-1">Phone Number</label>
                     <input
                       type="tel"
+                      placeholder="Phone Number"
                       value={clientInfo.phone}
                       onChange={(e) => setClientInfo({ ...clientInfo, phone: e.target.value })}
-                      placeholder="(000) 000-0000"
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gov-crimson/20 focus:border-gov-crimson"
+                      className="px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-slate-400"
                     />
                   </div>
                 </div>
-              </div>
 
-              {/* Select Program */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gov-crimson mb-4 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-gov-gold rounded-full" />
-                  Select Program
-                </h3>
-                <div className="space-y-3">
-                  {(Object.keys(packages) as PackageKey[]).map((key) => {
-                    const p = packages[key];
-                    const isSelected = selectedPackage === key;
-                    const IconComponent = p.icon;
-                    return (
+                {/* Add-ons */}
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-3">Add-on Services <span className="font-normal text-slate-500">(optional)</span></h4>
+                  <div className="space-y-2">
+                    {addons.map((addon) => (
                       <button
-                        key={key}
-                        onClick={() => setSelectedPackage(key)}
+                        key={addon.id}
+                        onClick={() => toggleAddon(addon.id)}
                         className={cn(
-                          "w-full text-left p-4 rounded-xl border-2 transition-all relative overflow-hidden",
-                          isSelected 
-                            ? "border-gov-crimson bg-white shadow-lg" 
-                            : "border-slate-200 hover:border-gov-crimson/50 hover:shadow-md"
+                          "w-full p-4 rounded-lg border text-left transition-all flex items-center justify-between",
+                          selectedAddons.includes(addon.id)
+                            ? "border-slate-900 bg-slate-50"
+                            : "border-slate-200 hover:border-slate-300"
                         )}
                       >
-                        {isSelected && (
-                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gov-crimson" />
-                        )}
-                        {key === 'growth' && (
-                          <span className="absolute top-3 right-3 text-[10px] font-bold uppercase bg-gov-gold text-gov-navy px-2 py-0.5 rounded-full">
-                            Popular
-                          </span>
-                        )}
-                        {key === 'prime' && (
-                          <span className="absolute top-3 right-3 text-[10px] font-bold uppercase bg-gov-gold text-gov-navy px-2 py-0.5 rounded-full">
-                            Premium
-                          </span>
-                        )}
-                        <div className="flex items-start gap-3">
+                        <div>
+                          <div className="font-medium text-slate-900">{addon.name}</div>
+                          <div className="text-sm text-slate-500">{addon.desc}</div>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                          <span className="font-bold text-slate-900">+${addon.price.toLocaleString()}</span>
                           <div className={cn(
-                            "w-10 h-10 rounded-lg flex items-center justify-center",
-                            p.color === 'gov-blue' && "bg-gov-blue/10 text-gov-blue",
-                            p.color === 'gov-crimson' && "bg-gov-crimson/10 text-gov-crimson",
-                            p.color === 'gov-gold' && "bg-gov-gold/10 text-gov-gold"
+                            "w-5 h-5 rounded border-2 flex items-center justify-center transition",
+                            selectedAddons.includes(addon.id)
+                              ? "border-slate-900 bg-slate-900"
+                              : "border-slate-300"
                           )}>
-                            <IconComponent size={20} />
-                          </div>
-                          <div className="flex-1">
-                            <div className="font-bold text-gov-navy">{p.name}</div>
-                            <div className="text-xs font-semibold text-gov-crimson bg-gov-crimson/10 px-2 py-0.5 rounded-full inline-block mt-1">
-                              {p.duration} Program
-                            </div>
-                            <div className="mt-2">
-                              <span className="text-xl font-bold text-gov-crimson">{formatCurrency(p.price)}</span>
-                              <span className="text-sm text-slate-500 ml-2">or <strong className="text-gov-navy">{formatCurrency(p.spotPrice)}</strong> spot</span>
-                            </div>
-                            <p className="text-xs text-slate-600 mt-2 leading-relaxed">{p.description}</p>
+                            {selectedAddons.includes(addon.id) && <Check size={12} className="text-white" />}
                           </div>
                         </div>
                       </button>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Add-on Services */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gov-crimson mb-4 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-gov-gold rounded-full" />
-                  Additional Services
-                </h3>
-                <div className="space-y-3">
-                  {(Object.keys(addons) as AddonKey[]).map((key) => {
-                    const addon = addons[key];
-                    const isActive = selectedAddons.includes(key);
-                    return (
-                      <button
-                        key={key}
-                        onClick={() => toggleAddon(key)}
-                        className={cn(
-                          "w-full flex items-center justify-between p-4 rounded-xl transition-all",
-                          isActive 
-                            ? "bg-gov-crimson/5 border border-gov-crimson/30" 
-                            : "bg-slate-50 hover:bg-slate-100"
-                        )}
+                {/* Payment Options */}
+                <div>
+                  <h4 className="font-bold text-slate-900 mb-3">Payment</h4>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm text-slate-600 mb-1">Payment Terms</label>
+                      <select
+                        value={paymentTerms}
+                        onChange={(e) => setPaymentTerms(e.target.value as 'full' | '50-50')}
+                        className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-200 bg-white"
                       >
-                        <div className="text-left">
-                          <div className="font-medium text-gov-navy text-sm">{addon.name}</div>
-                          <div className="text-xs text-slate-500 mt-0.5">{addon.desc}</div>
-                          <div className="text-sm font-semibold text-gov-crimson mt-1">+{formatCurrency(addon.price)}</div>
-                        </div>
-                        <div className={cn(
-                          "w-11 h-6 rounded-full relative transition-colors",
-                          isActive ? "bg-gov-crimson" : "bg-slate-300"
-                        )}>
-                          <div className={cn(
-                            "absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform shadow-sm",
-                            isActive ? "translate-x-5" : "translate-x-0.5"
-                          )} />
-                        </div>
-                      </button>
+                        <option value="50-50">50% Now / 50% in 2 Months</option>
+                        <option value="full">Full Payment Upfront</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-600 mb-1">Pricing</label>
+                      <select
+                        value={pricingType}
+                        onChange={(e) => setPricingType(e.target.value as 'standard' | 'spot')}
+                        className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-200 bg-white"
+                      >
+                        <option value="standard">Standard — ${program.price.toLocaleString()}</option>
+                        <option value="spot">Pay in Full — ${program.spotPrice.toLocaleString()} (Save ${(program.price - program.spotPrice).toLocaleString()})</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Summary */}
+                <div className="p-5 bg-slate-900 rounded-xl text-white">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-slate-400">{program.name} Program</span>
+                    <span>${(pricingType === 'spot' ? program.spotPrice : program.price).toLocaleString()}</span>
+                  </div>
+                  {selectedAddons.map((addonId) => {
+                    const addon = addons.find(a => a.id === addonId)!;
+                    return (
+                      <div key={addonId} className="flex items-center justify-between mb-3">
+                        <span className="text-slate-400">{addon.name}</span>
+                        <span>${addon.price.toLocaleString()}</span>
+                      </div>
                     );
                   })}
+                  {pricingType === 'spot' && getSavings() > 0 && (
+                    <div className="flex items-center justify-between mb-3 text-emerald-400">
+                      <span>Pay-in-Full Savings</span>
+                      <span>-${getSavings().toLocaleString()}</span>
+                    </div>
+                  )}
+                  <div className="pt-3 border-t border-slate-700 flex items-center justify-between">
+                    <span className="font-bold text-lg">Total</span>
+                    <span className="font-bold text-2xl">${getTotal().toLocaleString()}</span>
+                  </div>
+                  {paymentTerms === '50-50' && (
+                    <div className="mt-2 text-sm text-slate-400">
+                      ${Math.round(getTotal() / 2).toLocaleString()} due now • ${getTotal() - Math.round(getTotal() / 2).toLocaleString()} due in 60 days
+                    </div>
+                  )}
                 </div>
-              </div>
 
-              {/* Contract Terms */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gov-crimson mb-4 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-gov-gold rounded-full" />
-                  Contract Terms
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gov-navy mb-1">Pricing Type</label>
-                    <select
-                      value={pricingType}
-                      onChange={(e) => setPricingType(e.target.value as 'standard' | 'spot')}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gov-crimson/20 focus:border-gov-crimson bg-white"
-                    >
-                      <option value="standard">Standard Pricing</option>
-                      <option value="spot">Spot Purchase (Pay in Full)</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gov-navy mb-1">Payment Terms</label>
-                    <select
-                      value={paymentTerms}
-                      onChange={(e) => setPaymentTerms(e.target.value as 'full' | '50-50')}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gov-crimson/20 focus:border-gov-crimson bg-white"
-                    >
-                      <option value="full">Full Payment Upfront</option>
-                      <option value="50-50">50% Now / 50% in 2 Months</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gov-navy mb-1">Agreement Date</label>
-                    <input
-                      type="date"
-                      value={clientInfo.startDate}
-                      onChange={(e) => setClientInfo({ ...clientInfo, startDate: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gov-crimson/20 focus:border-gov-crimson"
-                    />
-                  </div>
-                </div>
-              </div>
+                {/* Submit */}
+                <button
+                  onClick={() => {
+                    if (!clientInfo.email) {
+                      alert('Please enter your email address.');
+                      return;
+                    }
+                    alert(`Agreement will be sent to ${clientInfo.email} for review and signature.`);
+                    closeCheckout();
+                  }}
+                  className={cn(
+                    "w-full py-4 rounded-xl font-semibold text-white transition flex items-center justify-center gap-2 bg-gradient-to-r hover:opacity-90",
+                    program.gradient
+                  )}
+                >
+                  Generate Agreement
+                  <Send size={18} />
+                </button>
 
-              {/* Upgrade Notice */}
-              <div className="bg-gov-navy rounded-2xl p-5 text-white">
-                <h4 className="font-semibold flex items-center gap-2 text-sm">
-                  <Target size={16} />
-                  Upgrade Anytime
-                </h4>
-                <p className="text-sm text-slate-300 mt-2 leading-relaxed">
-                  Clients can upgrade to a higher program tier at any time. 100% of amounts paid will be credited toward the upgraded program.
+                <p className="text-center text-sm text-slate-500">
+                  You'll receive a professional agreement to review before any payment is due.
                 </p>
               </div>
             </div>
-
-            {/* Main Content */}
-            <div>
-              {/* Tabs */}
-              <div className="flex gap-1 bg-slate-100 p-1 rounded-xl mb-6">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.key}
-                    onClick={() => setActiveTab(tab.key)}
-                    className={cn(
-                      "flex-1 px-4 py-2.5 text-sm font-medium rounded-lg transition-all",
-                      activeTab === tab.key 
-                        ? "bg-white text-gov-navy shadow-sm" 
-                        : "text-slate-600 hover:text-gov-navy"
-                    )}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Document Preview */}
-              <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-                {/* Document Header */}
-                <div className="bg-gov-navy p-6 flex items-center justify-between">
-                  <div>
-                    <h2 className="text-xl font-bold text-white">GovCon Marketing Services Agreement</h2>
-                    <p className="text-slate-400 text-sm mt-1">Agreement #GCI-{new Date().getFullYear()}-{String(Math.floor(Math.random() * 9999)).padStart(4, '0')}</p>
-                  </div>
-                  <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
-                    <span className="w-2 h-2 bg-gov-gold rounded-full" />
-                    <span className="text-white text-sm font-medium">Draft</span>
-                  </div>
-                </div>
-
-                {/* Document Body */}
-                <div className="p-8">
-                  {/* Agreement Tab */}
-                  {activeTab === 'agreement' && (
-                    <div className="space-y-8">
-                      {/* Section 1: Parties */}
-                      <div className="pb-8 border-b border-slate-100">
-                        <h3 className="text-lg font-bold text-gov-navy mb-4 flex items-center gap-3">
-                          <span className="w-7 h-7 bg-gov-crimson text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
-                          Parties to the Agreement
-                        </h3>
-                        <div className="text-slate-700 space-y-3">
-                          <p>This Marketing Services Agreement ("Agreement") is entered into as of <strong>{clientInfo.startDate ? new Date(clientInfo.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '[Agreement Date]'}</strong> by and between:</p>
-                          <p><strong>Service Provider:</strong><br />GovCon Inc.<br />Tampa, FL<br />(813) 665-0308 | Info@GovCon.Info</p>
-                          <p><strong>Client:</strong><br />{clientInfo.companyName || '[Company Name]'}<br />Contact: {clientInfo.contactName || '[Contact Name]'}<br />{clientInfo.email || '[Email]'} | {clientInfo.phone || '[Phone]'}</p>
-                        </div>
-                      </div>
-
-                      {/* Section 2: Scope */}
-                      <div className="pb-8 border-b border-slate-100">
-                        <h3 className="text-lg font-bold text-gov-navy mb-4 flex items-center gap-3">
-                          <span className="w-7 h-7 bg-gov-crimson text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
-                          Scope of Services
-                        </h3>
-                        <p className="text-slate-700 mb-4">GovCon Inc. agrees to provide the following government contracting business development services as outlined in the <strong>{pkg.name}</strong> program (<strong>{pkg.duration}</strong> engagement), along with any selected add-on services:</p>
-                        
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="bg-slate-50">
-                              <th className="text-left p-3 font-semibold text-slate-600 uppercase text-xs tracking-wide">Service</th>
-                              <th className="text-left p-3 font-semibold text-slate-600 uppercase text-xs tracking-wide">Description</th>
-                              <th className="text-right p-3 font-semibold text-slate-600 uppercase text-xs tracking-wide">Investment</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr className="border-b border-slate-100">
-                              <td className="p-3 font-semibold text-gov-navy">{pkg.name} Program{pricingType === 'spot' ? ' (Spot)' : ''}</td>
-                              <td className="p-3 text-slate-600">{pkg.duration} Program</td>
-                              <td className="p-3 text-right">{formatCurrency(basePrice)}</td>
-                            </tr>
-                            {selectedAddons.map((key) => (
-                              <tr key={key} className="border-b border-slate-100">
-                                <td className="p-3 text-gov-navy">{addons[key].name}</td>
-                                <td className="p-3 text-slate-600">{addons[key].desc}</td>
-                                <td className="p-3 text-right">{formatCurrency(addons[key].price)}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                          <tfoot>
-                            <tr className="bg-gov-navy text-white">
-                              <td colSpan={2} className="p-3 font-bold">Total Investment</td>
-                              <td className="p-3 text-right font-bold">{formatCurrency(total)}</td>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-
-                      {/* Section 3: Payment */}
-                      <div className="pb-8 border-b border-slate-100">
-                        <h3 className="text-lg font-bold text-gov-navy mb-4 flex items-center gap-3">
-                          <span className="w-7 h-7 bg-gov-crimson text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
-                          Payment Terms
-                        </h3>
-                        <div className="text-slate-700 space-y-2">
-                          <p>The total investment for the services described herein is <strong>{formatCurrency(total)}</strong>, payable according to the following schedule:</p>
-                          {paymentTerms === 'full' ? (
-                            <>
-                              <p><strong>Payment Structure:</strong> Full Payment Upfront</p>
-                              <p>• Total Payment: {formatCurrency(total)} due upon execution of this Agreement</p>
-                            </>
-                          ) : (
-                            <>
-                              <p><strong>Payment Structure:</strong> 50% Now / 50% in 2 Months</p>
-                              <p>• Initial Payment: {formatCurrency(Math.round(total / 2))} due upon execution of this Agreement</p>
-                              <p>• Final Payment: {formatCurrency(total - Math.round(total / 2))} due 60 days after execution</p>
-                            </>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Section 4: Duration */}
-                      <div className="pb-8 border-b border-slate-100">
-                        <h3 className="text-lg font-bold text-gov-navy mb-4 flex items-center gap-3">
-                          <span className="w-7 h-7 bg-gov-crimson text-white rounded-full flex items-center justify-center text-xs font-bold">4</span>
-                          Program Duration & Standing Meetings
-                        </h3>
-                        <p className="text-slate-700 mb-4">The <strong>{pkg.name}</strong> program is a <strong>{pkg.duration.toLowerCase()}</strong> engagement. Services shall commence upon receipt of initial payment and required documentation from Client.</p>
-                        <p className="text-slate-700 mb-6"><strong>All programs include standing meetings.</strong> Regularly scheduled strategy sessions are included to review progress, discuss opportunities, and adjust approach as needed.</p>
-                        
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="bg-slate-50 p-5 rounded-xl text-center">
-                            <div className="text-3xl font-bold text-gov-crimson">{pkg.durationNum}</div>
-                            <div className="text-xs text-slate-600 uppercase tracking-wide mt-1">Month Program</div>
-                          </div>
-                          <div className="bg-slate-50 p-5 rounded-xl text-center">
-                            <div className="text-3xl font-bold text-gov-crimson">{1 + selectedAddons.length}</div>
-                            <div className="text-xs text-slate-600 uppercase tracking-wide mt-1">Services Selected</div>
-                          </div>
-                          <div className="bg-slate-50 p-5 rounded-xl text-center">
-                            <div className="text-3xl font-bold text-gov-crimson">{pkg.contacts}</div>
-                            <div className="text-xs text-slate-600 uppercase tracking-wide mt-1">Contacts Included</div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Signature Block */}
-                      <div className="grid grid-cols-2 gap-12 pt-8 border-t-2 border-gov-navy">
-                        <div>
-                          <div className="h-16 border-b border-gov-navy" />
-                          <div className="text-xs text-slate-500 uppercase tracking-wide mt-2">Service Provider Signature</div>
-                          <div className="font-semibold text-gov-navy mt-1">GovCon Inc.</div>
-                          <div className="text-xs text-slate-500 mt-2">Date: ________________</div>
-                        </div>
-                        <div>
-                          <div className="h-16 border-b border-gov-navy" />
-                          <div className="text-xs text-slate-500 uppercase tracking-wide mt-2">Client Signature</div>
-                          <div className="font-semibold text-gov-navy mt-1">{clientInfo.contactName || '[Client Name]'}</div>
-                          <div className="text-xs text-slate-500 mt-2">Date: ________________</div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Deliverables Tab */}
-                  {activeTab === 'deliverables' && (
-                    <div className="space-y-8">
-                      <div>
-                        <h3 className="text-lg font-bold text-gov-navy mb-4 flex items-center gap-3">
-                          <span className="w-7 h-7 bg-gov-crimson text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
-                          {pkg.name} Program Deliverables
-                        </h3>
-                        <p className="text-slate-600 mb-4">The following deliverables are included in your selected program:</p>
-                        <div className="space-y-3">
-                          {pkg.features.map((feature, idx) => (
-                            <div 
-                              key={idx}
-                              className={cn(
-                                "flex items-start gap-3 p-4 rounded-xl",
-                                feature.included ? "bg-slate-50" : "bg-transparent border border-dashed border-slate-300 opacity-50"
-                              )}
-                            >
-                              <div className={cn(
-                                "w-7 h-7 rounded-lg flex items-center justify-center shrink-0",
-                                feature.included ? "bg-gov-crimson text-white" : "bg-slate-300 text-white"
-                              )}>
-                                {feature.included ? <CheckCircle size={14} /> : <span className="text-xs">✕</span>}
-                              </div>
-                              <div>
-                                <div className="font-medium text-gov-navy">{feature.name}</div>
-                                {feature.detail && (
-                                  <div className="text-sm text-slate-500 mt-1">{feature.detail}</div>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {selectedAddons.length > 0 && (
-                        <div>
-                          <h3 className="text-lg font-bold text-gov-navy mb-4 flex items-center gap-3">
-                            <span className="w-7 h-7 bg-gov-crimson text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
-                            Add-on Service Deliverables
-                          </h3>
-                          <div className="space-y-3">
-                            {selectedAddons.map((key) => (
-                              <div key={key} className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl">
-                                <div className="w-7 h-7 rounded-lg bg-gov-crimson text-white flex items-center justify-center shrink-0">
-                                  <CheckCircle size={14} />
-                                </div>
-                                <div>
-                                  <div className="font-medium text-gov-navy">{addons[key].name}</div>
-                                  <div className="text-sm text-slate-500 mt-1">{addons[key].desc}</div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Timeline Tab */}
-                  {activeTab === 'timeline' && (
-                    <div>
-                      <h3 className="text-lg font-bold text-gov-navy mb-4 flex items-center gap-3">
-                        <span className="w-7 h-7 bg-gov-crimson text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
-                        Project Timeline
-                      </h3>
-                      <p className="text-slate-600 mb-6">Estimated project milestones for your <strong>{pkg.name}</strong> program:</p>
-                      
-                      <div className="space-y-0">
-                        {pkg.milestones.map((milestone, idx) => (
-                          <div key={idx} className="flex gap-5 pb-6 relative">
-                            {idx < pkg.milestones.length - 1 && (
-                              <div className="absolute left-[15px] top-8 bottom-0 w-0.5 bg-slate-200" />
-                            )}
-                            <div className="w-8 h-8 rounded-full bg-gov-crimson text-white flex items-center justify-center text-sm font-bold shrink-0 relative z-10">
-                              {idx + 1}
-                            </div>
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-gov-navy">{milestone.phase}</h4>
-                              <p className="text-slate-600 text-sm mt-1">{milestone.desc}</p>
-                              <span className="inline-block mt-2 text-xs font-medium text-gov-crimson bg-gov-crimson/10 px-3 py-1 rounded-full">
-                                {milestone.days}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Comparison Tab */}
-                  {activeTab === 'comparison' && (
-                    <div>
-                      <h3 className="text-lg font-bold text-gov-navy mb-4 flex items-center gap-3">
-                        <span className="w-7 h-7 bg-gov-crimson text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
-                        Program Comparison
-                      </h3>
-                      <p className="text-slate-600 mb-6">See what's included in each program tier. Your selected program (<strong>{pkg.name}</strong>) is highlighted.</p>
-                      
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="bg-gov-navy text-white">
-                              <th className="text-left p-3 font-semibold">Feature</th>
-                              <th className="text-center p-3 font-semibold">
-                                FedStart<br /><span className="font-normal text-xs">3 Months</span>
-                              </th>
-                              <th className="text-center p-3 font-semibold">
-                                Growth<br /><span className="font-normal text-xs">6 Months</span>
-                              </th>
-                              <th className="text-center p-3 font-semibold">
-                                Prime<br /><span className="font-normal text-xs">12 Months</span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {comparisonData.map((row, idx) => (
-                              <tr key={idx} className={idx % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
-                                <td className="p-3 font-medium text-gov-navy">{row.feature}</td>
-                                <td className="p-3 text-center">
-                                  {row.fedstart === true ? (
-                                    <span className="text-gov-crimson font-bold">✓</span>
-                                  ) : row.fedstart === false ? (
-                                    <span className="text-slate-300">—</span>
-                                  ) : (
-                                    <span className="text-slate-700">{row.fedstart}</span>
-                                  )}
-                                </td>
-                                <td className="p-3 text-center">
-                                  {row.growth === true ? (
-                                    <span className="text-gov-crimson font-bold">✓</span>
-                                  ) : row.growth === false ? (
-                                    <span className="text-slate-300">—</span>
-                                  ) : (
-                                    <span className="text-slate-700">{row.growth}</span>
-                                  )}
-                                </td>
-                                <td className="p-3 text-center">
-                                  {row.prime === true ? (
-                                    <span className="text-gov-crimson font-bold">✓</span>
-                                  ) : row.prime === false ? (
-                                    <span className="text-slate-300">—</span>
-                                  ) : (
-                                    <span className="text-slate-700">{row.prime}</span>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Terms Tab */}
-                  {activeTab === 'terms' && (
-                    <div className="space-y-8">
-                      {[
-                        {
-                          num: 1,
-                          title: 'Service Delivery Guarantees',
-                          content: (
-                            <>
-                              <p><strong>SAM.gov Registration:</strong> Submitted within 5 business days of receiving all required documentation.</p>
-                              <p><strong>DSBS & FEMA Registration:</strong> Submitted within 14 business days.</p>
-                              <p><strong>SBA Certifications:</strong> All certifications you qualify for, submitted within 14 days.</p>
-                              <p>GovCon Inc. handles all compliance updates throughout the program duration, regardless of program tier selected.</p>
-                            </>
-                          )
-                        },
-                        {
-                          num: 2,
-                          title: 'Client Responsibilities',
-                          content: <p>Client agrees to provide timely access to all required documentation, respond to information requests within 48 business hours, and participate in scheduled standing meetings. Delays in providing required materials may extend project timelines.</p>
-                        },
-                        {
-                          num: 3,
-                          title: 'Program Upgrades',
-                          content: <p>Client may upgrade to a higher program tier at any time during the engagement. GovCon Inc. will credit 100% of amounts already paid toward the upgraded program. Many clients start with FedStart and upgrade to Growth once they're ready to actively pursue contracts.</p>
-                        },
-                        {
-                          num: 4,
-                          title: 'Confidentiality',
-                          content: <p>Both parties agree to maintain the confidentiality of all proprietary information, business strategies, client lists, and other sensitive materials disclosed during the course of this engagement. This obligation shall survive the termination of this Agreement.</p>
-                        },
-                        {
-                          num: 5,
-                          title: 'Intellectual Property',
-                          content: <p>Upon full payment, all deliverables created specifically for Client (capabilities statements, proposals, marketing materials) shall become the property of Client. GovCon Inc. retains the right to use generic templates, methodologies, and processes for future clients.</p>
-                        },
-                        {
-                          num: 6,
-                          title: 'Termination',
-                          content: <p>Either party may terminate this Agreement with 30 days written notice. In the event of termination, Client shall pay for all services rendered through the termination date. Refunds for prepaid services shall be prorated based on work completed.</p>
-                        },
-                        {
-                          num: 7,
-                          title: 'Governing Law',
-                          content: <p>This Agreement shall be governed by and construed in accordance with the laws of the State of Florida. Any disputes arising under this Agreement shall be resolved in the courts of Hillsborough County, Florida.</p>
-                        }
-                      ].map((section) => (
-                        <div key={section.num} className="pb-6 border-b border-slate-100 last:border-0">
-                          <h3 className="text-lg font-bold text-gov-navy mb-4 flex items-center gap-3">
-                            <span className="w-7 h-7 bg-gov-crimson text-white rounded-full flex items-center justify-center text-xs font-bold">{section.num}</span>
-                            {section.title}
-                          </h3>
-                          <div className="text-slate-700 space-y-2">{section.content}</div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Action Bar */}
-                <div className="bg-slate-50 border-t border-slate-100 p-5 flex gap-3 justify-end">
-                  <button 
-                    onClick={() => {
-                      localStorage.setItem('govcon_agreement_draft', JSON.stringify({
-                        clientInfo, selectedPackage, selectedAddons, pricingType, paymentTerms
-                      }));
-                      alert('Draft saved!');
-                    }}
-                    className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-gov-navy bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition"
-                  >
-                    <Save size={16} /> Save Draft
-                  </button>
-                  <button 
-                    onClick={() => window.print()}
-                    className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-gov-navy bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition"
-                  >
-                    <Printer size={16} /> Print
-                  </button>
-                  <button className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-gov-crimson bg-white border-2 border-gov-crimson rounded-lg hover:bg-gov-crimson hover:text-white transition">
-                    <Download size={16} /> Export PDF
-                  </button>
-                  <button 
-                    onClick={() => {
-                      if (!clientInfo.email) {
-                        alert('Please enter a client email address.');
-                        return;
-                      }
-                      alert(`Agreement would be sent to ${clientInfo.email} for signature.`);
-                    }}
-                    className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gov-crimson rounded-lg hover:bg-gov-crimson/90 transition"
-                  >
-                    <Send size={16} /> Send for Signature
-                  </button>
-                </div>
-
-                {/* Footer */}
-                <div className="bg-slate-50 border-t border-slate-100 p-5 flex items-center justify-between text-xs text-slate-500">
-                  <p className="max-w-xl">This agreement is generated by GovCon Inc.'s Executive Marketing Agreement Builder. All terms are customizable and subject to final review before execution.</p>
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 bg-gov-crimson rounded-md flex items-center justify-center text-white font-bold text-xs">G</div>
-                    <span>© {new Date().getFullYear()} GovCon Inc.</span>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
-        </div>
-      </div>
+        );
+      })()}
     </>
   );
 }
