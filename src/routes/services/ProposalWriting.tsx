@@ -368,71 +368,61 @@ export default function ServicesProposalWriting() {
             </p>
           </div>
 
-          {/* Progress Bar */}
+          {/* Stages Accordion */}
           <div className="mb-8">
-            <div className="flex gap-1">
-              {stages.map((stage, idx) => (
-                <button
-                  key={stage.stage}
-                  onClick={() => setActiveStage(activeStage === idx ? null : idx)}
-                  className={cn(
-                    "flex-1 h-3 rounded-full transition-all duration-300",
-                    stage.color,
-                    activeStage === idx ? "scale-y-150" : "hover:scale-y-125"
-                  )}
-                />
-              ))}
-            </div>
-            <div className="flex justify-between mt-2">
-              {stages.map(stage => (
-                <div key={stage.stage} className="text-xs text-slate-500">{stage.stage}</div>
-              ))}
-            </div>
-          </div>
+            <div className="max-w-6xl mx-auto px-4 sm:px-0">
+              <div className="space-y-3">
+                {stages.map((stage, idx) => (
+                  <div key={stage.stage} className="border rounded-lg overflow-hidden bg-white">
+                    <button
+                      onClick={() => setActiveStage(activeStage === idx ? null : idx)}
+                      className={cn(
+                        "w-full flex items-center justify-between p-4",
+                        activeStage === idx ? "bg-slate-50" : "hover:bg-slate-50"
+                      )}
+                      aria-expanded={activeStage === idx}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={cn("h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold", stage.color)}>
+                          {idx + 1}
+                        </div>
 
-          {/* Stage Cards */}
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {stages.map((stage, idx) => (
-              <Card 
-                key={stage.stage}
-                className={cn(
-                  "p-5 cursor-pointer transition-all duration-300",
-                  activeStage === idx && "ring-2 ring-gov-blue shadow-xl"
-                )}
-                hover
-                onClick={() => setActiveStage(activeStage === idx ? null : idx)}
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <div className={cn("h-3 w-3 rounded-full", stage.color)} />
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    {stage.stage}
-                  </span>
-                </div>
-                <h3 className="font-semibold text-gov-navy">{stage.name}</h3>
-                
-                {activeStage === idx && (
-                  <div className="mt-4 animate-fade-in-up">
-                    <ul className="space-y-2">
-                      {stage.tasks.map(task => (
-                        <li key={task} className="flex items-center gap-2 text-sm text-slate-600">
-                          <CheckCircle size={14} className="text-gov-green" />
-                          {task}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-4 pt-4 border-t border-slate-200">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-gov-crimson mb-2">
-                        <Star size={14} />
-                        {stage.milestone}
+                        <div className="text-left">
+                          <div className="text-sm font-semibold text-gov-navy">{stage.name}</div>
+                          <div className="text-xs text-slate-500">{stage.stage}</div>
+                        </div>
                       </div>
-                      <p className="text-xs text-slate-600 bg-slate-100 p-2 rounded">
-                        <strong>You receive:</strong> {stage.deliverable}
-                      </p>
-                    </div>
+
+                      <div className="text-slate-400">
+                        {activeStage === idx ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                      </div>
+                    </button>
+
+                    {activeStage === idx && (
+                      <div className="p-4 bg-white">
+                        <p className="text-slate-600">{stage.deliverable}</p>
+
+                        <ul className="mt-3 space-y-2">
+                          {stage.tasks.map(task => (
+                            <li key={task} className="flex items-center gap-2 text-sm text-slate-600">
+                              <CheckCircle size={14} className="text-gov-green" />
+                              {task}
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div className="mt-4 pt-4 border-t border-slate-100">
+                          <div className="text-sm font-semibold text-gov-crimson flex items-center gap-2">
+                            <Star size={14} />
+                            {stage.milestone}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </Card>
-            ))}
+                ))}
+              </div>
+            </div>
           </div>
 
           <p className="mt-8 text-sm text-slate-500 text-center">
