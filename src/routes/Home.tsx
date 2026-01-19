@@ -85,7 +85,7 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>GovCon Inc — Win Government Contracts | GSA Schedule | SAM Registration | 8(a) Certification</title>
+        <title>GovCon LLC — Win Government Contracts | GSA Schedule | SAM Registration | 8(a) Certification</title>
         <meta
           name="description"
           content="Government contracting consulting for new businesses and GSA Schedule holders. Guaranteed SAM.gov registration, 8(a) certification, GSA MAS awards, and FCP catalog management. Win more federal contracts."
@@ -95,7 +95,7 @@ export default function Home() {
           content="government contracts, GSA Schedule, SAM.gov registration, 8(a) certification, FCP catalog, federal contracting, government procurement, GSA MAS, proposal writing, capture management, FAS Catalog Platform" 
         />
         <link rel="canonical" href="https://govcon.info/" />
-        <meta property="og:title" content="GovCon Inc — Win Government Contracts" />
+        <meta property="og:title" content="GovCon LLC — Win Government Contracts" />
         <meta property="og:description" content="Government contracting consulting for new businesses and GSA Schedule holders. Guaranteed certifications and FCP catalog management." />
         <meta property="og:type" content="website" />
       </Helmet>
