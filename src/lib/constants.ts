@@ -1,5 +1,5 @@
 export const BRAND = {
-  name: "GovCon Inc.",
+  name: "GovCon Llc",
   tagline: "Win Government Contracts",
   phone: "(813) 665-0308",
   email: "Info@GovCon.Info",
