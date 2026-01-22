@@ -10,6 +10,10 @@ import InformationBids from "./routes/information/Bids";
 import InformationProposals from "./routes/information/Proposals";
 import InformationVehicles from "./routes/information/Vehicles";
 import SearchContracts from "./routes/information/SearchContracts";
+import BradsElectrical from "./routes/BradsElectrical";
+
+// Inside your Routes:
+<Route path="/brads-electrical" element={<BradsElectrical />} />
 
 // Services Pages
 import ServicesGSA from "./routes/services/GSA";
@@ -38,6 +42,7 @@ export default function App() {
         <Route path="/information/writing-proposals" element={<InformationProposals />} />
         <Route path="/information/contract-vehicles" element={<InformationVehicles />} />
         <Route path="/information/search-contracts" element={<SearchContracts />} />
+        <Route path="/brads-electrical" element={<BradsElectrical />} />
 
         {/* Services Routes */}
         <Route path="/services" element={<ServicesGSA />} />
