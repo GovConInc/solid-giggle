@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import Home from "./routes/Home";
 import NotFound from "./routes/NotFound";
 
+
 // Information Pages
 import InformationSAM from "./routes/information/SAM";
 import InformationCertification from "./routes/information/Certification";
@@ -10,7 +11,6 @@ import InformationBids from "./routes/information/Bids";
 import InformationProposals from "./routes/information/Proposals";
 import InformationVehicles from "./routes/information/Vehicles";
 import SearchContracts from "./routes/information/SearchContracts";
-import BradsElectrical from "./routes/BradsElectrical";
 
 // Inside your Routes:
 <Route path="/brads-electrical" element={<BradsElectrical />} />
@@ -24,6 +24,8 @@ import ServicesProposalWriting from "./routes/services/ProposalWriting";
 // About Pages
 import About from "./routes/About";
 import AboutMethodology from "./routes/about/Methodology";
+import BradsElectrical from "./routes/BradsElectrical";
+
 
 // Contact
 import Contact from "./routes/Contact";
@@ -42,7 +44,7 @@ export default function App() {
         <Route path="/information/writing-proposals" element={<InformationProposals />} />
         <Route path="/information/contract-vehicles" element={<InformationVehicles />} />
         <Route path="/information/search-contracts" element={<SearchContracts />} />
-        <Route path="/brads-electrical" element={<BradsElectrical />} />
+        
 
         {/* Services Routes */}
         <Route path="/services" element={<ServicesGSA />} />
@@ -54,6 +56,7 @@ export default function App() {
         {/* About Routes */}
         <Route path="/about" element={<About />} />
         <Route path="/about/methodology" element={<AboutMethodology />} />
+        <Route path="/brads-electrical" element={<BradsElectrical />} />
 
         {/* Contact */}
         <Route path="/contact" element={<Contact />} />
