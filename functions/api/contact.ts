@@ -16,7 +16,7 @@ export async function onRequestPost(context) {
     }
 
     const resendApiKey = context.env.RESEND_API_KEY;
-    const toEmail = context.env.CONTACT_TO_EMAIL || "Info@GovCon.Info";
+    const toEmail = context.env.CONTACT_TO_EMAIL || "Info@GSAManagers.com";
 
     if (!resendApiKey) {
       // No email key configured — log and return success so the form still works
@@ -41,7 +41,7 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "GovCon Contact Form <noreply@govcon.info>",
+        from: context.env.RESEND_FROM_EMAIL || "GSA Managers Contact <onboarding@resend.dev>",
         to: [toEmail],
         reply_to: email,
         subject: `New Inquiry from ${name}${interest ? ` — ${interest}` : ""}`,
