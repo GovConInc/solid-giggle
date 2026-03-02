@@ -22,7 +22,6 @@ import ServicesProposalWriting from "./routes/services/ProposalWriting";
 // About Pages
 import About from "./routes/About";
 import AboutMethodology from "./routes/about/Methodology";
-import BradsElectrical from "./routes/BradsElectrical";
 
 
 // Contact
@@ -54,7 +53,6 @@ export default function App() {
         {/* About Routes */}
         <Route path="/about" element={<About />} />
         <Route path="/about/methodology" element={<AboutMethodology />} />
-        <Route path="about/brads-electrical" element={<BradsElectrical />} />
 
         {/* Contact */}
         <Route path="/contact" element={<Contact />} />
