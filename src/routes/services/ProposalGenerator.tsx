@@ -77,10 +77,10 @@ const marketingPrograms = [
     icon: BarChart3,
     color: 'rose',
     popular: true,
-    description: 'Everything in FedStart plus GovCon Portal access, 2 email marketing campaigns, unlimited RFP reviews, and dedicated capture support.',
+    description: 'Everything in FedStart plus Federal Bid Portal access, 2 email marketing campaigns, unlimited RFP reviews, and dedicated capture support.',
     highlights: [
       'Everything in FedStart',
-      'GovCon Portal Access (6 months)',
+      'Federal Bid Portal Access (6 months)',
       'Daily Bid Alerts',
       '2 Email Marketing Campaigns (2,000 contacts)',
       'Prime Contractor Targeting',
@@ -645,7 +645,7 @@ export default function ProposalGenerator() {
         <div class="proposal-container">
           <div class="header">
             <div>
-              <div class="company-name">GovCon Inc.</div>
+              <div class="company-name">GSA Managers Inc.</div>
               <div class="company-tagline">Federal Contractor Consulting</div>
             </div>
             <div class="proposal-label">
@@ -667,7 +667,7 @@ export default function ProposalGenerator() {
           </div>
           
           <div class="intro-text">
-            Thank you for the opportunity to provide this proposal. GovCon Inc. is committed to helping your company succeed in the federal marketplace. The following outlines our recommended services based on your business objectives.
+            Thank you for the opportunity to provide this proposal. GSA Managers Inc. is committed to helping your company succeed in the federal marketplace. The following outlines our recommended services based on your business objectives.
           </div>
           
           <div class="services-section">
@@ -744,7 +744,7 @@ export default function ProposalGenerator() {
               <div class="signature-title">${proposalData.client.companyName}</div>
             </div>
             <div class="signature-block">
-              <div class="signature-label">GovCon Inc.</div>
+              <div class="signature-label">GSA Managers Inc.</div>
               <div class="signature-line"></div>
               <div class="signature-name">Don Sean</div>
               <div class="signature-title">Principal Consultant</div>
@@ -754,7 +754,7 @@ export default function ProposalGenerator() {
           <div class="footer">
             <div class="footer-text">This proposal is confidential and intended solely for the named recipient.</div>
             <div class="footer-contact">
-              GovCon Inc. • (813) 665-0308 • info@govcon.info • www.govcon.info
+              GSA Managers Inc. • (813) 665-0308 • Info@GSAManagers.com • www.GSAManagers.com
             </div>
           </div>
         </div>
@@ -774,7 +774,7 @@ export default function ProposalGenerator() {
   return (
     <>
       <Helmet>
-        <title>Proposal Generator — GovCon Inc.</title>
+        <title>Proposal Generator — GSA Managers Inc.</title>
         <meta name="description" content="Generate professional service proposals for federal contracting clients." />
       </Helmet>
 
@@ -1373,7 +1373,7 @@ export default function ProposalGenerator() {
                 {/* Preview content mimics PDF */}
                 <div className="flex justify-between items-start mb-10 pb-8 border-b-4 border-slate-900">
                   <div>
-                    <h1 className="text-4xl font-bold text-slate-900 tracking-tight">GovCon Inc.</h1>
+                    <h1 className="text-4xl font-bold text-slate-900 tracking-tight">GSA Managers Inc.</h1>
                     <p className="text-slate-500 mt-1">Federal Contractor Consulting</p>
                   </div>
                   <div className="text-right">
@@ -1393,7 +1393,7 @@ export default function ProposalGenerator() {
                 </div>
 
                 <p className="text-slate-600 mb-10 leading-relaxed">
-                  Thank you for the opportunity to provide this proposal. GovCon Inc. is committed to helping your company succeed in the federal marketplace. The following outlines our recommended services based on your business objectives.
+                  Thank you for the opportunity to provide this proposal. GSA Managers Inc. is committed to helping your company succeed in the federal marketplace. The following outlines our recommended services based on your business objectives.
                 </p>
 
                 <div className="mb-10">
@@ -1472,7 +1472,7 @@ export default function ProposalGenerator() {
                     <div className="text-slate-500 text-sm">{proposalData.client.companyName}</div>
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-500 uppercase mb-2">GovCon Inc.</div>
+                    <div className="text-xs font-bold text-slate-500 uppercase mb-2">GSA Managers Inc.</div>
                     <div className="border-b border-slate-900 h-10 mb-2" />
                     <div className="font-semibold text-slate-900">Don Sean</div>
                     <div className="text-slate-500 text-sm">Principal Consultant</div>
@@ -1481,7 +1481,7 @@ export default function ProposalGenerator() {
 
                 <div className="mt-16 pt-6 border-t border-slate-200 text-center">
                   <p className="text-slate-400 text-sm">This proposal is confidential and intended solely for the named recipient.</p>
-                  <p className="text-slate-500 text-sm mt-2">GovCon Inc. • (813) 665-0308 • info@govcon.info • www.govcon.info</p>
+                  <p className="text-slate-500 text-sm mt-2">GSA Managers Inc. • (813) 665-0308 • Info@GSAManagers.com • www.GSAManagers.com</p>
                 </div>
               </div>
             </div>

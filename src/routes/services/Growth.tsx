@@ -50,7 +50,7 @@ const deliverables = [
     color: 'rose',
     items: [
       { 
-        name: 'GovCon Portal Access', 
+        name: 'Federal Bid Portal Access', 
         timeline: '6 Months',
         description: 'Stop checking 50 different websites. Our portal aggregates 2,200+ federal and state bid sources into one searchable interface.',
         details: [
@@ -203,7 +203,7 @@ const faqs = [
     a: 'No. Growth includes everything in FedStart. If you\'re ready to go all-in on pursuing opportunities, start with Growth. If you already completed FedStart, your full investment applies as credit.',
   },
   {
-    q: 'How does the GovCon Portal work?',
+    q: 'How does the Federal Bid Portal work?',
     a: 'The portal aggregates 2,200+ bid sources including SAM.gov, GovWin, state procurement sites, and more. You set your NAICS codes, agencies, and preferences — then get matching opportunities delivered daily. No more checking 50 websites.',
   },
   {
@@ -229,7 +229,7 @@ const comparisonWithFedStart = [
   { feature: 'SBA Certification Submissions', fedstart: true, growth: true },
   { feature: 'Capabilities Statement', fedstart: true, growth: true },
   { feature: 'Marketing Strategy + 1,000 Contacts', fedstart: true, growth: true },
-  { feature: 'GovCon Portal Access', fedstart: false, growth: '6 months' },
+  { feature: 'Federal Bid Portal Access', fedstart: false, growth: '6 months' },
   { feature: 'Daily Bid Alerts', fedstart: false, growth: true },
   { feature: 'Email Marketing Campaigns', fedstart: false, growth: '2 campaigns' },
   { feature: 'RFP Reviews', fedstart: '1', growth: 'Unlimited' },
@@ -244,7 +244,7 @@ export default function GrowthProgram() {
   return (
     <>
       <Helmet>
-        <title>Growth Program — Scale Your Federal Pipeline | GovCon Inc.</title>
+        <title>Growth Program — Scale Your Federal Pipeline | GSA Managers Inc.</title>
         <meta name="description" content="Build a real federal contract pipeline. 2,200+ bid sources, marketing campaigns, unlimited proposal reviews, and opportunity qualification. $6,500." />
       </Helmet>
 
@@ -663,9 +663,9 @@ export default function GrowthProgram() {
               <Phone size={18} />
               (813) 665-0308
             </a>
-            <a href="mailto:Info@GovCon.info" className="flex items-center gap-2 hover:text-white transition">
+            <a href="mailto:Info@GSAManagers.com" className="flex items-center gap-2 hover:text-white transition">
               <Mail size={18} />
-              Info@GovCon.info
+              Info@GSAManagers.com
             </a>
           </div>
         </div>

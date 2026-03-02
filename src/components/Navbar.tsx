@@ -62,19 +62,19 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-slate-100">
       {/* Top bar */}
-      <div className="bg-gov-navy text-white">
+      <div className="bg-slate-50 border-b border-slate-100">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-2 lg:px-8">
-          <div className="flex items-center gap-4 text-xs">
-            <a href={`tel:${BRAND.phone}`} className="flex items-center gap-1.5 hover:text-gov-sky transition">
+          <div className="flex items-center gap-4 text-xs text-slate-500">
+            <a href={`tel:${BRAND.phone}`} className="flex items-center gap-1.5 hover:text-slate-900 transition">
               <Phone size={12} />
               {BRAND.phone}
             </a>
-            <span className="hidden sm:inline text-slate-400">|</span>
-            <a href={`mailto:${BRAND.email}`} className="hidden sm:block hover:text-gov-sky transition">
+            <span className="hidden sm:inline text-slate-300">|</span>
+            <a href={`mailto:${BRAND.email}`} className="hidden sm:block hover:text-slate-900 transition">
               {BRAND.email}
             </a>
           </div>
-          <div className="text-xs text-slate-300">
+          <div className="text-xs text-slate-400">
             {BRAND.location}
           </div>
         </div>
@@ -83,14 +83,12 @@ export default function Navbar() {
       {/* Main nav */}
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-5 py-4 lg:px-8">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-3 group">
-          <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-gov-crimson to-gov-blue shadow-lg transition-transform group-hover:scale-105">
-            <span className="font-display text-2xl font-bold text-white">G</span>
-          </div>
-          <div className="leading-tight">
-            <div className="text-lg font-bold text-gov-navy tracking-tight">{BRAND.name}</div>
-            <div className="text-xs font-medium text-slate-500">{BRAND.tagline}</div>
-          </div>
+        <NavLink to="/" className="flex items-center group">
+          <img
+            src="/logo.png"
+            alt="GSA Managers Inc."
+            className="h-10 w-auto transition-opacity group-hover:opacity-80"
+          />
         </NavLink>
 
         {/* Desktop Nav */}
@@ -124,8 +122,8 @@ export default function Navbar() {
                           className={({ isActive }) =>
                             cn(
                               "block rounded-lg px-4 py-2.5 text-sm font-medium transition-all",
-                              isActive 
-                                ? "text-gov-crimson bg-red-50/60" 
+                              isActive
+                                ? "text-gov-navy font-bold bg-slate-100"
                                 : "text-slate-600 hover:text-gov-navy hover:bg-slate-50"
                             )
                           }
@@ -228,8 +226,8 @@ export default function Navbar() {
                     className={({ isActive }) =>
                       cn(
                         "rounded-xl border px-4 py-3.5 text-sm font-semibold transition",
-                        isActive 
-                          ? "border-gov-crimson/20 bg-red-50/50 text-gov-crimson" 
+                        isActive
+                          ? "border-slate-300 bg-slate-100 text-gov-navy font-bold"
                           : "border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
                       )
                     }

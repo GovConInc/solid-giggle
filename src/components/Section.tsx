@@ -37,7 +37,7 @@ export default function Section({
             {kicker && (
               <p className={cn(
                 "text-sm font-bold uppercase tracking-wider",
-                dark ? "text-gov-crimson" : "text-gov-blue"
+                dark ? "text-gov-gold" : "text-gov-blue"
               )}>
                 {kicker}
               </p>

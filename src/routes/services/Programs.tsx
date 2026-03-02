@@ -290,7 +290,7 @@ const marketingPrograms = [
       { phase: 'Months 2-3', title: 'Ongoing Support', items: ['Monthly strategy calls', 'Opportunity guidance', 'RFP review when ready'] },
     ],
     notIncluded: [
-      'GovCon Portal access',
+      'Federal Bid Portal access',
       'Marketing campaign execution',
       'Multiple proposal reviews',
       'Dedicated capture management',
@@ -349,7 +349,7 @@ const marketingPrograms = [
         icon: Target,
         items: [
           { 
-            name: 'GovCon Portal Access', 
+            name: 'Federal Bid Portal Access', 
             timeline: '6 Months',
             description: 'Stop checking 50 different websites. Our portal aggregates 2,200+ federal and state bid sources into one searchable interface.',
             details: [
@@ -516,7 +516,7 @@ const marketingPrograms = [
             details: [
               'All compliance registrations',
               'Capabilities statement and strategy',
-              'GovCon Portal (12 months)',
+              'Federal Bid Portal (12 months)',
               'Daily bid alerts',
               '2 marketing campaigns',
               'Unlimited RFP reviews',
@@ -761,7 +761,7 @@ const comparisonFeatures = [
     { name: 'Prime Targeting', fedstart: false, growth: true, prime: true },
   ]},
   { category: 'Capture (C3)', features: [
-    { name: 'GovCon Portal Access', fedstart: false, growth: '6 months', prime: '12 months' },
+    { name: 'Federal Bid Portal Access', fedstart: false, growth: '6 months', prime: '12 months' },
     { name: 'Daily Bid Alerts', fedstart: false, growth: true, prime: true },
     { name: 'Opportunity Qualification', fedstart: false, growth: true, prime: true },
     { name: 'Capture Management', fedstart: false, growth: 'Guided', prime: 'Dedicated' },
@@ -822,7 +822,7 @@ export default function Programs() {
   return (
     <>
       <Helmet>
-        <title>Federal Contractor Programs — GovCon Inc.</title>
+        <title>Federal Contractor Programs — GSA Managers Inc.</title>
         <meta name="description" content="Win federal contracts with our proven 5 C's methodology. FedStart, Growth, and Prime programs plus GSA Schedule services." />
       </Helmet>
 

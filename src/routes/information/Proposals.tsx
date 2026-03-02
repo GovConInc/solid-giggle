@@ -16,7 +16,7 @@ export default function InformationProposals() {
   return (
     <>
       <Helmet>
-        <title>Writing Proposals 101 — GovCon Inc.</title>
+        <title>Writing Proposals 101 — GSA Managers Inc.</title>
       </Helmet>
 
       {/* Hero */}

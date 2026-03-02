@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-5">
       <Helmet>
-        <title>Not Found — GovCon Inc.</title>
+        <title>Not Found — GSA Managers Inc.</title>
       </Helmet>
       
       <div className="text-center max-w-md">

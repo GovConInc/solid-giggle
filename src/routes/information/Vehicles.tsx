@@ -40,7 +40,7 @@ export default function InformationVehicles() {
   return (
     <>
       <Helmet>
-        <title>Contract Vehicles 101 — GovCon Inc.</title>
+        <title>Contract Vehicles 101 — GSA Managers Inc.</title>
       </Helmet>
 
       {/* Hero */}

@@ -10,19 +10,18 @@ export default function Footer() {
         <div className="grid gap-12 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-gov-crimson to-gov-blue">
-                <span className="font-display text-2xl font-bold text-white">G</span>
-              </div>
-              <div>
-                <div className="text-lg font-bold text-white">{BRAND.name}</div>
-                <div className="text-xs text-slate-400">{BRAND.tagline}</div>
-              </div>
+            <div>
+              <img
+                src="/logo.png"
+                alt="GSA Managers Inc."
+                className="h-8 w-auto brightness-0 invert"
+              />
+              <div className="mt-2 text-xs text-slate-400">{BRAND.tagline}</div>
             </div>
 
             <p className="mt-6 text-sm text-slate-400 leading-relaxed">
-              We help companies win government business through compliance, capture, 
-              and proposal execution — built into a repeatable operating system.
+              Expert GSA Schedule consulting — from application and award to FCP catalog
+              migration, modifications, and ongoing contract management.
             </p>
           </div>
 
@@ -54,15 +53,15 @@ export default function Footer() {
             <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Contact</p>
             <div className="mt-4 space-y-3 text-sm">
               <a href={`tel:${BRAND.phone}`} className="flex items-center gap-3 text-slate-300 hover:text-white transition">
-                <Phone size={16} className="text-gov-crimson" />
+                <Phone size={16} className="text-slate-400" />
                 {BRAND.phone}
               </a>
               <a href={`mailto:${BRAND.email}`} className="flex items-center gap-3 text-slate-300 hover:text-white transition">
-                <Mail size={16} className="text-gov-crimson" />
+                <Mail size={16} className="text-slate-400" />
                 {BRAND.email}
               </a>
               <div className="flex items-center gap-3 text-slate-300">
-                <MapPin size={16} className="text-gov-crimson" />
+                <MapPin size={16} className="text-slate-400" />
                 {BRAND.location}
               </div>
             </div>
@@ -71,7 +70,7 @@ export default function Footer() {
               href={LINKS.booking} 
               target="_blank" 
               rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-gov-crimson px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-gov-crimson/90"
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gov-navy transition hover:bg-slate-100"
             >
               Book a Call
               <ArrowUpRight size={16} />

@@ -47,7 +47,7 @@ const stages = [
     id: "continuity",
     title: "Continuity",
     subtitle: "Scale & Repeat",
-    description: "Learn how to systematically grow your GovCon department with repeatable processes.",
+    description: "Learn how to systematically grow your federal contracting division with repeatable processes.",
     details: ["Process Documentation", "Team Development", "Contract Management", "Growth Strategy"],
     icon: TrendingUp,
     number: "05",

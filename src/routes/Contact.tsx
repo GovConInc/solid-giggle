@@ -53,7 +53,7 @@ export default function Contact() {
   return (
     <>
       <Helmet>
-        <title>Contact Us — GovCon Inc.</title>
+        <title>Contact Us — GSA Managers Inc.</title>
       </Helmet>
 
       {/* Hero */}

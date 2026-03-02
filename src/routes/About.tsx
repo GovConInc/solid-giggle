@@ -112,7 +112,7 @@ const methodologySteps = [
     title: "Continuity",
     subtitle: "Scale & Repeat",
     color: "gov-orange",
-    description: "Document your wins, build institutional knowledge, repeat the process. Once you've won once, winning again is faster. This is how your GovCon department scales.",
+    description: "Document your wins, build institutional knowledge, repeat the process. Once you've won once, winning again is faster. This is how your federal contracting division scales.",
   },
 ];
 
@@ -157,7 +157,7 @@ export default function About() {
   return (
     <>
       <Helmet>
-        <title>About Us — GovCon Inc.</title>
+        <title>About Us — GSA Managers Inc.</title>
       </Helmet>
 
       {/* Hero */}
@@ -166,11 +166,10 @@ export default function About() {
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">About Us</p>
             <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl">
-              Government contracting doesn't have to be complicated
+              The GSA Schedule is powerful. We make sure you use it right.
             </h1>
             <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-              GovCon Inc. exists because federal systems change constantly and businesses waste months figuring it out on their own. 
-              We provide strategy, structure, and execution—turning chaos into a repeatable process. The result: faster wins, sustainable revenue, and a government business that scales.
+              GSA Managers Inc. exists because too many companies leave their GSA Schedule sitting idle, out of compliance, or poorly managed. We fix that — with disciplined application support, expert catalog management, and a team that treats your schedule like a revenue asset, not a checkbox.
             </p>
           </div>
         </div>
@@ -183,29 +182,28 @@ export default function About() {
             <div>
               <p className="text-sm font-bold uppercase tracking-wider text-gov-crimson">Our Story</p>
               <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-                Built from experience, not theory
+                Built around the GSA Schedule, nothing else
               </h2>
               <div className="mt-6 space-y-4 text-slate-600">
                 <p>
-                  We're based in {BRAND.location} and support organizations from startups to 
-                  large primes. Our work spans registrations and profiles, market intelligence 
-                  and capture, and proposal development across multiple industries.
+                  We're based in {BRAND.location} and work exclusively with companies pursuing or
+                  managing a GSA Multiple Award Schedule. That singular focus means we know the
+                  portal, the contracting officers, and the pitfalls better than anyone.
                 </p>
                 <p>
-                  The industry's "boom moments" usually come from system transitions: new portals, 
-                  new data structures, new rules — and usually not enough guidance. That's where 
-                  we grew: helping companies stay compliant, avoid preventable delays, and pursue 
-                  the right work with a real strategy.
+                  The GSA landscape shifts constantly — FCP, Mass Mods, C&P reporting, new SINs —
+                  and most companies lack the in-house bandwidth to stay ahead of it. That's where
+                  we come in: keeping your schedule clean, your catalog current, and your contract
+                  active.
                 </p>
                 <p>
-                  {BRAND.founder} has supported proposals across diverse scopes — including 
-                  complex, high-value pursuits — and built this firm to turn hard-earned lessons 
-                  into a cleaner path for clients.
+                  {BRAND.founder} has guided schedules across dozens of industries and led
+                  high-stakes migrations when GSA changed platforms. That experience is the
+                  foundation of everything we deliver.
                 </p>
                 <p>
-                  Today, we focus on one thing: getting our clients to their first government win, 
-                  and then scaling from there. Everything we do is measured by contracts won and 
-                  revenue generated for your business.
+                  Today, we manage schedules from initial award through multi-year continuity —
+                  handling the administrative burden so you can focus on winning task orders.
                 </p>
               </div>
             </div>

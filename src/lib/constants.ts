@@ -1,8 +1,8 @@
 export const BRAND = {
-  name: "GovCon Llc",
-  tagline: "Win Government Contracts",
+  name: "GSA Managers Inc.",
+  tagline: "Expert GSA Schedule Consulting",
   phone: "(813) 665-0308",
-  email: "Info@GovCon.Info",
+  email: "Info@GSAManagers.com",
   location: "Tampa, FL",
   founder: "Sean Conway",
 };

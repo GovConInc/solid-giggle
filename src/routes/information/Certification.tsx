@@ -125,7 +125,7 @@ export default function InformationCertification() {
   return (
     <>
       <Helmet>
-        <title>Certification Data — GovCon Inc.</title>
+        <title>Certification Data — GSA Managers Inc.</title>
       </Helmet>
 
       {/* Hero */}

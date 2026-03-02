@@ -183,7 +183,7 @@ const whyFedStart = [
 ];
 
 const notIncluded = [
-  'GovCon Portal access (opportunity database)',
+  'Federal Bid Portal access (opportunity database)',
   'Marketing campaign execution',
   'Multiple proposal reviews',
   'Dedicated capture management',
@@ -219,7 +219,7 @@ export default function FedStartProgram() {
   return (
     <>
       <Helmet>
-        <title>FedStart Program — Your Federal Contractor Foundation | GovCon Inc.</title>
+        <title>FedStart Program — Your Federal Contractor Foundation | GSA Managers Inc.</title>
         <meta name="description" content="Launch your federal contracting business in 30 days. SAM.gov registration, SBA certifications, capabilities statement, and marketing foundation. $3,200." />
       </Helmet>
 
@@ -588,9 +588,9 @@ export default function FedStartProgram() {
               <Phone size={18} />
               (813) 665-0308
             </a>
-            <a href="mailto:Info@GovCon.info" className="flex items-center gap-2 hover:text-white transition">
+            <a href="mailto:Info@GSAManagers.com" className="flex items-center gap-2 hover:text-white transition">
               <Mail size={18} />
-              Info@GovCon.info
+              Info@GSAManagers.com
             </a>
           </div>
         </div>

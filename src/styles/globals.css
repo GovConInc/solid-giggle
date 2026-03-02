@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --ring: 139 21 56; /* gov-crimson */
+  --ring: 17 24 39; /* gov-crimson / gray-900 */
 }
 
 * { 
@@ -16,8 +16,8 @@ html {
   scroll-behavior: smooth;
 }
 
-::selection { 
-  background: rgba(139, 21, 56, 0.15); 
+::selection {
+  background: rgba(10, 22, 40, 0.12);
   color: #0a1628;
 }
 
@@ -48,11 +48,11 @@ h1, .text-4xl, .text-5xl, .text-6xl {
 }
 
 .gradient-line {
-  background: linear-gradient(90deg, #8b1538, #1e3a5f);
+  background: linear-gradient(90deg, #111827, #1e3a5f);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #8b1538 0%, #1e3a5f 100%);
+  background: linear-gradient(135deg, #0a1628 0%, #1e3a5f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

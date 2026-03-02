@@ -85,24 +85,24 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>GovCon LLC — Win Government Contracts | GSA Schedule | SAM Registration | 8(a) Certification</title>
+        <title>GSA Managers Inc. — Expert GSA Schedule Consulting | MAS Award | FCP Migration | Catalog Management</title>
         <meta
           name="description"
-          content="Government contracting consulting for new businesses and GSA Schedule holders. Guaranteed SAM.gov registration, 8(a) certification, GSA MAS awards, and FCP catalog management. Win more federal contracts."
+          content="GSA Managers Inc. specializes in GSA Schedule applications, FCP catalog migration, modifications, and ongoing contract management. Guaranteed timelines, expert execution."
         />
-        <meta 
-          name="keywords" 
-          content="government contracts, GSA Schedule, SAM.gov registration, 8(a) certification, FCP catalog, federal contracting, government procurement, GSA MAS, proposal writing, capture management, FAS Catalog Platform" 
+        <meta
+          name="keywords"
+          content="GSA Schedule, GSA MAS application, FAS Catalog Platform, FCP migration, GSA catalog management, GSA modifications, SAM.gov registration, 8(a) certification, government contracting, GSA Advantage"
         />
-        <link rel="canonical" href="https://govcon.info/" />
-        <meta property="og:title" content="GovCon LLC — Win Government Contracts" />
-        <meta property="og:description" content="Government contracting consulting for new businesses and GSA Schedule holders. Guaranteed certifications and FCP catalog management." />
+        <link rel="canonical" href="https://gsamanagers.com/" />
+        <meta property="og:title" content="GSA Managers Inc. — Expert GSA Schedule Consulting" />
+        <meta property="og:description" content="GSA Schedule application, FCP catalog migration, and ongoing contract management — guaranteed timelines, expert execution." />
         <meta property="og:type" content="website" />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-slate-50 to-blue-50">
-        <div className="absolute inset-0 bg-grid opacity-30" />
+      <section className="relative overflow-hidden bg-white border-b border-slate-100">
+        <div className="absolute inset-0 bg-grid opacity-20" />
         
         <div className="relative mx-auto w-full max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -112,17 +112,17 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 rounded-full bg-gov-crimson/10 px-4 py-1.5 text-sm font-bold text-gov-crimson border border-gov-crimson/20">
+              <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-1.5 text-sm font-bold text-slate-700 border border-slate-200">
                 <Zap size={14} className="animate-pulse-subtle" />
-                Solutions for Government Business
+                GSA Schedule Specialists
               </div>
-              
+
               <h1 className="mt-6 font-display text-4xl font-black tracking-tight text-gov-navy sm:text-5xl lg:text-6xl leading-tight">
-                Your Roadmap to Winning More Contracts.
+                Your GSA Schedule. Managed Right.
               </h1>
-              
+
               <p className="mt-6 text-lg text-slate-700 leading-relaxed">
-                We deliver professional support to government contractors at every stage. No guessing. No delays. Just results.
+                We get companies onto the GSA Schedule and keep them there — with expert application support, FCP catalog management, and guaranteed timelines. No guessing. No delays.
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -149,23 +149,23 @@ export default function Home() {
                     <Rocket className="text-gov-blue" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-xl text-gov-navy">Quick Start</h3>
+                    <h3 className="font-bold text-xl text-gov-navy">Get Started</h3>
                     <p className="text-sm text-slate-600">Choose your path</p>
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   <Link
-                    to="/services"
+                    to="/services/gsa-contractors"
                     className="block p-4 rounded-xl border-2 border-slate-200 hover:border-gov-crimson hover:bg-gov-crimson/5 transition group"
                   >
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="font-bold text-gov-navy group-hover:text-gov-crimson transition">
-                          Compliance & Certifications
+                          New GSA Schedule Application
                         </div>
                         <div className="text-sm text-slate-600 mt-1">
-                          SAM Registration, SBA Certifications, & More
+                          MAS award in 30 business days, guaranteed
                         </div>
                       </div>
                       <ArrowRight className="text-slate-400 group-hover:text-gov-crimson transition" size={20} />
@@ -173,16 +173,16 @@ export default function Home() {
                   </Link>
 
                   <Link
-                    to="/services"
+                    to="/services/gsa-contractors"
                     className="block p-4 rounded-xl border-2 border-slate-200 hover:border-gov-blue hover:bg-gov-blue/5 transition group"
                   >
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="font-bold text-gov-navy group-hover:text-gov-blue transition">
-                          Capture & Proposal Support
+                          FCP Catalog Migration
                         </div>
                         <div className="text-sm text-slate-600 mt-1">
-                          Finding, Winning, & Managing Contracts
+                          SIP → FCP transition completed in 7–14 days
                         </div>
                       </div>
                       <ArrowRight className="text-slate-400 group-hover:text-gov-blue transition" size={20} />
@@ -190,16 +190,16 @@ export default function Home() {
                   </Link>
 
                   <Link
-                    to="/services"
+                    to="/services/gsa-contractors"
                     className="block p-4 rounded-xl border-2 border-slate-200 hover:border-gov-green hover:bg-gov-green/5 transition group"
                   >
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="font-bold text-gov-navy group-hover:text-gov-green transition">
-                          GSA Contract Vehicles
+                          Ongoing Schedule Management
                         </div>
                         <div className="text-sm text-slate-600 mt-1">
-                          Submissions, Modifications, & Management
+                          Modifications, reporting, and catalog upkeep
                         </div>
                       </div>
                       <ArrowRight className="text-slate-400 group-hover:text-gov-green transition" size={20} />
@@ -252,7 +252,7 @@ export default function Home() {
             >
               <Card className="p-6 h-full border-2 mx-auto max-w-md" hover>
                 <div className="flex items-start justify-between mb-4">
-                  <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-gov-crimson to-gov-blue flex items-center justify-center text-white">
+                  <div className="h-14 w-14 rounded-xl bg-gov-navy flex items-center justify-center text-white">
                     <program.icon size={28} />
                   </div>
                   <div className="text-right">
@@ -404,29 +404,29 @@ export default function Home() {
       </section>
 
       {/* Final CTA Section */}
-      <Section title="Ready to Win Government Contracts?" kicker="Next Step" dark>
+      <Section title="Ready to Get on the GSA Schedule?" kicker="Next Step" dark>
         <Card className="p-8 lg:p-12 bg-white/5 border-white/10" hover={false}>
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="font-display text-3xl font-bold text-white mb-4">
-                Book Your Free Readiness Call
+                Book Your Free GSA Readiness Call
               </h3>
               <p className="text-slate-300 text-lg leading-relaxed mb-6">
-                We'll assess your compliance status, identify certification opportunities, review your 
-                target market, and provide a clear roadmap. No sales pitch—just actionable intelligence.
+                We'll assess your GSA eligibility, review your current schedule status or catalog,
+                and give you a clear action plan. No pitch — just actionable intelligence.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center gap-3 text-white">
                   <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  Compliance gap analysis
+                  GSA eligibility and qualification review
                 </li>
                 <li className="flex items-center gap-3 text-white">
                   <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  Certification eligibility review
+                  FCP migration readiness assessment
                 </li>
                 <li className="flex items-center gap-3 text-white">
                   <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  Target agency recommendations
+                  Catalog compliance gap analysis
                 </li>
                 <li className="flex items-center gap-3 text-white">
                   <CheckCircle2 className="text-gov-gold shrink-0" size={20} />

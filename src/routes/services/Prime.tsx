@@ -38,7 +38,7 @@ const deliverables = [
           'All compliance registrations (SAM.gov, DSBS, FEMA)',
           'SBA certification submissions',
           'Capabilities statement and marketing strategy',
-          'GovCon Portal access (12 months)',
+          'Federal Bid Portal access (12 months)',
           'Daily bid alerts',
           '2 marketing campaigns',
           'Unlimited Gold Team RFP reviews',
@@ -214,7 +214,7 @@ const valueBreakdown = [
   { item: 'Dedicated Capture Manager (12 months)', value: '$60,000', note: 'vs. hiring BD staff' },
   { item: '5 Full Proposals', value: '$25,000', note: 'at $5,000 per proposal' },
   { item: '4 Marketing Campaigns', value: '$8,000', note: 'at $2,000 per campaign' },
-  { item: 'GovCon Portal (12 months)', value: '$6,000', note: 'standard pricing' },
+  { item: 'Federal Bid Portal (12 months)', value: '$6,000', note: 'standard pricing' },
   { item: 'Compliance Management', value: '$3,000', note: 'annual value' },
   { item: 'Unlimited RFP Reviews', value: '$10,000', note: 'based on typical usage' },
   { item: 'Priority Support & QBRs', value: '$5,000', note: 'consulting value' },
@@ -224,7 +224,7 @@ const comparisonFull = [
   { feature: 'SAM.gov, DSBS, FEMA Registrations', fedstart: true, growth: true, prime: true },
   { feature: 'SBA Certification Submissions', fedstart: true, growth: true, prime: true },
   { feature: 'Capabilities Statement', fedstart: true, growth: true, prime: true },
-  { feature: 'GovCon Portal Access', fedstart: false, growth: '6 months', prime: '12 months' },
+  { feature: 'Federal Bid Portal Access', fedstart: false, growth: '6 months', prime: '12 months' },
   { feature: 'Daily Bid Alerts', fedstart: false, growth: true, prime: true },
   { feature: 'Email Marketing Campaigns', fedstart: false, growth: '2', prime: '4 (quarterly)' },
   { feature: 'RFP Reviews', fedstart: '1', growth: 'Unlimited', prime: 'Unlimited' },
@@ -275,7 +275,7 @@ export default function PrimeProgram() {
   return (
     <>
       <Helmet>
-        <title>Prime Program — Full-Service Federal Partnership | GovCon Inc.</title>
+        <title>Prime Program — Full-Service Federal Partnership | GSA Managers Inc.</title>
         <meta name="description" content="Dedicated capture management, 5 full proposals, quarterly campaigns, and year-round compliance. The complete federal contracting partnership. $15,500." />
       </Helmet>
 
@@ -678,9 +678,9 @@ export default function PrimeProgram() {
               <Phone size={18} />
               (813) 665-0308
             </a>
-            <a href="mailto:Info@GovCon.info" className="flex items-center gap-2 hover:text-white transition">
+            <a href="mailto:Info@GSAManagers.com" className="flex items-center gap-2 hover:text-white transition">
               <Mail size={18} />
-              Info@GovCon.info
+              Info@GSAManagers.com
             </a>
           </div>
         </div>
