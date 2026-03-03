@@ -271,7 +271,7 @@ export default function ServicesProposalWriting() {
   return (
     <>
       <Helmet>
-        <title>Proposal Writing – FedGovWin</title>
+        <title>Proposal Writing — FedGovWin Professional Services</title>
         <meta name="description" content="Professional government proposal writing services using the Shipley method tailored to your business. Full development, Red Team reviews, and past performance support." />
       </Helmet>
 

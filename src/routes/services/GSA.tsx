@@ -293,14 +293,14 @@ const heroStats = [
   { value: "98%", label: "Approval Rate" },
   { value: "4–6mo", label: "Avg. Time to Award" },
   { value: "80+", label: "Active GSA Clients" },
-  { value: "$999", label: "FCP Flat Fee" }
+  { value: "$50B+", label: "Annual GSA Market" }
 ];
 
 export default function ServicesGSA() {
   const [activeTimeline, setActiveTimeline] = useState(0);
   const [activeManagement, setActiveManagement] = useState(0);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState<"benefits" | "submission" | "management" | "fcp">("fcp");
+  const [activeTab, setActiveTab] = useState<"benefits" | "submission" | "management" | "fcp">("submission");
 
   const getStatusColor = (status: string) => {
     switch(status) {
@@ -316,8 +316,8 @@ export default function ServicesGSA() {
   return (
     <>
       <Helmet>
-        <title>GSA Schedule Services — FedGovWin</title>
-        <meta name="description" content="Get on the GSA Schedule in 4–6 months with a 98% approval rate. FCP Baseline Upload for $999. Full contract management starting at $350/mo." />
+        <title>GSA Schedule Services — FedGovWin Professional Services</title>
+        <meta name="description" content="New to GSA? We get you on the GSA Schedule in 4–6 months with a 98% approval rate. Already on GSA? FCP Baseline Upload for $999, contract management from $350/mo." />
       </Helmet>
 
       {/* ============================================ */}
@@ -347,11 +347,11 @@ export default function ServicesGSA() {
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer" size="lg">
-                  Start Your Application
+                  Start My GSA Application
                   <ArrowRight size={18} className="ml-2" />
                 </LinkButton>
                 <LinkButton href="#process" variant="secondary" size="lg">
-                  See Our Process
+                  View All Services
                 </LinkButton>
               </div>
 
@@ -366,11 +366,43 @@ export default function ServicesGSA() {
               </div>
             </div>
             
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-br from-gov-crimson/10 via-gov-blue/5 to-transparent rounded-3xl" />
-              
-              {/* Urgent FCP Alert Card */}
-              <Card className="relative p-6 bg-gov-crimson text-white border-gov-crimson mb-4 ring-2 ring-gov-crimson/50" hover={false}>
+            <div className="relative space-y-4">
+              <div className="absolute -inset-4 bg-gradient-to-br from-gov-blue/10 via-gov-crimson/5 to-transparent rounded-3xl pointer-events-none" />
+
+              {/* Path 1: New GSA Applications */}
+              <Card className="relative p-6 border-2 border-gov-blue/30 hover:border-gov-blue hover:shadow-lg transition-all bg-white" hover={false}>
+                <div className="absolute -top-3 left-4">
+                  <span className="rounded-full bg-gov-blue px-3 py-1 text-xs font-bold text-white shadow-md">
+                    NEW TO GSA?
+                  </span>
+                </div>
+                <div className="flex items-start gap-4 mt-2">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue/10 text-gov-blue shrink-0">
+                    <FileText size={24} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-display text-lg font-bold text-gov-navy">Get on the GSA Schedule</h3>
+                    <p className="text-sm text-slate-600 mt-1">Full application — SIN strategy, document prep, Holy Trinity review, and submission.</p>
+                    <div className="mt-3 flex items-baseline gap-2">
+                      <span className="font-display text-2xl font-bold text-gov-crimson">$7,500+</span>
+                      <span className="text-xs text-slate-500">depending on schedule type</span>
+                    </div>
+                  </div>
+                </div>
+                <LinkButton
+                  href={LINKS.booking}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 w-full justify-center"
+                  size="sm"
+                >
+                  Start My GSA Application
+                  <ArrowRight size={16} className="ml-1.5" />
+                </LinkButton>
+              </Card>
+
+              {/* Path 2: Existing Contractors — FCP Urgent */}
+              <Card className="relative p-6 bg-gov-crimson text-white border-gov-crimson ring-2 ring-gov-crimson/40" hover={false}>
                 <div className="absolute -top-3 right-4">
                   <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-gov-crimson shadow-md">
                     ACTION REQUIRED
@@ -381,11 +413,10 @@ export default function ServicesGSA() {
                     <AlertTriangle size={24} />
                   </div>
                   <div className="flex-1">
-                    <div className="text-xs font-bold uppercase tracking-widest text-white/70 mb-1">FY26 Critical Update</div>
-                    <h3 className="font-display text-xl font-bold text-white">SIP is Retired. FCP Is Mandatory.</h3>
+                    <div className="text-xs font-bold uppercase tracking-widest text-white/70 mb-1">Already Have a GSA Schedule?</div>
+                    <h3 className="font-display text-lg font-bold text-white">SIP is Retired. FCP is Mandatory.</h3>
                     <p className="mt-2 text-white/90 text-sm leading-relaxed">
-                      GSA has shut down SIP. Without an FCP Baseline Upload, your catalog
-                      disappears from GSA Advantage and agencies cannot order from you.
+                      Migrate your catalog to FCP now or lose your GSA Advantage visibility entirely.
                     </p>
                     <div className="mt-4 flex items-center gap-3 flex-wrap">
                       <LinkButton
@@ -393,37 +424,16 @@ export default function ServicesGSA() {
                         target="_blank"
                         rel="noreferrer"
                         className="bg-white text-gov-crimson hover:bg-slate-100 font-bold inline-flex"
+                        size="sm"
                       >
                         Fix My Catalog — $999
                         <ArrowRight size={16} className="ml-1.5" />
                       </LinkButton>
-                      <span className="text-white/60 text-xs">7-day guaranteed turnaround</span>
+                      <span className="text-white/60 text-xs">7-day guarantee</span>
                     </div>
                   </div>
                 </div>
               </Card>
-              
-              {/* Quick Stats */}
-              <div className="grid grid-cols-2 gap-4">
-                <Card className="p-4 bg-white/80" hover={false}>
-                  <div className="flex items-center gap-3">
-                    <Zap size={20} className="text-gov-crimson" />
-                    <div>
-                      <div className="font-semibold text-gov-navy text-sm">7-Day FCP</div>
-                      <div className="text-xs text-slate-500">Guaranteed upload</div>
-                    </div>
-                  </div>
-                </Card>
-                <Card className="p-4 bg-white/80" hover={false}>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle size={20} className="text-gov-green" />
-                    <div>
-                      <div className="font-semibold text-gov-navy text-sm">Zero Losses</div>
-                      <div className="text-xs text-slate-500">On managed contracts</div>
-                    </div>
-                  </div>
-                </Card>
-              </div>
             </div>
           </div>
         </div>
@@ -437,20 +447,38 @@ export default function ServicesGSA() {
           <div className="mb-12 text-center">
             <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Our GSA Services</p>
             <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-              From Application to Active Revenue
+              Two Tracks. One Expert Team.
             </h2>
             <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-              Whether you need to get on schedule, maintain compliance, or urgently restore your FCP
-              catalog — we have a defined engagement for every stage of your GSA lifecycle.
+              New to GSA? We handle your entire application from day one through award.
+              Already on GSA? We manage compliance, FCP migration, and catalog maintenance so you never lose your schedule.
             </p>
+            {/* Two track summary pills */}
+            <div className="mt-6 flex flex-wrap justify-center gap-4">
+              <div className="inline-flex items-center gap-2 rounded-full bg-gov-blue/10 border border-gov-blue/25 px-4 py-2">
+                <FileText size={15} className="text-gov-blue" />
+                <span className="text-sm font-semibold text-gov-blue">New Applications</span>
+                <span className="text-xs text-slate-500 font-medium">from $7,500</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-gov-crimson/10 border border-gov-crimson/25 px-4 py-2">
+                <Upload size={15} className="text-gov-crimson" />
+                <span className="text-sm font-semibold text-gov-crimson">FCP Migration</span>
+                <span className="text-xs text-slate-500 font-medium">$999 flat · existing contractors</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-gov-green/10 border border-gov-green/25 px-4 py-2">
+                <Settings size={15} className="text-gov-green" />
+                <span className="text-sm font-semibold text-gov-green">Contract Management</span>
+                <span className="text-xs text-slate-500 font-medium">from $350/mo</span>
+              </div>
+            </div>
           </div>
           
           {/* Tab Navigation */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {[
-              { id: "fcp", label: "FCP Baseline Upload", icon: Upload, desc: "Flat fee — $999", urgent: true },
-              { id: "submission", label: "Get on Schedule", icon: FileText, desc: "4–6 month path to award" },
-              { id: "management", label: "Manage & Grow", icon: Settings, desc: "Ongoing compliance & growth" },
+              { id: "submission", label: "New GSA Application", icon: FileText, desc: "From $7,500 — new applicants", audience: "new" },
+              { id: "fcp", label: "FCP Migration", icon: Upload, desc: "Flat $999 — existing contractors", urgent: true, audience: "existing" },
+              { id: "management", label: "Manage & Grow", icon: Settings, desc: "From $350/mo — existing contractors", audience: "existing" },
               { id: "benefits", label: "Why GSA?", icon: Star, desc: "The $50B+ opportunity" }
             ].map((tab) => (
               <button
@@ -599,6 +627,25 @@ export default function ServicesGSA() {
           {/* ============================================ */}
           {activeTab === "submission" && (
             <div className="animate-fade-in-up">
+              {/* Audience Banner */}
+              <div className="mb-8 p-4 bg-gov-blue/5 border-2 border-gov-blue/25 rounded-xl flex items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gov-green text-white shrink-0 mt-0.5">
+                  <Award size={22} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-gov-green mb-0.5">For Businesses New to GSA</div>
+                  <p className="text-sm text-gov-navy font-medium">
+                    This service is for businesses that <strong>don't yet have a GSA Schedule contract</strong> and want to get listed as a pre-approved federal vendor.{" "}
+                    <button
+                      onClick={() => setActiveTab("fcp")}
+                      className="text-gov-crimson underline font-semibold hover:no-underline"
+                    >
+                      Already on GSA? See FCP migration for existing contractors →
+                    </button>
+                  </p>
+                </div>
+              </div>
+
               <div className="text-center mb-12">
                 <div className="inline-block mb-4 px-4 py-2 rounded-full bg-gov-blue/10 text-gov-blue font-bold text-sm">
                   GSA MAS APPLICATION
@@ -764,6 +811,25 @@ export default function ServicesGSA() {
           {/* ============================================ */}
           {activeTab === "management" && (
             <div className="animate-fade-in-up">
+              {/* Audience Banner */}
+              <div className="mb-8 p-4 bg-gov-green/5 border-2 border-gov-green/25 rounded-xl flex items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gov-green text-white shrink-0 mt-0.5">
+                  <Building2 size={22} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-gov-green mb-0.5">For Existing GSA Contractors</div>
+                  <p className="text-sm text-gov-navy font-medium">
+                    This service is for businesses that <strong>already hold an active GSA Schedule contract</strong> and need ongoing compliance support, reporting, and catalog management.{" "}
+                    <button
+                      onClick={() => setActiveTab("submission")}
+                      className="text-gov-blue underline font-semibold hover:no-underline"
+                    >
+                      Not yet on GSA? See our new application service →
+                    </button>
+                  </p>
+                </div>
+              </div>
+
               <div className="text-center mb-12">
                 <div className="inline-block mb-4 px-4 py-2 rounded-full bg-gov-green/10 text-gov-green font-bold text-sm">
                   GSA CONTRACT MANAGEMENT
@@ -926,6 +992,25 @@ export default function ServicesGSA() {
           {/* ============================================ */}
           {activeTab === "fcp" && (
             <div className="animate-fade-in-up">
+              {/* Audience Banner */}
+              <div className="mb-8 p-4 bg-gov-crimson/5 border-2 border-gov-crimson/30 rounded-xl flex items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gov-crimson text-white shrink-0 mt-0.5">
+                  <Building2 size={22} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-gov-crimson mb-0.5">Existing GSA Contractors Only</div>
+                  <p className="text-sm text-gov-navy font-medium">
+                    This service is exclusively for businesses that <strong>already hold an active GSA Schedule contract</strong> and need to migrate their catalog from SIP to FCP.{" "}
+                    <button
+                      onClick={() => setActiveTab("submission")}
+                      className="text-gov-blue underline font-semibold hover:no-underline"
+                    >
+                      Not yet on GSA? See our new application service →
+                    </button>
+                  </p>
+                </div>
+              </div>
+
               <div className="text-center mb-12">
                 <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-gov-crimson text-white font-bold text-sm shadow-lg">
                   <AlertTriangle size={15} />

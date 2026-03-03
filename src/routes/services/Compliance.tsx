@@ -180,7 +180,7 @@ export default function ServicesCertifications() {
   return (
     <>
       <Helmet>
-        <title>Certifications & Compliance — FedGovWin</title>
+        <title>Certifications & Compliance — FedGovWin Professional Services</title>
         <meta name="description" content="SBA certifications, SAM.gov registration, and compliance management. Get certified and stay compliant with our expert support." />
       </Helmet>
 
