@@ -80,7 +80,7 @@ export default function AboutMethodology() {
   return (
     <>
       <Helmet>
-        <title>Methodology — FedGovWin</title>
+        <title>Methodology — FedGovWin Professional Services</title>
       </Helmet>
 
       {/* Hero */}

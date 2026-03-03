@@ -22,7 +22,7 @@ export default function InformationSAM() {
   return (
     <>
       <Helmet>
-        <title>SAM, DSBS & FEMA Registration — FedGovWin</title>
+        <title>SAM, DSBS & FEMA Registration — FedGovWin Professional Services</title>
       </Helmet>
 
       {/* Hero */}
