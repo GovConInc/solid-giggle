@@ -774,7 +774,7 @@ export default function ProposalGenerator() {
   return (
     <>
       <Helmet>
-        <title>Proposal Generator — FedGovWin Professional Services</title>
+        <title>Proposal Generator — FedGovWin</title>
         <meta name="description" content="Generate professional service proposals for federal contracting clients." />
       </Helmet>
 

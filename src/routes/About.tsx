@@ -1,109 +1,222 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  ArrowRight, CheckCircle, Users, Target, TrendingUp,
-  Building2, Briefcase, Code2, DollarSign, Shield
-} from "lucide-react";
+import { ArrowRight, Award, Users, Target, TrendingUp, ChevronDown, CheckCircle, Zap, Clock, DollarSign } from "lucide-react";
+import { useState } from "react";
 import Section from "../components/Section";
 import Card from "../components/Card";
 import { LinkButton } from "../components/Button";
 import { BRAND, LINKS } from "../lib/constants";
 
-// ============================================
-// DATA
-// ============================================
-
-const teamBackgrounds = [
-  {
-    icon: Building2,
-    label: "Government Contracting",
-    color: "bg-gov-blue/10 text-gov-blue",
-    body: "We've worked inside the machine — as contractors, prime subcontractors, and capture managers. We know how contracting officers think, how procurement decisions get made, and what the real evaluation criteria are (not just what the RFP says).",
-  },
-  {
-    icon: Code2,
-    label: "Technology & Systems",
-    color: "bg-emerald-100 text-emerald-700",
-    body: "Half our team comes from IT and systems integration backgrounds. We understand how to position tech companies for government work — what evaluators want to see, how to translate commercial capability into federal language, and how to win on IT vehicles.",
-  },
-  {
-    icon: DollarSign,
-    label: "Sales & Business Development",
-    color: "bg-gov-crimson/10 text-gov-crimson",
-    body: "Government contracting is a sales process. Pipeline management, relationship building, competitive positioning — we bring commercial BD discipline to federal capture. We don't just fill out forms; we help you build a repeatable revenue engine.",
-  },
-];
-
-const stats = [
-  { value: "15+", label: "Years in the industry" },
-  { value: "7,000+", label: "Registrations processed" },
-  { value: "$640M", label: "Largest contract supported" },
-  { value: "98%", label: "Certification approval rate" },
-];
-
-const principles = [
+const values = [
   {
     icon: Target,
-    title: "We tell you what we can actually deliver",
-    body: "No overpromising. If a certification doesn't fit your business, we say so. If a bid isn't worth your time, we say that too. Our job is to maximize your return, not our billable hours.",
-  },
-  {
-    icon: TrendingUp,
-    title: "We measure by outcomes, not effort",
-    body: "Client results determine whether this relationship works. We track what matters: contracts won, revenue generated, certifications approved, pipeline built. Hours logged is not a metric.",
+    title: "Results-Driven",
+    description: "We measure success by contracts won, not hours billed.",
   },
   {
     icon: Users,
-    title: "We act like a partner, not a vendor",
-    body: "When something goes sideways — a certification denial, a missed bid, a compliance issue — we don't hand it back to you. We diagnose, fix, and move forward. That's what an extension of your team does.",
+    title: "Partnership",
+    description: "We become an extension of your team, not a vendor.",
   },
   {
-    icon: Shield,
-    title: "We stay current so you don't have to",
-    body: "Federal regulations, platform updates, SBA rule changes, new vehicles — this space moves constantly. Staying ahead of it is a full-time job. It's our job, so it doesn't have to be yours.",
+    icon: Award,
+    title: "Excellence",
+    description: "Every submission reflects our commitment to quality.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Continuous Improvement",
+    description: "We refine our processes based on real outcomes.",
   },
 ];
 
-// ============================================
-// COMPONENT
-// ============================================
+const faqs = [
+  {
+    question: "How long does it take to get certified?",
+    answer: "Our 14-day fast-track program completes the entire certification process—from eligibility review to submission. We handle all documentation, form completion, and submission. After SBA approval (typically 3-6 weeks), you can start pursuing set-asides immediately.",
+  },
+  {
+    question: "Which certification should my company pursue?",
+    answer: "It depends on your ownership and business profile. 8(a) targets socially/economically disadvantaged owners. HUBZone requires your office and 35% of employees in designated zones. SDVOSB requires service-disabled veteran ownership. WOSB/EDWOSB require 51% ownership by women. We assess your eligibility for all categories in a free assessment and recommend the highest-impact options.",
+  },
+  {
+    question: "What's the difference between FFP and cost-plus contracts?",
+    answer: "Firm Fixed Price (FFP) means you quote a price and that's your obligation—you bear all cost overrun risk. Cost-Plus contracts (CPFF, T&M, CPIF) reimburse your costs + profit. FFP is riskier but can be more profitable if you estimate accurately. Cost-plus is safer for uncertain work but caps your profit. We help you evaluate contract types before bidding.",
+  },
+  {
+    question: "How do you find bids before competitors?",
+    answer: "We monitor SAM.gov daily for new notifications across your targeted NAICS codes and agencies. More importantly, we identify Sources Sought notices early—these signal upcoming RFPs 30-60 days before formal release. We analyze the market, assess your win probability, and deliver only opportunities you can actually win.",
+  },
+  {
+    question: "What's your process for proposal writing?",
+    answer: "We start with a capture strategy—understanding the customer's pain points, past RFP patterns, and evaluation criteria. We then structure your proposal to directly address their hot buttons, include relevant past performance examples, and differentiate you from competition. We review all submissions against the RFP requirements checklist before you submit.",
+  },
+  {
+    question: "Can you help with subcontracting opportunities?",
+    answer: "Yes. Large primes are required to use small business subs on set-aside contracts. We help small businesses become preferred subcontractors by building relationships with primes, documenting capabilities, and pursuing teaming opportunities. This opens pipeline without requiring you to be a prime.",
+  },
+  {
+    question: "What should I put on my SAM.gov profile?",
+    answer: "SAM is how agencies find you. Your profile should include: accurate NAICS codes, realistic past performance examples with dollar values, key personnel with bios, your certifications (8(a), WOSB, HUBZone, SDVOSB), a strong company description, and current contact info. We optimize your profile to match how agencies search for contractors like you.",
+  },
+  {
+    question: "How much does your service cost?",
+    answer: "We offer several engagement models: fixed-fee certification programs ($1,500-$2,500 depending on complexity), hourly capture and proposal support, or retained advisory services. Most clients see ROI within their first government contract win. We're happy to discuss your specific needs and provide a proposal.",
+  },
+  {
+    question: "Can you help with GSA Schedule?",
+    answer: "Yes. GSA Schedule is a pre-approved vendor list that unlocks RFQs on GSA eBuy. We help you prepare the application, optimize your pricing strategy, and manage the approval process. Once approved, you get access to quick RFQs (3-5 day response) that many businesses miss entirely.",
+  },
+  {
+    question: "What if my certification gets rejected?",
+    answer: "Rejections usually mean missing documentation or minor eligibility issues. We review the SBA's rejection letter, address the gaps, and resubmit. Our 98% approval rate reflects our thorough vetting before first submission—we don't waste your time on incomplete applications.",
+  },
+  {
+    question: "How do you handle RFPs with tight deadlines?",
+    answer: "RFPs typically allow 15-30 days. We have a rapid-response process: intake call (24 hrs), draft outline (48 hrs), section assignments, review and refinement, final compliance check, and submission. For 5-day RFQs, we have templates and streamlined processes to turn them around quickly.",
+  },
+  {
+    question: "Do you help with compliance audits?",
+    answer: "Yes. After you win a contract, government may audit your compliance—cost accounting, small business utilization, past performance documentation. We help you prepare for audits and ensure you're documenting correctly. It's easier to be compliant from day one than fix issues later.",
+  },
+];
+
+// 5 Cs of Methodology
+const methodologySteps = [
+  {
+    title: "Compliance",
+    subtitle: "Get Certified",
+    color: "gov-navy",
+    description: "Start with registrations, certifications, and profiles. SAM.gov, certifications (8(a), HUBZone, SDVOSB, WOSB), and a locked-down capability statement are your foundation. Without these, you can't compete.",
+  },
+  {
+    title: "Context",
+    subtitle: "Know the Landscape",
+    color: "gov-blue",
+    description: "Understand your target agencies, their budget cycles, past procurement patterns, and key decision-makers. Market research reveals where work is coming from and which agencies fit your capabilities best.",
+  },
+  {
+    title: "Capture",
+    subtitle: "Find & Influence",
+    color: "gov-green",
+    description: "Identify opportunities early—before RFPs hit SAM.gov. Monitor Sources Sought notices, build relationships, understand requirements, and position your solution. Early influence beats last-minute proposals.",
+  },
+  {
+    title: "Compete",
+    subtitle: "Win the Work",
+    color: "gov-crimson",
+    description: "Submit compliant, compelling proposals. Every page responds to evaluation criteria. Past performance is specific, past management style is clear, and your team is capable. Proposal wins happen in capture, not writing.",
+  },
+  {
+    title: "Continuity",
+    subtitle: "Scale & Repeat",
+    color: "gov-orange",
+    description: "Document your wins, build institutional knowledge, repeat the process. Once you've won once, winning again is faster. This is how your federal contracting division scales.",
+  },
+];
+
+const processPhases = [
+  {
+    phase: "Discovery",
+    duration: "Weeks 1-2",
+    activities: [
+      "Understand your business model, strengths, and target market",
+      "Map your capabilities to federal opportunities",
+      "Identify which certifications apply",
+      "Review your SAM.gov and website presence",
+    ],
+  },
+  {
+    phase: "Strategy",
+    duration: "Weeks 3-4",
+    activities: [
+      "Build a 3-year capture plan targeting specific agencies/NAICS",
+      "Define your win strategy and competitive positioning",
+      "Outline certification roadmap (timing and sequence)",
+      "Establish key metrics: contracts won, revenue, win rate",
+    ],
+  },
+  {
+    phase: "Execution",
+    duration: "Weeks 5+",
+    activities: [
+      "Submit certifications (14-day fast-track or concurrent)",
+      "Optimize SAM.gov, GSA, and website profiles",
+      "Monitor SAM for Sources Sought and RFPs in your space",
+      "Pursue subcontracting teaming opportunities",
+      "Respond to RFQs and RFPs per your strategy",
+      "Document wins and refine approach based on results",
+    ],
+  },
+];
 
 export default function About() {
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
   return (
     <>
       <Helmet>
-        <title>About — FedGovWin Professional Services</title>
-        <meta name="description" content="FedGovWin is a Tampa-based federal contracting firm built by govcon, tech, and sales professionals who've been in your seat." />
+        <title>About Us — FedGovWin Professional Services</title>
+        <meta name="description" content="FedGovWin provides professional federal contracting consulting — GSA Schedule, SBA certifications, proposal writing, and more." />
         <link rel="canonical" href="https://fedgovwin.com/about" />
       </Helmet>
 
-      {/* ── Hero ── */}
+      {/* Hero */}
       <section className="bg-white">
-        <div className="mx-auto w-full max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
+        <div className="mx-auto w-full max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">About Us</p>
+            <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl">
+              Federal contracting is complex. We make it straightforward.
+            </h1>
+            <p className="mt-6 text-lg text-slate-600 leading-relaxed">
+              FedGovWin exists because too many businesses leave federal contracting opportunities on the table — from unclaimed certifications to idle GSA Schedules and proposals that never win. We fix that, with disciplined strategy, expert execution, and a team that treats your federal program like a growth engine, not a compliance checkbox.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Story Section */}
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div>
-              <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">About FedGovWin</p>
-              <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl lg:text-6xl">
-                We've been where you are
-              </h1>
-              <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-                FedGovWin started because the federal contracting industry was full of consultants who'd never actually won a government contract. We came from the other side — from capture management, from BD, from building pipelines and writing proposals that had to win to keep the lights on.
-              </p>
-              <p className="mt-4 text-lg text-slate-600 leading-relaxed">
-                That's still the DNA of this firm. Every person here has real operating experience in govcon, tech, or sales — not just a consulting background. We know what works because we've done the work.
-              </p>
-              <div className="mt-10">
-                <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer" size="lg">
-                  Talk to Our Team
-                  <ArrowRight size={18} className="ml-2" />
-                </LinkButton>
+              <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Our Story</p>
+              <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
+                Built for businesses serious about federal contracting
+              </h2>
+              <div className="mt-6 space-y-4 text-slate-600">
+                <p>
+                  We're based in {BRAND.location} and work with companies across every stage of the federal
+                  contracting lifecycle — from initial SAM.gov registration and SBA certifications to GSA
+                  Schedule applications, proposal writing, and long-term contract management.
+                </p>
+                <p>
+                  The federal landscape shifts constantly — new regulations, platform migrations, changing
+                  agency priorities — and most businesses lack the in-house expertise to stay ahead of it.
+                  That's where FedGovWin comes in: keeping your registrations current, your certifications
+                  active, and your pipeline full.
+                </p>
+                <p>
+                  {BRAND.founder} has guided companies through thousands of registrations, certifications,
+                  and contract awards across dozens of industries. That depth of experience is the
+                  foundation of everything we deliver.
+                </p>
+                <p>
+                  Today, FedGovWin manages the full federal contracting journey — from initial eligibility
+                  through multi-year contract growth — so you can focus on delivering results.
+                </p>
               </div>
             </div>
-
-            {/* Stats */}
+            
             <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat, idx) => (
+              {[
+                { value: "15+", label: "Years Experience" },
+                { value: "7,000+", label: "Registrations Completed" },
+                { value: "$640M", label: "Largest Win Supported" },
+                { value: "98%", label: "Approval Rate" },
+              ].map((stat, idx) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -122,172 +235,208 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Our Story ── */}
-      <section className="bg-slate-50 py-20">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">How We Got Here</p>
-            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-              Built out of frustration with the way it was being done
-            </h2>
-            <div className="mt-6 space-y-5 text-slate-600 text-lg leading-relaxed">
-              <p>
-                {BRAND.founder} built FedGovWin in {BRAND.location} after years of watching companies get burned — by consultants who talked a good game but couldn't execute, by compliance lapses that cost real contracts, by proposals that were technically compliant but had no shot of winning. The federal market was too good to leave on the table.
-              </p>
-              <p>
-                The approach from day one was simple: hire people who'd actually done the work. Not consultants who'd studied it — people who'd been in the room when the contract was awarded, who'd built the pipeline, who'd written the proposals under pressure. Combine that with a discipline for process and a bias toward measurable outcomes, and you get a firm that actually moves the needle.
-              </p>
-              <p>
-                Today, FedGovWin works with companies across industries — IT, professional services, logistics, construction, healthcare — at every stage of the federal lifecycle. New entrants building their compliance foundation. Growing companies trying to win more consistently. Established contractors looking to scale into larger vehicles or new agencies.
-              </p>
-              <p>
-                The work is the same regardless of the client size: build the foundation right, build the pipeline smart, and write proposals that evaluate well. Everything else is noise.
-              </p>
-            </div>
-          </div>
+      {/* Values Section */}
+      <Section title="Our Values" kicker="What We Stand For">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {values.map((value, idx) => (
+            <motion.div
+              key={value.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+            >
+              <Card className="p-6 h-full" hover>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue/10 text-gov-blue">
+                  <value.icon size={24} />
+                </div>
+                <h3 className="mt-4 text-lg font-bold text-gov-navy">{value.title}</h3>
+                <p className="mt-2 text-sm text-slate-600">{value.description}</p>
+              </Card>
+            </motion.div>
+          ))}
         </div>
-      </section>
+      </Section>
 
-      {/* ── Team Backgrounds ── */}
-      <section className="bg-white py-20">
+      {/* 5 Cs Methodology */}
+      <section className="bg-white py-16">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Who We Are</p>
-            <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-              Three backgrounds that matter for this work
-            </h2>
-            <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
-              Federal contracting requires expertise in government process, technology positioning, and business development — simultaneously. Our team covers all three.
-            </p>
-          </div>
+          <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Our Methodology</p>
+          <h2 className="mt-3 font-display text-2xl font-bold text-gov-navy mb-2">
+            The 5 C's Framework
+          </h2>
+          <p className="max-w-2xl text-slate-600 mb-8">
+            Every successful government business follows this cycle: Compliance, Context, Capture, Compete, 
+            and Continuity. We help you master each phase and repeat the cycle to scale.
+          </p>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {teamBackgrounds.map((bg, idx) => (
+          <div className="grid gap-6 lg:grid-cols-5">
+            {methodologySteps.map((step, idx) => (
               <motion.div
-                key={bg.label}
+                key={step.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
               >
                 <Card className="p-6 h-full" hover>
-                  <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl mb-4 ${bg.color}`}>
-                    <bg.icon size={24} />
+                  <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase mb-3 ${
+                    step.color === "gov-navy" ? "bg-gov-navy/10 text-gov-navy" :
+                    step.color === "gov-blue" ? "bg-gov-blue/10 text-gov-blue" :
+                    step.color === "gov-green" ? "bg-gov-green/10 text-gov-green" :
+                    step.color === "gov-crimson" ? "bg-gov-crimson/10 text-gov-crimson" :
+                    "bg-gov-orange/10 text-gov-orange"
+                  }`}>
+                    {step.color === "gov-orange" ? "Scale" : "Phase"}
                   </div>
-                  <h3 className="font-bold text-lg text-gov-navy">{bg.label}</h3>
-                  <p className="mt-3 text-slate-600 leading-relaxed">{bg.body}</p>
+                  <h3 className="font-bold text-lg text-gov-navy">{step.title}</h3>
+                  <p className="text-xs text-slate-500 mt-1">{step.subtitle}</p>
+                  <p className="mt-3 text-sm text-slate-600">{step.description}</p>
                 </Card>
               </motion.div>
+            ))}
+          </div>
+
+          <Card className="mt-8 p-6 bg-slate-50" hover={false}>
+            <div className="flex items-start gap-4">
+              <Zap className="text-gov-crimson shrink-0 mt-1" size={24} />
+              <div>
+                <h4 className="font-semibold text-gov-navy mb-2">The Key Insight</h4>
+                <p className="text-sm text-slate-600">
+                  Most businesses jump straight to "Compete" (writing proposals). We start much earlier: build your foundation (Compliance), 
+                  understand where the work is (Context), then position yourself before RFPs hit the street (Capture). When you reach Compete, 
+                  you're already winning because you've already influenced the requirements.
+                </p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </section>
+
+      {/* Our Process */}
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">How We Work</p>
+          <h2 className="mt-3 font-display text-2xl font-bold text-gov-navy mb-8">
+            A Phased Approach to Government Success
+          </h2>
+
+          <div className="space-y-6">
+            {processPhases.map((phase, idx) => (
+              <Card key={phase.phase} className="p-6" hover={false}>
+                <div className="grid gap-6 lg:grid-cols-3">
+                  <div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gov-blue text-white font-bold text-sm">
+                        {idx + 1}
+                      </div>
+                      <h3 className="font-bold text-lg text-gov-navy">{phase.phase}</h3>
+                    </div>
+                    <p className="text-xs font-semibold text-slate-500">{phase.duration}</p>
+                  </div>
+                  <div className="lg:col-span-2">
+                    <ul className="space-y-2">
+                      {phase.activities.map((activity, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                          <CheckCircle size={16} className="text-gov-green shrink-0 mt-0.5" />
+                          {activity}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── How We Think ── */}
-      <section className="bg-slate-50 py-20">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">How We Operate</p>
-              <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-                The principles that drive how we work
-              </h2>
-              <p className="mt-4 text-slate-600">
-                These aren't values we put on a wall. They're the things that show up in how we run engagements, handle problems, and communicate with clients.
-              </p>
-
-              <div className="mt-8 p-6 bg-white rounded-2xl border border-slate-200">
-                <p className="font-semibold text-gov-navy">On the methodology side —</p>
-                <p className="mt-2 text-slate-600 text-sm leading-relaxed">
-                  Our 4 C's framework (Compliance → Capture → Connect → Consulting) isn't a sales slide. It's how we actually structure engagements, track progress, and measure whether the work is moving the business forward. Every client engagement maps to it.
-                </p>
-                <Link
-                  to="/about/methodology"
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-gov-blue hover:underline"
+      {/* FAQ Section */}
+      <Section title="Frequently Asked Questions" kicker="Common Questions">
+        <div className="space-y-4">
+          {faqs.map((faq, idx) => {
+            const isExpanded = expandedFaq === idx;
+            return (
+              <div 
+                key={idx}
+                className="rounded-2xl border border-slate-200 bg-white overflow-hidden"
+              >
+                <button
+                  onClick={() => setExpandedFaq(isExpanded ? null : idx)}
+                  className="w-full p-6 flex items-start justify-between gap-4 hover:bg-slate-50 transition text-left"
                 >
-                  See our methodology in detail
-                  <ArrowRight size={14} />
-                </Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {principles.map((p, idx) => (
-                <motion.div
-                  key={p.title}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.1 }}
-                >
-                  <Card className="p-5" hover={false}>
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gov-blue/10 text-gov-blue shrink-0">
-                        <p.icon size={18} />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gov-navy">{p.title}</h3>
-                        <p className="mt-1.5 text-sm text-slate-600 leading-relaxed">{p.body}</p>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── What We're Not ── */}
-      <section className="bg-white py-16">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="max-w-3xl mx-auto">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue text-center">Straight Talk</p>
-            <h2 className="mt-3 font-display text-2xl font-bold text-gov-navy text-center">
-              What we're not
-            </h2>
-            <div className="mt-8 space-y-4">
-              {[
-                {
-                  title: "We're not a staffing firm",
-                  body: "We don't place junior analysts at your company and bill by the hour. We're a lean expert team that owns the outcomes, not the headcount."
-                },
-                {
-                  title: "We're not a proposal factory",
-                  body: "We don't take every opportunity that comes in. We help you decide which ones are worth pursuing — and we don't write proposals we don't believe can win."
-                },
-                {
-                  title: "We're not template consultants",
-                  body: "Every engagement starts from your specific situation, not from our last client's pitch deck. The federal market is too competitive for copy-paste advice."
-                },
-              ].map((item) => (
-                <div key={item.title} className="flex items-start gap-4 p-5 rounded-xl bg-slate-50 border border-slate-200">
-                  <CheckCircle size={18} className="text-gov-green shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-gov-navy">{item.title}</p>
-                    <p className="mt-1 text-slate-600 text-sm">{item.body}</p>
+                  <h3 className="font-semibold text-gov-navy pr-4">{faq.question}</h3>
+                  <ChevronDown 
+                    size={20} 
+                    className={`text-gov-blue shrink-0 mt-1 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {isExpanded && (
+                  <div className="px-6 pb-6 pt-0 border-t border-slate-200">
+                    <p className="text-slate-600 text-sm leading-relaxed">{faq.answer}</p>
                   </div>
-                </div>
-              ))}
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </Section>
+
+      {/* Methodology Link */}
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <Card className="p-8 lg:p-12" hover={false}>
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <h3 className="font-display text-2xl font-bold text-gov-navy">
+                  Get Started Today
+                </h3>
+                <p className="mt-3 text-slate-600 max-w-xl">
+                  Schedule a free consultation to discuss your business goals and explore how we can help 
+                  you win your first government contract.
+                </p>
+              </div>
+              <LinkButton 
+                href={LINKS.booking} 
+                target="_blank" 
+                rel="noreferrer" 
+                size="lg"
+                className="shrink-0"
+              >
+                Book a Call
+                <ArrowRight size={18} className="ml-2" />
+              </LinkButton>
             </div>
-          </div>
+          </Card>
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <Section title="Work with people who know the work" kicker="Get In Touch" dark>
-        <div className="grid gap-6 sm:grid-cols-3 mb-8">
+      {/* CTA */}
+      <Section title="Questions? We're Here to Help" kicker="Get In Touch" dark>
+        <div className="grid gap-6 lg:grid-cols-3 mb-8">
           {[
-            { icon: Briefcase, title: "Tampa, FL", desc: "Serving clients across every state, working remote-first since day one." },
-            { icon: Users, title: "Senior-Only Team", desc: "Nobody on your engagement has fewer than 5 years of real-world govcon experience." },
-            { icon: TrendingUp, title: "Fixed-Price Engagements", desc: "No surprise invoices. You know what you're paying and what you're getting." },
-          ].map((item) => {
+            {
+              icon: Clock,
+              title: "Fast Response",
+              desc: "We reply to inquiries within 24 hours"
+            },
+            {
+              icon: DollarSign,
+              title: "Transparent Pricing",
+              desc: "No surprises. Fixed fees or hourly rates clearly outlined"
+            },
+            {
+              icon: Award,
+              title: "Proven Process",
+              desc: "15+ years of wins. We know what works"
+            },
+          ].map((item, idx) => {
             const Icon = item.icon;
             return (
-              <Card key={item.title} className="p-6 bg-white/10 border-white/20" hover={false}>
-                <Icon className="text-gov-gold mb-3" size={24} />
-                <h3 className="font-semibold text-white">{item.title}</h3>
-                <p className="mt-1 text-sm text-slate-300">{item.desc}</p>
+              <Card key={idx} className="p-6 bg-white/10 border-white/20" hover={false}>
+                <Icon className="text-gov-gold mb-4" size={28} />
+                <h3 className="font-semibold text-white mb-2">{item.title}</h3>
+                <p className="text-sm text-slate-300">{item.desc}</p>
               </Card>
             );
           })}
@@ -297,16 +446,16 @@ export default function About() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h3 className="font-display text-2xl font-bold text-white">
-                Let's talk about your federal goals
+                Let's discuss your goals
               </h3>
-              <p className="mt-3 text-slate-300 max-w-xl">
-                Book a free 30-minute call. Come with questions, an RFP, or just a goal — we'll figure out together what it actually takes to get there.
+              <p className="mt-3 text-slate-300">
+                Whether you need certification help, capture strategy, or proposal support—we've got a solution.
               </p>
             </div>
-            <LinkButton
-              href={LINKS.booking}
-              target="_blank"
-              rel="noreferrer"
+            <LinkButton 
+              href={LINKS.booking} 
+              target="_blank" 
+              rel="noreferrer" 
               size="lg"
               className="shrink-0"
             >
