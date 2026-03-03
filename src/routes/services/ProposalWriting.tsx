@@ -271,7 +271,7 @@ export default function ServicesProposalWriting() {
   return (
     <>
       <Helmet>
-        <title>Proposal Writing – GSA Managers Inc.</title>
+        <title>Proposal Writing – FedGovWin</title>
         <meta name="description" content="Professional government proposal writing services using the Shipley method tailored to your business. Full development, Red Team reviews, and past performance support." />
       </Helmet>
 
@@ -750,7 +750,7 @@ export default function ServicesProposalWriting() {
             </Card>
 
             <Card className="p-6 border-l-4 border-l-gov-crimson bg-white" hover={false}>
-              <div className="text-xs font-bold uppercase tracking-wider text-gov-crimson mb-3">GSA Managers Inc.</div>
+              <div className="text-xs font-bold uppercase tracking-wider text-gov-crimson mb-3">FedGovWin</div>
               <ul className="space-y-3">
                 {[
                   "Senior writers with evaluation experience",
@@ -857,7 +857,7 @@ export default function ServicesProposalWriting() {
         <div className="mt-8 text-center">
           <p className="text-slate-400">
             Questions? Call <a href="tel:8136650308" className="text-white hover:underline">(813) 665-0308</a> or 
-            email <a href="mailto:Info@GSAManagers.com" className="text-white hover:underline">Info@GSAManagers.com</a>
+            email <a href="mailto:Info@FedGovWin.com" className="text-white hover:underline">Info@FedGovWin.com</a>
           </p>
         </div>
       </Section>

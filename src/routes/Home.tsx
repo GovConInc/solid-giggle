@@ -85,18 +85,18 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>GSA Managers Inc. — Expert GSA Schedule Consulting | MAS Award | FCP Migration | Catalog Management</title>
+        <title>FedGovWin — Professional Federal Contracting Services | GSA Schedule | SBA Certifications | Proposal Writing</title>
         <meta
           name="description"
-          content="GSA Managers Inc. specializes in GSA Schedule applications, FCP catalog migration, modifications, and ongoing contract management. Guaranteed timelines, expert execution."
+          content="FedGovWin provides expert federal contracting consulting — GSA Schedule applications, SBA certifications, proposal writing, and ongoing contract management. Guaranteed timelines, proven results."
         />
         <meta
           name="keywords"
-          content="GSA Schedule, GSA MAS application, FAS Catalog Platform, FCP migration, GSA catalog management, GSA modifications, SAM.gov registration, 8(a) certification, government contracting, GSA Advantage"
+          content="federal contracting consulting, GSA Schedule, GSA MAS application, FAS Catalog Platform, FCP migration, SAM.gov registration, 8(a) certification, SBA certification, government contracting, proposal writing, FedGovWin"
         />
-        <link rel="canonical" href="https://gsamanagers.com/" />
-        <meta property="og:title" content="GSA Managers Inc. — Expert GSA Schedule Consulting" />
-        <meta property="og:description" content="GSA Schedule application, FCP catalog migration, and ongoing contract management — guaranteed timelines, expert execution." />
+        <link rel="canonical" href="https://fedgovwin.com/" />
+        <meta property="og:title" content="FedGovWin — Professional Federal Contracting Services" />
+        <meta property="og:description" content="Expert federal contracting consulting — GSA Schedule, certifications, proposal writing, and contract management. Guaranteed timelines." />
         <meta property="og:type" content="website" />
       </Helmet>
 
@@ -114,15 +114,15 @@ export default function Home() {
             >
               <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-1.5 text-sm font-bold text-slate-700 border border-slate-200">
                 <Zap size={14} className="animate-pulse-subtle" />
-                GSA Schedule Specialists
+                Federal Contracting Specialists
               </div>
 
               <h1 className="mt-6 font-display text-4xl font-black tracking-tight text-gov-navy sm:text-5xl lg:text-6xl leading-tight">
-                Your GSA Schedule. Managed Right.
+                Win Federal Contracts. Keep Winning.
               </h1>
 
               <p className="mt-6 text-lg text-slate-700 leading-relaxed">
-                We get companies onto the GSA Schedule and keep them there — with expert application support, FCP catalog management, and guaranteed timelines. No guessing. No delays.
+                FedGovWin helps businesses enter the federal marketplace, get certified, and win contracts — with expert GSA Schedule support, SBA certifications, and proposal writing that delivers results. Guaranteed timelines. No guessing.
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -131,7 +131,7 @@ export default function Home() {
                   <ArrowRight size={18} className="ml-2" />
                 </LinkButton>
                 <LinkButton href="/services" variant="secondary" size="lg">
-                  View Services
+                  Explore Services
                 </LinkButton>
               </div>
 
@@ -149,8 +149,8 @@ export default function Home() {
                     <Rocket className="text-gov-blue" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-xl text-gov-navy">Get Started</h3>
-                    <p className="text-sm text-slate-600">Choose your path</p>
+                    <h3 className="font-bold text-xl text-gov-navy">Where Do You Start?</h3>
+                    <p className="text-sm text-slate-600">Choose your path forward</p>
                   </div>
                 </div>
 
@@ -404,33 +404,33 @@ export default function Home() {
       </section>
 
       {/* Final CTA Section */}
-      <Section title="Ready to Get on the GSA Schedule?" kicker="Next Step" dark>
+      <Section title="Ready to Win Federal Contracts?" kicker="Next Step" dark>
         <Card className="p-8 lg:p-12 bg-white/5 border-white/10" hover={false}>
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="font-display text-3xl font-bold text-white mb-4">
-                Book Your Free GSA Readiness Call
+                Book Your Free Federal Readiness Call
               </h3>
               <p className="text-slate-300 text-lg leading-relaxed mb-6">
-                We'll assess your GSA eligibility, review your current schedule status or catalog,
-                and give you a clear action plan. No pitch — just actionable intelligence.
+                We'll assess your federal contracting eligibility, review your certifications and GSA status,
+                and deliver a clear action plan. No pitch — just actionable intelligence.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center gap-3 text-white">
                   <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  GSA eligibility and qualification review
+                  Federal eligibility and certification review
                 </li>
                 <li className="flex items-center gap-3 text-white">
                   <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  FCP migration readiness assessment
+                  GSA Schedule and FCP readiness assessment
                 </li>
                 <li className="flex items-center gap-3 text-white">
                   <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  Catalog compliance gap analysis
+                  Opportunity pipeline and win strategy
                 </li>
                 <li className="flex items-center gap-3 text-white">
                   <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  Clear next-step roadmap
+                  Clear next-step roadmap — no obligation
                 </li>
               </ul>
             </div>
@@ -441,10 +441,10 @@ export default function Home() {
                 <p className="text-slate-600 mb-6">
                   15-30 minutes. Zero obligation. 100% transparency.
                 </p>
-                <LinkButton 
-                  href={LINKS.booking} 
-                  target="_blank" 
-                  rel="noreferrer" 
+                <LinkButton
+                  href={LINKS.booking}
+                  target="_blank"
+                  rel="noreferrer"
                   size="lg"
                   className="w-full"
                 >
@@ -452,7 +452,7 @@ export default function Home() {
                   <ArrowRight size={18} className="ml-2" />
                 </LinkButton>
                 <p className="mt-4 text-xs text-slate-500">
-                  Used by Fortune 500s and startups alike
+                  Trusted by businesses of all sizes across the US
                 </p>
               </Card>
             </div>

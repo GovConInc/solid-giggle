@@ -1,10 +1,12 @@
 export const BRAND = {
-  name: "GSA Managers Inc.",
-  tagline: "Expert GSA Schedule Consulting",
+  name: "FedGovWin",
+  fullName: "FedGovWin Professional Services",
+  tagline: "Professional Federal Contracting Services",
   phone: "(813) 665-0308",
-  email: "Info@GSAManagers.com",
+  email: "Info@FedGovWin.com",
   location: "Tampa, FL",
   founder: "Sean Conway",
+  domain: "fedgovwin.com",
 };
 
 export const LINKS = {

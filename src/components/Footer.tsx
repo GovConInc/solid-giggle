@@ -11,17 +11,17 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div>
-              <img
-                src="/logo.png"
-                alt="GSA Managers Inc."
-                className="h-8 w-auto brightness-0 invert"
-              />
-              <div className="mt-2 text-xs text-slate-400">{BRAND.tagline}</div>
+              <span className="font-display leading-none select-none">
+                <span className="text-2xl font-black tracking-tight">
+                  <span className="text-white">Fed</span><span className="text-gov-sky">Gov</span><span className="text-gov-gold">Win</span>
+                </span>
+              </span>
+              <div className="mt-1 text-xs text-slate-400 uppercase tracking-wider font-semibold">{BRAND.tagline}</div>
             </div>
 
             <p className="mt-6 text-sm text-slate-400 leading-relaxed">
-              Expert GSA Schedule consulting — from application and award to FCP catalog
-              migration, modifications, and ongoing contract management.
+              Expert federal contracting consulting — GSA Schedule applications, SBA certifications,
+              proposal writing, and ongoing contract management. Guaranteed timelines, proven results.
             </p>
           </div>
 
@@ -84,7 +84,7 @@ export default function Footer() {
         <div className="mx-auto w-full max-w-7xl px-5 py-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-xs text-slate-500">
-              © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+              © {new Date().getFullYear()} {BRAND.fullName}. All rights reserved.
             </div>
             <div className="flex gap-6 text-xs text-slate-500">
               <a href="#" className="hover:text-slate-300 transition">Privacy Policy</a>

@@ -83,12 +83,15 @@ export default function Navbar() {
       {/* Main nav */}
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-5 py-4 lg:px-8">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center group">
-          <img
-            src="/logo.png"
-            alt="GSA Managers Inc."
-            className="h-10 w-auto transition-opacity group-hover:opacity-80"
-          />
+        <NavLink to="/" className="flex items-center group shrink-0">
+          <span className="font-display leading-none select-none">
+            <span className="text-2xl font-black tracking-tight">
+              <span className="text-gov-navy">Fed</span><span className="text-gov-blue">Gov</span><span className="text-gov-crimson">Win</span>
+            </span>
+            <span className="hidden sm:inline ml-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider align-middle">
+              Professional Services
+            </span>
+          </span>
         </NavLink>
 
         {/* Desktop Nav */}

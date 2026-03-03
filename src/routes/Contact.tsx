@@ -53,7 +53,9 @@ export default function Contact() {
   return (
     <>
       <Helmet>
-        <title>Contact Us — GSA Managers Inc.</title>
+        <title>Contact Us — FedGovWin Professional Services</title>
+        <meta name="description" content="Contact FedGovWin for expert federal contracting consulting — GSA Schedule, certifications, proposal writing, and more. Get a free readiness assessment." />
+        <link rel="canonical" href="https://fedgovwin.com/contact" />
       </Helmet>
 
       {/* Hero */}
@@ -62,11 +64,11 @@ export default function Contact() {
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Contact Us</p>
             <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl">
-              Let's Talk.
+              Let's Talk Federal Contracting.
             </h1>
             <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-              Have questions about certifications, capture strategy, GSA schedules, or proposal support? 
-              Send us a message or book a free readiness call. No pitch—just straight answers and a clear path forward.
+              Have questions about certifications, capture strategy, GSA schedules, or proposal support?
+              Send us a message or book a free readiness call. No pitch — just straight answers and a clear path forward.
             </p>
             
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">

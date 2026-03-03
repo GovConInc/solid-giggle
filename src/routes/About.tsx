@@ -157,7 +157,9 @@ export default function About() {
   return (
     <>
       <Helmet>
-        <title>About Us — GSA Managers Inc.</title>
+        <title>About Us — FedGovWin Professional Services</title>
+        <meta name="description" content="FedGovWin provides professional federal contracting consulting — GSA Schedule, SBA certifications, proposal writing, and more." />
+        <link rel="canonical" href="https://fedgovwin.com/about" />
       </Helmet>
 
       {/* Hero */}
@@ -166,10 +168,10 @@ export default function About() {
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">About Us</p>
             <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-gov-navy sm:text-5xl">
-              The GSA Schedule is powerful. We make sure you use it right.
+              Federal contracting is complex. We make it straightforward.
             </h1>
             <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-              GSA Managers Inc. exists because too many companies leave their GSA Schedule sitting idle, out of compliance, or poorly managed. We fix that — with disciplined application support, expert catalog management, and a team that treats your schedule like a revenue asset, not a checkbox.
+              FedGovWin exists because too many businesses leave federal contracting opportunities on the table — from unclaimed certifications to idle GSA Schedules and proposals that never win. We fix that, with disciplined strategy, expert execution, and a team that treats your federal program like a growth engine, not a compliance checkbox.
             </p>
           </div>
         </div>
@@ -180,30 +182,30 @@ export default function About() {
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div>
-              <p className="text-sm font-bold uppercase tracking-wider text-gov-crimson">Our Story</p>
+              <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Our Story</p>
               <h2 className="mt-3 font-display text-3xl font-bold text-gov-navy">
-                Built around the GSA Schedule, nothing else
+                Built for businesses serious about federal contracting
               </h2>
               <div className="mt-6 space-y-4 text-slate-600">
                 <p>
-                  We're based in {BRAND.location} and work exclusively with companies pursuing or
-                  managing a GSA Multiple Award Schedule. That singular focus means we know the
-                  portal, the contracting officers, and the pitfalls better than anyone.
+                  We're based in {BRAND.location} and work with companies across every stage of the federal
+                  contracting lifecycle — from initial SAM.gov registration and SBA certifications to GSA
+                  Schedule applications, proposal writing, and long-term contract management.
                 </p>
                 <p>
-                  The GSA landscape shifts constantly — FCP, Mass Mods, C&P reporting, new SINs —
-                  and most companies lack the in-house bandwidth to stay ahead of it. That's where
-                  we come in: keeping your schedule clean, your catalog current, and your contract
-                  active.
+                  The federal landscape shifts constantly — new regulations, platform migrations, changing
+                  agency priorities — and most businesses lack the in-house expertise to stay ahead of it.
+                  That's where FedGovWin comes in: keeping your registrations current, your certifications
+                  active, and your pipeline full.
                 </p>
                 <p>
-                  {BRAND.founder} has guided schedules across dozens of industries and led
-                  high-stakes migrations when GSA changed platforms. That experience is the
+                  {BRAND.founder} has guided companies through thousands of registrations, certifications,
+                  and contract awards across dozens of industries. That depth of experience is the
                   foundation of everything we deliver.
                 </p>
                 <p>
-                  Today, we manage schedules from initial award through multi-year continuity —
-                  handling the administrative burden so you can focus on winning task orders.
+                  Today, FedGovWin manages the full federal contracting journey — from initial eligibility
+                  through multi-year contract growth — so you can focus on delivering results.
                 </p>
               </div>
             </div>
@@ -386,10 +388,10 @@ export default function About() {
           <Card className="p-8 lg:p-12" hover={false}>
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <h3 className="font-display text-2xl font-bold text-black">
+                <h3 className="font-display text-2xl font-bold text-gov-navy">
                   Get Started Today
                 </h3>
-                <p className="mt-3 text-black-600 max-w-xl">
+                <p className="mt-3 text-slate-600 max-w-xl">
                   Schedule a free consultation to discuss your business goals and explore how we can help 
                   you win your first government contract.
                 </p>
@@ -431,8 +433,8 @@ export default function About() {
           ].map((item, idx) => {
             const Icon = item.icon;
             return (
-              <Card key={idx} className="p-6 bg-white/5 border-white/10" hover={false}>
-                <Icon className="text-gov-crimson mb-4" size={28} />
+              <Card key={idx} className="p-6 bg-white/10 border-white/20" hover={false}>
+                <Icon className="text-gov-gold mb-4" size={28} />
                 <h3 className="font-semibold text-white mb-2">{item.title}</h3>
                 <p className="text-sm text-slate-300">{item.desc}</p>
               </Card>

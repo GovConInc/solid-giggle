@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --ring: 17 24 39; /* gov-crimson / gray-900 */
+  --ring: 10 22 40; /* gov-navy */
 }
 
 * { 

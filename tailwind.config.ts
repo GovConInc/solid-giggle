@@ -6,9 +6,9 @@ export default {
     extend: {
       colors: {
         "gov-navy": "#0a1628",
-        "gov-crimson": "#111827",
-        "gov-blue": "#1e3a5f",
-        "gov-sky": "#0ea5e9",
+        "gov-crimson": "#b91c1c",
+        "gov-blue": "#1e4d8c",
+        "gov-sky": "#3b82f6",
         "gov-green": "#059669",
         "gov-gold": "#d97706",
       },

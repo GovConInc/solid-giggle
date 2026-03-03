@@ -180,7 +180,7 @@ export default function ServicesCertifications() {
   return (
     <>
       <Helmet>
-        <title>Certifications & Compliance — GSA Managers Inc.</title>
+        <title>Certifications & Compliance — FedGovWin</title>
         <meta name="description" content="SBA certifications, SAM.gov registration, and compliance management. Get certified and stay compliant with our expert support." />
       </Helmet>
 
@@ -668,7 +668,7 @@ export default function ServicesCertifications() {
                 </div>
                 <div className="flex items-center gap-2 text-slate-300">
                   <Mail size={16} />
-                  Info@GSAManagers.com
+                  Info@FedGovWin.com
                 </div>
                 <div className="flex items-center gap-2 text-slate-300">
                   <Calendar size={16} />

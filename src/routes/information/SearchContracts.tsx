@@ -6,8 +6,8 @@ export default function SearchContracts() {
   return (
     <>
       <Helmet>
-        <title>Search Contracts - GovSpend</title>
-        <meta name="description" content="Search and analyze federal contract awards data from SAM.gov" />
+        <title>Contract Award History — FedGovWin Professional Services</title>
+        <meta name="description" content="Search and analyze federal contract awards data from SAM.gov. Market intelligence for federal contracting professionals." />
       </Helmet>
 
       <Section title="Contract Award History" kicker="Market Intelligence">

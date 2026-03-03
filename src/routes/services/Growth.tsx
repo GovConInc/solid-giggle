@@ -244,7 +244,7 @@ export default function GrowthProgram() {
   return (
     <>
       <Helmet>
-        <title>Growth Program — Scale Your Federal Pipeline | GSA Managers Inc.</title>
+        <title>Growth Program — Scale Your Federal Pipeline | FedGovWin Professional Services</title>
         <meta name="description" content="Build a real federal contract pipeline. 2,200+ bid sources, marketing campaigns, unlimited proposal reviews, and opportunity qualification. $6,500." />
       </Helmet>
 
@@ -663,9 +663,9 @@ export default function GrowthProgram() {
               <Phone size={18} />
               (813) 665-0308
             </a>
-            <a href="mailto:Info@GSAManagers.com" className="flex items-center gap-2 hover:text-white transition">
+            <a href="mailto:Info@FedGovWin.com" className="flex items-center gap-2 hover:text-white transition">
               <Mail size={18} />
-              Info@GSAManagers.com
+              Info@FedGovWin.com
             </a>
           </div>
         </div>

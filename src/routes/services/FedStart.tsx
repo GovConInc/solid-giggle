@@ -219,7 +219,7 @@ export default function FedStartProgram() {
   return (
     <>
       <Helmet>
-        <title>FedStart Program — Your Federal Contractor Foundation | GSA Managers Inc.</title>
+        <title>FedStart Program — Your Federal Contractor Foundation | FedGovWin Professional Services</title>
         <meta name="description" content="Launch your federal contracting business in 30 days. SAM.gov registration, SBA certifications, capabilities statement, and marketing foundation. $3,200." />
       </Helmet>
 
@@ -588,9 +588,9 @@ export default function FedStartProgram() {
               <Phone size={18} />
               (813) 665-0308
             </a>
-            <a href="mailto:Info@GSAManagers.com" className="flex items-center gap-2 hover:text-white transition">
+            <a href="mailto:Info@FedGovWin.com" className="flex items-center gap-2 hover:text-white transition">
               <Mail size={18} />
-              Info@GSAManagers.com
+              Info@FedGovWin.com
             </a>
           </div>
         </div>

@@ -316,7 +316,7 @@ export default function ServicesGSA() {
   return (
     <>
       <Helmet>
-        <title>GSA Schedule Services — GSA Managers Inc.</title>
+        <title>GSA Schedule Services — FedGovWin</title>
         <meta name="description" content="Get on the GSA Schedule in 4–6 months with a 98% approval rate. FCP Baseline Upload for $999. Full contract management starting at $350/mo." />
       </Helmet>
 
@@ -1158,7 +1158,7 @@ export default function ServicesGSA() {
                   </div>
                   <div>
                     <div className="text-xs font-bold text-slate-400 uppercase">Email</div>
-                    <div className="text-white font-semibold">Info@GSAManagers.com</div>
+                    <div className="text-white font-semibold">Info@FedGovWin.com</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">

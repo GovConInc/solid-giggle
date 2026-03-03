@@ -125,7 +125,7 @@ export default function InformationCertification() {
   return (
     <>
       <Helmet>
-        <title>Certification Data — GSA Managers Inc.</title>
+        <title>Certification Data — FedGovWin</title>
       </Helmet>
 
       {/* Hero */}
@@ -221,21 +221,22 @@ export default function InformationCertification() {
             </Card>
           </div>
 
-          <Card className="mt-6 p-6 bg-gov-navy text-black-1200" hover={true}>FY24 Roadmap
+          <Card className="mt-6 p-6 bg-gov-navy text-white" hover={false}>
+            <div className="text-sm font-bold uppercase tracking-wider text-gov-gold mb-4">FY24 Market Data</div>
             <div className="grid gap-6 lg:grid-cols-3">
               <div>
-                <div className="text-sm font-semibold text-black-300">Total SBA Awards</div>
-                <div className="text-3xl font-bold mt-2">$375.9B</div>
+                <div className="text-sm font-semibold text-slate-400">Total SBA Awards</div>
+                <div className="text-3xl font-bold mt-2 text-white">$375.9B</div>
                 <div className="text-xs text-slate-400 mt-1">Combined 2024 awards</div>
               </div>
               <div>
-                <div className="text-sm font-semibold text-black-300">Market Share</div>
-                <div className="text-3xl font-bold mt-2">28.76%</div>
+                <div className="text-sm font-semibold text-slate-400">Market Share</div>
+                <div className="text-3xl font-bold mt-2 text-white">28.76%</div>
                 <div className="text-xs text-slate-400 mt-1">Federal procurement dollars</div>
               </div>
               <div>
-                <div className="text-sm font-semibold text-black-300">Market Population</div>
-                <div className="text-3xl font-bold mt-2">78,677</div>
+                <div className="text-sm font-semibold text-slate-400">Market Population</div>
+                <div className="text-3xl font-bold mt-2 text-white">78,677</div>
                 <div className="text-xs text-slate-400 mt-1">Small Businesses won contracts</div>
               </div>
             </div>

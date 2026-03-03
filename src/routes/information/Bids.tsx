@@ -203,7 +203,7 @@ export default function InformationBids() {
   return (
     <>
       <Helmet>
-        <title>Finding Government Bids — GSA Managers Inc.</title>
+        <title>Finding Government Bids — FedGovWin</title>
       </Helmet>
 
       {/* Hero */}
