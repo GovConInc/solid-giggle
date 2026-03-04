@@ -4,12 +4,11 @@ import {
   ArrowRight, 
   CheckCircle, 
   AlertTriangle, 
-  Clock, 
-  FileText, 
+  Clock,
+  FileText,
   Shield,
   Zap,
   Calendar,
-  Users,
   TrendingUp,
   ChevronDown,
   ChevronRight,
@@ -252,10 +251,10 @@ const fcpConsequences = [
 ];
 
 const fcpBenefits = [
-  { title: "7-Day Guarantee", desc: "Complete migration in one week or it's free", icon: Zap },
-  { title: "Data Validation", desc: "Ensure 100% accuracy before upload", icon: CheckCircle },
-  { title: "System Training", desc: "Learn the new FCP workflow hands-on", icon: BookOpen },
-  { title: "Ongoing Support", desc: "We're here when you need catalog updates", icon: Shield }
+  { title: "Fast Upload", desc: "Catalog live on GSA Advantage and eBuy in days", icon: Zap },
+  { title: "Data Validation", desc: "100% accuracy verified before going live", icon: CheckCircle },
+  { title: "3-Month Training", desc: "Personalized coaching on eBuy, Advantage!, Mods & more", icon: BookOpen },
+  { title: "Ongoing Support", desc: "We're here whenever you need catalog updates", icon: Shield }
 ];
 
 // ============================================
@@ -317,7 +316,7 @@ export default function ServicesGSA() {
     <>
       <Helmet>
         <title>GSA Schedule Services — FedGovWin Professional Services</title>
-        <meta name="description" content="New to GSA? We get you on the GSA Schedule in 4–6 months with a 98% approval rate. Already on GSA? FCP Baseline Upload for $999, contract management from $350/mo." />
+        <meta name="description" content="New to GSA? We submit your GSA Schedule application in 30 days — $5,500 Essentials or $9,000 Full-Service with a year of support. Catalog Platform upload + 3-month training for $999." />
       </Helmet>
 
       {/* ============================================ */}
@@ -383,9 +382,9 @@ export default function ServicesGSA() {
                   <div className="flex-1">
                     <h3 className="font-display text-lg font-bold text-gov-navy">Get on the GSA Schedule</h3>
                     <p className="text-sm text-slate-600 mt-1">Full application — SIN strategy, document prep, Holy Trinity review, and submission.</p>
-                    <div className="mt-3 flex items-baseline gap-2">
-                      <span className="font-display text-2xl font-bold text-gov-crimson">$7,500+</span>
-                      <span className="text-xs text-slate-500">depending on schedule type</span>
+                    <div className="mt-3 flex items-baseline gap-2 flex-wrap">
+                      <span className="font-display text-2xl font-bold text-gov-crimson">$5,500</span>
+                      <span className="text-xs text-slate-500">Essentials · or $9,000 Full-Service</span>
                     </div>
                   </div>
                 </div>
@@ -413,10 +412,10 @@ export default function ServicesGSA() {
                     <AlertTriangle size={24} />
                   </div>
                   <div className="flex-1">
-                    <div className="text-xs font-bold uppercase tracking-widest text-white/70 mb-1">Already Have a GSA Schedule?</div>
-                    <h3 className="font-display text-lg font-bold text-white">SIP is Retired. FCP is Mandatory.</h3>
-                    <p className="mt-2 text-white/90 text-sm leading-relaxed">
-                      Migrate your catalog to FCP now or lose your GSA Advantage visibility entirely.
+                    <div className="text-xs font-bold uppercase tracking-widest text-white mb-1">Already Have a GSA Schedule?</div>
+                    <h3 className="font-display text-lg font-bold text-white">Your Catalog Must Move to the GSA Catalog Platform.</h3>
+                    <p className="mt-2 text-white text-sm leading-relaxed">
+                      Upload your catalog to FCP now — or lose your GSA Advantage and eBuy visibility entirely.
                     </p>
                     <div className="mt-4 flex items-center gap-3 flex-wrap">
                       <LinkButton
@@ -426,10 +425,10 @@ export default function ServicesGSA() {
                         className="bg-white text-gov-crimson hover:bg-slate-100 font-bold inline-flex"
                         size="sm"
                       >
-                        Fix My Catalog — $999
+                        Upload My Catalog — $999
                         <ArrowRight size={16} className="ml-1.5" />
                       </LinkButton>
-                      <span className="text-white/60 text-xs">7-day guarantee</span>
+                      <span className="text-white text-xs font-medium">Includes 3-month training</span>
                     </div>
                   </div>
                 </div>
@@ -458,12 +457,12 @@ export default function ServicesGSA() {
               <div className="inline-flex items-center gap-2 rounded-full bg-gov-blue/10 border border-gov-blue/25 px-4 py-2">
                 <FileText size={15} className="text-gov-blue" />
                 <span className="text-sm font-semibold text-gov-blue">New Applications</span>
-                <span className="text-xs text-slate-500 font-medium">from $7,500</span>
+                <span className="text-xs text-slate-500 font-medium">from $5,500</span>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full bg-gov-crimson/10 border border-gov-crimson/25 px-4 py-2">
                 <Upload size={15} className="text-gov-crimson" />
-                <span className="text-sm font-semibold text-gov-crimson">FCP Migration</span>
-                <span className="text-xs text-slate-500 font-medium">$999 flat · existing contractors</span>
+                <span className="text-sm font-semibold text-gov-crimson">Catalog Platform Upload</span>
+                <span className="text-xs text-slate-500 font-medium">$999 flat · upload + 3-mo training</span>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full bg-gov-green/10 border border-gov-green/25 px-4 py-2">
                 <Settings size={15} className="text-gov-green" />
@@ -476,8 +475,8 @@ export default function ServicesGSA() {
           {/* Tab Navigation */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {[
-              { id: "submission", label: "New GSA Application", icon: FileText, desc: "From $7,500 — new applicants", audience: "new" },
-              { id: "fcp", label: "FCP Migration", icon: Upload, desc: "Flat $999 — existing contractors", urgent: true, audience: "existing" },
+              { id: "submission", label: "New GSA Application", icon: FileText, desc: "From $5,500 — new applicants", audience: "new" },
+              { id: "fcp", label: "Catalog Platform Upload", icon: Upload, desc: "Flat $999 — upload + 3-mo training", urgent: true, audience: "existing" },
               { id: "management", label: "Manage & Grow", icon: Settings, desc: "From $350/mo — existing contractors", audience: "existing" },
               { id: "benefits", label: "Why GSA?", icon: Star, desc: "The $50B+ opportunity" }
             ].map((tab) => (
@@ -651,7 +650,7 @@ export default function ServicesGSA() {
                   GSA MAS APPLICATION
                 </div>
                 <h2 className="font-display text-3xl font-bold text-gov-navy">
-                  On Schedule in 30 Days. Approved in 4–6 Months.
+                  Submitted in 30 Days. Approved in 4–6 Months.
                 </h2>
                 <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
                   Our "Holy Trinity" review process stress-tests every <strong>Administrative, Technical, and Pricing</strong> volume
@@ -756,52 +755,89 @@ export default function ServicesGSA() {
                 </div>
               </div>
               
-              {/* MAS Pricing */}
-              <div className="mt-12 grid gap-6 lg:grid-cols-3">
-                <Card className="p-6 text-center" hover>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue/10 text-gov-blue mx-auto">
+              {/* MAS Pricing — 2 Plans */}
+              <div className="mt-12 grid gap-6 lg:grid-cols-2">
+                <Card className="p-8 border-2 border-slate-200" hover>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue/10 text-gov-blue">
                     <FileText size={24} />
                   </div>
-                  <h3 className="mt-4 font-bold text-lg text-gov-navy">Products Schedule</h3>
-                  <p className="mt-2 text-sm text-slate-600">Commercial products and supplies</p>
-                  <div className="mt-4">
-                    <span className="text-sm text-slate-500">Starting at </span>
-                    <span className="font-display text-3xl font-bold text-gov-crimson">$7,500</span>
+                  <h3 className="mt-5 font-display text-xl font-bold text-gov-navy">Essentials Plan</h3>
+                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">Complete GSA MAS submission — from kickoff through Contracting Officer delivery.</p>
+                  <div className="mt-5 flex items-baseline gap-2">
+                    <span className="font-display text-4xl font-bold text-gov-crimson">$5,500</span>
+                    <span className="text-sm text-slate-500">flat fee</span>
                   </div>
+                  <ul className="mt-6 space-y-3">
+                    {[
+                      "SIN strategy & eligibility assessment",
+                      "Full document collection & preparation",
+                      "eOffer portal setup & data entry",
+                      "Holy Trinity review (Admin, Technical, Pricing)",
+                      "Final package audit & official submission"
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
+                        <CheckCircle size={16} className="text-gov-green shrink-0 mt-0.5" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <LinkButton
+                    href={LINKS.booking}
+                    target="_blank"
+                    rel="noreferrer"
+                    variant="secondary"
+                    className="mt-8 w-full justify-center"
+                  >
+                    Get Started — $5,500
+                    <ArrowRight size={16} className="ml-1.5" />
+                  </LinkButton>
                 </Card>
-                
-                <Card className="p-6 text-center border-gov-blue ring-2 ring-gov-blue/20 relative" hover>
+
+                <Card className="p-8 border-2 border-gov-blue ring-2 ring-gov-blue/20 relative" hover>
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="rounded-full bg-gov-blue px-3 py-1 text-xs font-bold text-white">
-                      Most Common
+                    <span className="rounded-full bg-gov-blue px-4 py-1 text-xs font-bold text-white shadow">
+                      Most Popular
                     </span>
                   </div>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue text-white mx-auto">
-                    <Users size={24} />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue text-white">
+                    <Star size={24} />
                   </div>
-                  <h3 className="mt-4 font-bold text-lg text-gov-navy">Services Schedule</h3>
-                  <p className="mt-2 text-sm text-slate-600">Professional and IT services</p>
-                  <div className="mt-4">
-                    <span className="text-sm text-slate-500">Starting at </span>
-                    <span className="font-display text-3xl font-bold text-gov-crimson">$9,500</span>
+                  <h3 className="mt-5 font-display text-xl font-bold text-gov-navy">Full-Service Plan</h3>
+                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">Everything in Essentials — plus a full year of post-award support, catalog setup & training.</p>
+                  <div className="mt-5 flex items-baseline gap-2">
+                    <span className="font-display text-4xl font-bold text-gov-crimson">$9,000</span>
+                    <span className="text-sm text-slate-500">flat fee</span>
                   </div>
-                </Card>
-                
-                <Card className="p-6 text-center" hover>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-crimson/10 text-gov-crimson mx-auto">
-                    <Layers size={24} />
-                  </div>
-                  <h3 className="mt-4 font-bold text-lg text-gov-navy">Combined Schedule</h3>
-                  <p className="mt-2 text-sm text-slate-600">Products + Services together</p>
-                  <div className="mt-4">
-                    <span className="text-sm text-slate-500">Starting at </span>
-                    <span className="font-display text-3xl font-bold text-gov-crimson">$12,500</span>
-                  </div>
+                  <ul className="mt-6 space-y-3">
+                    {[
+                      "Everything in the Essentials Plan",
+                      "GSA Catalog Platform (FCP) upload & setup",
+                      "Personalized 3-month training program",
+                      "eBuy, GSA Advantage!, Mods & more",
+                      "12 months of contract management",
+                      "Quarterly IFF reporting (first year)",
+                      "Dedicated account manager throughout"
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
+                        <CheckCircle size={16} className="text-gov-green shrink-0 mt-0.5" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <LinkButton
+                    href={LINKS.booking}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-8 w-full justify-center"
+                  >
+                    Get Started — $9,000
+                    <ArrowRight size={16} className="ml-1.5" />
+                  </LinkButton>
                 </Card>
               </div>
-              
+
               <p className="text-center text-sm text-slate-500 mt-4">
-                Pricing varies based on SIN complexity, number of labor categories, and past performance requirements
+                Not sure which plan fits? We'll help you decide in a free 30-minute consultation.
               </p>
             </div>
           )}
@@ -1000,7 +1036,7 @@ export default function ServicesGSA() {
                 <div>
                   <div className="text-xs font-bold uppercase tracking-wider text-gov-crimson mb-0.5">Existing GSA Contractors Only</div>
                   <p className="text-sm text-gov-navy font-medium">
-                    This service is exclusively for businesses that <strong>already hold an active GSA Schedule contract</strong> and need to migrate their catalog from SIP to FCP.{" "}
+                    This service is exclusively for businesses that <strong>already hold an active GSA Schedule contract</strong> and need to upload their catalog to the GSA Catalog Platform (FCP).{" "}
                     <button
                       onClick={() => setActiveTab("submission")}
                       className="text-gov-blue underline font-semibold hover:no-underline"
@@ -1017,15 +1053,15 @@ export default function ServicesGSA() {
                   ACTION REQUIRED — GSA CATALOG AT RISK
                 </div>
                 <h2 className="font-display text-3xl font-bold text-gov-navy">
-                  FAS Catalog Platform (FCP) Baseline Upload
+                  GSA Catalog Platform Upload & Training
                 </h2>
                 <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-                  GSA retired the Schedule Input Program (SIP). Every GSA contractor must complete
-                  an FCP Baseline Upload or their catalog is removed from GSA Advantage — permanently.
+                  GSA retired the legacy SIP system. Every contractor must upload their catalog to the
+                  GSA Catalog Platform (FCP) to stay visible on GSA Advantage and eligible for eBuy RFQs.
                 </p>
                 <div className="mt-6 inline-flex items-center gap-3 rounded-2xl bg-amber-50 border-2 border-amber-200 px-6 py-3">
                   <DollarSign size={20} className="text-amber-600" />
-                  <span className="font-bold text-amber-800">Flat fee: <span className="text-2xl">$999</span> — done in 7 business days.</span>
+                  <span className="font-bold text-amber-800">Flat <span className="text-2xl">$999</span> — catalog upload + personalized 3-month training included.</span>
                 </div>
               </div>
 
@@ -1066,23 +1102,23 @@ export default function ServicesGSA() {
 
                 <Card className="p-8 bg-gradient-to-br from-gov-navy to-gov-blue text-white" hover={false}>
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-display text-2xl font-bold">FCP Baseline Package</h3>
+                    <h3 className="font-display text-2xl font-bold">Catalog Platform Package</h3>
                     <span className="rounded-full bg-gov-gold px-3 py-1 text-xs font-bold text-gov-navy">FLAT FEE</span>
                   </div>
-                  <p className="text-slate-300 text-sm mb-6">Everything needed to restore your GSA Advantage visibility — guaranteed in 7 business days.</p>
+                  <p className="text-slate-300 text-sm mb-6">Your catalog uploaded to GSA Advantage and eBuy, plus three months of hands-on platform training.</p>
 
                   <div className="space-y-5 mb-8">
                     <div className="p-5 bg-white/10 rounded-lg border border-white/20">
                       <h4 className="font-bold mb-3 flex items-center gap-2">
                         <Zap size={18} className="text-gov-gold" />
-                        What's Included
+                        Catalog Upload — What We Handle
                       </h4>
                       <ul className="space-y-2.5">
                         {[
-                          "Full catalog migration from SIP to FCP",
-                          "Data validation and error correction before upload",
-                          "GSA Advantage visibility confirmation",
-                          "7-business-day completion guarantee",
+                          "Complete upload to GSA Catalog Platform (FCP)",
+                          "Data validation & error correction before going live",
+                          "GSA Advantage and eBuy visibility confirmed",
+                          "Catalog structure optimized for agency searchability",
                           "Post-upload walkthrough with your team"
                         ].map((item) => (
                           <li key={item} className="flex items-start gap-2 text-sm text-slate-200">
@@ -1096,16 +1132,16 @@ export default function ServicesGSA() {
                     <div className="p-5 bg-white/10 rounded-lg border border-white/20">
                       <h4 className="font-bold mb-3 flex items-center gap-2">
                         <BookOpen size={18} className="text-gov-gold" />
-                        Platform Training Included
+                        Personalized 3-Month Training Program
                       </h4>
                       <div className="grid grid-cols-2 gap-3">
                         {[
                           "eBuy (RFQ Portal)",
+                          "GSA Advantage!",
                           "eMod (Modifications)",
                           "Sales Reporting",
                           "Catalog Management",
-                          "GSA Advantage",
-                          "Compliance Monitoring"
+                          "Compliance Basics"
                         ].map((topic) => (
                           <div key={topic} className="flex items-center gap-2 text-sm text-slate-200">
                             <div className="h-1.5 w-1.5 rounded-full bg-gov-gold" />
@@ -1121,14 +1157,14 @@ export default function ServicesGSA() {
                     <div className="mb-2 flex items-end gap-3">
                       <span className="font-display text-6xl font-bold text-white">$999</span>
                     </div>
-                    <p className="text-xs text-slate-300 mb-6">No hidden fees. No ongoing commitment. Just your catalog live and visible — in a week.</p>
+                    <p className="text-xs text-slate-300 mb-6">No hidden fees. No ongoing commitment. Includes your full catalog upload and 3 months of personalized platform training.</p>
                     <LinkButton
                       href={LINKS.booking}
                       target="_blank"
                       rel="noreferrer"
                       className="w-full bg-white text-gov-navy hover:bg-slate-100 justify-center font-bold"
                     >
-                      Get My Catalog Live — $999
+                      Upload My Catalog — $999
                       <ArrowRight size={18} className="ml-2" />
                     </LinkButton>
                   </div>

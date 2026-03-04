@@ -1,22 +1,19 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { 
-  ArrowRight, CheckCircle, Clock, Target, Rocket, 
-  Calendar, Phone, Mail, BarChart3, Crown, ChevronDown,
-  Zap, Shield, Star, TrendingUp, Check, FileText,
-  Users, Database, MessageSquare, ClipboardCheck, Award,
-  Building2, Briefcase, Globe, Search, PieChart, 
-  ChevronRight, Layers, Handshake, CircleDollarSign,
-  Timer, AlertCircle, CheckCheck, Sparkles, ArrowDown,
-  Lightbulb, Repeat, Trophy, BookOpen, Compass, Eye,
-  BarChart, Send, RefreshCw, Settings, Megaphone
+import {
+  ArrowRight, CheckCircle, Target, Rocket,
+  BarChart3, Crown, ChevronDown, Shield, Check,
+  Lightbulb, Trophy, Repeat, CheckCheck, MessageSquare,
+  FileText, Megaphone, PieChart, Zap,
+  Layers, CircleDollarSign, Timer, Sparkles,
+  TrendingUp, Phone
 } from "lucide-react";
 import { cn } from "../../components/cn";
 import { LinkButton } from "../../components/Button";
 import { LINKS } from "../../lib/constants";
 
 // ============================================
-// THE 5 C's - CORRECT VERSION
+// THE 5 C's DATA
 // ============================================
 
 const fiveCsData = [
@@ -112,16 +109,8 @@ const fiveCsData = [
   },
 ];
 
-const processSteps = [
-  { step: 1, title: 'Get Compliant', desc: 'Registrations & Certs', color: 'blue' },
-  { step: 2, title: 'Build Concept', desc: 'Strategy & Materials', color: 'emerald' },
-  { step: 3, title: 'Capture Opps', desc: 'Pipeline & Intelligence', color: 'rose' },
-  { step: 4, title: 'Compete & Win', desc: 'Proposals & Awards', color: 'amber' },
-  { step: 5, title: 'Continue Growing', desc: 'Perform & Expand', color: 'purple' },
-];
-
 // ============================================
-// MARKETING PROGRAMS DATA - EXPANDED
+// PROGRAMS DATA
 // ============================================
 
 const marketingPrograms = [
@@ -132,13 +121,17 @@ const marketingPrograms = [
     duration: '3 Months',
     price: 3200,
     icon: Rocket,
-    gradient: 'from-blue-600 to-blue-800',
-    bgLight: 'bg-blue-50',
-    text: 'text-blue-600',
-    border: 'border-blue-200',
-    bg: 'bg-blue-600',
     idealFor: 'New contractors entering the federal market',
-    overview: 'Everything you need to become a qualified, visible federal contractor. We handle all your registrations, certifications, and create your first marketing foundation — so you can start pursuing contracts within 30 days.',
+    whoHeadline: 'New to federal contracting?',
+    whoDesc: 'Get fully registered, certified, and positioned to pursue contracts — all within 30 days. The compliance foundation every contractor needs before they can win.',
+    highlights: [
+      'SAM.gov registration completed in 5 business days',
+      'All applicable SBA certifications submitted (8(a), WOSB, SDVOSB, HUBZone)',
+      'DSBS & FEMA vendor portal profiles created',
+      'Professional capabilities statement — designed & print-ready',
+      'Marketing strategy document + 1,000 curated federal contacts',
+      'Monthly strategy calls for 3 months + 1 RFP review included',
+    ],
     csCoverage: [
       { c: 'Compliance', level: 'Full' },
       { c: 'Concept', level: 'Foundation' },
@@ -154,8 +147,8 @@ const marketingPrograms = [
         category: 'Compliance Services',
         icon: Shield,
         items: [
-          { 
-            name: 'SAM.gov Registration & Optimization', 
+          {
+            name: 'SAM.gov Registration & Optimization',
             timeline: '5 Business Days',
             description: 'Complete System for Award Management registration including CAGE code acquisition, UEI validation, entity information, NAICS code selection, and profile optimization.',
             details: [
@@ -167,8 +160,8 @@ const marketingPrograms = [
               'Representations and certifications',
             ]
           },
-          { 
-            name: 'DSBS Profile Creation', 
+          {
+            name: 'DSBS Profile Creation',
             timeline: '14 Business Days',
             description: 'SBA Dynamic Small Business Search profile — the database contracting officers are required to check before making awards under $250K.',
             details: [
@@ -179,8 +172,8 @@ const marketingPrograms = [
               'Search ranking improvement',
             ]
           },
-          { 
-            name: 'FEMA Vendor Portal Registration', 
+          {
+            name: 'FEMA Vendor Portal Registration',
             timeline: '14 Business Days',
             description: 'Access to FEMA emergency response contracting — a massive market most contractors completely miss.',
             details: [
@@ -190,8 +183,8 @@ const marketingPrograms = [
               'Geographic coverage setup',
             ]
           },
-          { 
-            name: 'SBA Certification Submissions', 
+          {
+            name: 'SBA Certification Submissions',
             timeline: '14 Days to Submit',
             description: 'We analyze your eligibility and submit applications for every SBA certification you qualify for.',
             details: [
@@ -210,8 +203,8 @@ const marketingPrograms = [
         category: 'Concept Development',
         icon: Lightbulb,
         items: [
-          { 
-            name: 'Professional Capabilities Statement', 
+          {
+            name: 'Professional Capabilities Statement',
             timeline: 'Weeks 2-3',
             description: 'The single most important marketing document in federal contracting. Professionally designed to make an impression in 30 seconds.',
             details: [
@@ -224,8 +217,8 @@ const marketingPrograms = [
               'Editable template for updates',
             ]
           },
-          { 
-            name: 'Marketing Strategy Document', 
+          {
+            name: 'Marketing Strategy Document',
             timeline: 'Week 4',
             description: 'Your attack plan. Which agencies, which opportunities, which approach — customized to your capabilities.',
             details: [
@@ -237,8 +230,8 @@ const marketingPrograms = [
               'Timeline and milestones',
             ]
           },
-          { 
-            name: '1,000 Targeted Contacts', 
+          {
+            name: '1,000 Targeted Contacts',
             timeline: 'Week 4',
             description: 'Curated contact list of contracting officers, small business specialists, and program managers at your target agencies.',
             details: [
@@ -256,8 +249,8 @@ const marketingPrograms = [
         category: 'Ongoing Support',
         icon: MessageSquare,
         items: [
-          { 
-            name: 'Monthly Capture Calls', 
+          {
+            name: 'Monthly Capture Calls',
             timeline: 'Months 1-3',
             description: 'Standing strategy sessions to review progress, answer questions, and adjust approach.',
             details: [
@@ -268,8 +261,8 @@ const marketingPrograms = [
               'Introduction facilitation',
             ]
           },
-          { 
-            name: 'One RFP Review', 
+          {
+            name: 'One RFP Review',
             timeline: 'When Ready',
             description: 'Professional review of your first proposal before submission.',
             details: [
@@ -304,15 +297,18 @@ const marketingPrograms = [
     duration: '6 Months',
     price: 6500,
     icon: BarChart3,
-    gradient: 'from-rose-600 to-rose-800',
-    bgLight: 'bg-rose-50',
-    text: 'text-rose-600',
-    border: 'border-rose-200',
-    bg: 'bg-rose-600',
     popular: true,
     idealFor: 'Contractors ready to actively pursue and win contracts',
-    overview: 'You have your foundation — now it\'s time to hunt. Growth adds the tools, data, and campaigns you need to build a real pipeline and start winning. Most clients see their first contract wins during this program.',
-    includesPrevious: 'FedStart',
+    whoHeadline: 'Registered but not winning?',
+    whoDesc: 'Turn your foundation into an active pipeline. Bid portal, marketing campaigns, and unlimited proposal reviews — so you stop leaving federal dollars on the table.',
+    highlights: [
+      'Everything in FedStart, included',
+      'Federal Bid Portal — 2,200+ bid sources, 6 months of access',
+      '2 professional email marketing campaigns (2,000 contacts)',
+      'Unlimited RFP reviews with debrief calls (3–5 day turnaround)',
+      'Daily bid alerts + opportunity qualification support',
+      'Prime contractor targeting and teaming strategy',
+    ],
     csCoverage: [
       { c: 'Compliance', level: 'Full' },
       { c: 'Concept', level: 'Full' },
@@ -330,8 +326,8 @@ const marketingPrograms = [
         category: 'Everything in FedStart',
         icon: CheckCheck,
         items: [
-          { 
-            name: 'Complete FedStart Package', 
+          {
+            name: 'Complete FedStart Package',
             timeline: 'Month 1',
             description: 'All compliance services, concept development, and support from FedStart included.',
             details: [
@@ -348,8 +344,8 @@ const marketingPrograms = [
         category: 'Capture Tools & Intelligence',
         icon: Target,
         items: [
-          { 
-            name: 'Federal Bid Portal Access', 
+          {
+            name: 'Federal Bid Portal Access',
             timeline: '6 Months',
             description: 'Stop checking 50 different websites. Our portal aggregates 2,200+ federal and state bid sources into one searchable interface.',
             details: [
@@ -363,8 +359,8 @@ const marketingPrograms = [
               'Training session included',
             ]
           },
-          { 
-            name: 'Daily Bid Alerts', 
+          {
+            name: 'Daily Bid Alerts',
             timeline: 'Automated',
             description: 'Wake up every morning to a curated list of opportunities matching your capabilities.',
             details: [
@@ -375,8 +371,8 @@ const marketingPrograms = [
               'Delivered to your inbox daily',
             ]
           },
-          { 
-            name: 'Opportunity Qualification Support', 
+          {
+            name: 'Opportunity Qualification Support',
             timeline: 'Ongoing',
             description: 'We help you decide which opportunities to pursue and which to skip.',
             details: [
@@ -392,10 +388,10 @@ const marketingPrograms = [
         category: 'Marketing Campaigns',
         icon: Megaphone,
         items: [
-          { 
-            name: '2 Email Marketing Campaigns', 
+          {
+            name: '2 Email Marketing Campaigns',
             timeline: 'Months 2 & 4',
-            description: 'Professional outreach campaigns targeting contracting officers and prime contractors. These aren\'t spam blasts — they\'re strategic introductions that generate meetings.',
+            description: "Professional outreach campaigns targeting contracting officers and prime contractors. These aren't spam blasts — they're strategic introductions that generate meetings.",
             details: [
               'Campaign strategy development',
               '1,000 contacts per campaign (2,000 total)',
@@ -407,8 +403,8 @@ const marketingPrograms = [
               'Performance reporting',
             ]
           },
-          { 
-            name: 'Prime Contractor Targeting', 
+          {
+            name: 'Prime Contractor Targeting',
             timeline: 'Months 2-6',
             description: '40% of federal dollars flow through primes to subs. We identify primes who need your capabilities.',
             details: [
@@ -425,8 +421,8 @@ const marketingPrograms = [
         category: 'Proposal Support',
         icon: FileText,
         items: [
-          { 
-            name: 'Unlimited Gold Team RFP Reviews', 
+          {
+            name: 'Unlimited Gold Team RFP Reviews',
             timeline: 'As Needed',
             description: 'Every proposal you submit gets a professional review. Our team evaluates your submission exactly like government evaluators would.',
             details: [
@@ -446,8 +442,8 @@ const marketingPrograms = [
         category: 'Ongoing Support',
         icon: MessageSquare,
         items: [
-          { 
-            name: 'Regular Strategy Sessions', 
+          {
+            name: 'Regular Strategy Sessions',
             timeline: 'Monthly',
             description: 'Standing meetings throughout the engagement to review pipeline, adjust strategy, and keep momentum.',
             details: [
@@ -483,14 +479,17 @@ const marketingPrograms = [
     duration: '12 Months',
     price: 15500,
     icon: Crown,
-    gradient: 'from-amber-500 to-orange-600',
-    bgLight: 'bg-amber-50',
-    text: 'text-amber-600',
-    border: 'border-amber-200',
-    bg: 'bg-amber-500',
     idealFor: 'Serious contractors committed to building a federal practice',
-    overview: 'We become your business development team. Dedicated capture management, quarterly campaigns, up to 5 full proposal developments, and year-round compliance. This is for contractors who are serious about winning.',
-    includesPrevious: 'Growth',
+    whoHeadline: 'Ready to make federal your primary revenue?',
+    whoDesc: "We become your business development team — dedicated capture management, full proposal writing, and year-round compliance. For contractors who aren't dabbling, they're building.",
+    highlights: [
+      'Everything in Growth, included',
+      'Dedicated named capture manager for 12 full months',
+      'Up to 5 fully written and submitted proposals',
+      '4 quarterly marketing campaigns all year (Q1–Q4)',
+      'Year-round compliance management — no renewals missed',
+      'Same-day priority access via phone, email & text',
+    ],
     csCoverage: [
       { c: 'Compliance', level: 'Full + Managed' },
       { c: 'Concept', level: 'Full + Ongoing' },
@@ -509,8 +508,8 @@ const marketingPrograms = [
         category: 'Everything in Growth',
         icon: CheckCheck,
         items: [
-          { 
-            name: 'Complete Growth Package', 
+          {
+            name: 'Complete Growth Package',
             timeline: 'Included',
             description: 'All FedStart and Growth services included as your foundation.',
             details: [
@@ -528,10 +527,10 @@ const marketingPrograms = [
         category: 'Dedicated Capture Management',
         icon: PieChart,
         items: [
-          { 
-            name: 'Dedicated Capture Manager', 
+          {
+            name: 'Dedicated Capture Manager',
             timeline: '12 Months',
-            description: 'Your own capture manager who builds and maintains your opportunity pipeline. This is like having a full-time BD person without the salary.',
+            description: "Your own capture manager who builds and maintains your opportunity pipeline. This is like having a full-time BD person without the salary.",
             details: [
               'Named capture manager assigned',
               'Weekly pipeline updates',
@@ -544,8 +543,8 @@ const marketingPrograms = [
               '10-15 qualified pursuits active',
             ]
           },
-          { 
-            name: 'Pipeline Dashboard', 
+          {
+            name: 'Pipeline Dashboard',
             timeline: 'Always Current',
             description: 'Living pipeline spreadsheet tracking every opportunity from identification through award.',
             details: [
@@ -562,8 +561,8 @@ const marketingPrograms = [
         category: 'Quarterly Marketing Campaigns',
         icon: Megaphone,
         items: [
-          { 
-            name: '4 Full Marketing Campaigns', 
+          {
+            name: '4 Full Marketing Campaigns',
             timeline: 'Q1, Q2, Q3, Q4',
             description: 'Sustained market presence with quarterly campaigns targeting different verticals and audiences throughout the year.',
             details: [
@@ -583,10 +582,10 @@ const marketingPrograms = [
         category: 'Full Proposal Development',
         icon: FileText,
         items: [
-          { 
-            name: 'Up to 5 Complete Proposals', 
+          {
+            name: 'Up to 5 Complete Proposals',
             timeline: 'As Opportunities Arise',
-            description: 'We don\'t just review — we write. Complete proposal development from RFP analysis through submission-ready package. This alone is worth $25,000+.',
+            description: "We don't just review — we write. Complete proposal development from RFP analysis through submission-ready package. This alone is worth $25,000+.",
             details: [
               '5 full proposal developments included',
               'RFP analysis and compliance matrix',
@@ -607,8 +606,8 @@ const marketingPrograms = [
         category: 'Year-Round Compliance',
         icon: Shield,
         items: [
-          { 
-            name: 'Compliance Management', 
+          {
+            name: 'Compliance Management',
             timeline: 'Continuous',
             description: 'Never worry about expirations or renewals. We monitor everything and handle it proactively.',
             details: [
@@ -627,10 +626,10 @@ const marketingPrograms = [
         category: 'Priority Support',
         icon: Zap,
         items: [
-          { 
-            name: 'Priority Access', 
+          {
+            name: 'Priority Access',
             timeline: 'Same Day',
-            description: 'Questions don\'t wait for monthly calls. Direct access to senior consultants with same-day response.',
+            description: "Questions don't wait for monthly calls. Direct access to senior consultants with same-day response.",
             details: [
               'Same-day email response',
               'Live phone or 2-hour callback',
@@ -640,8 +639,8 @@ const marketingPrograms = [
               'Priority scheduling',
             ]
           },
-          { 
-            name: 'Quarterly Business Reviews', 
+          {
+            name: 'Quarterly Business Reviews',
             timeline: '4x/Year',
             description: 'Comprehensive strategic reviews every quarter to assess results and adjust approach.',
             details: [
@@ -666,77 +665,6 @@ const marketingPrograms = [
     ],
     notIncluded: [],
     upgradeNote: null,
-  },
-];
-
-// ============================================
-// GSA SERVICES
-// ============================================
-
-const gsaServices = [
-  {
-    id: 'gsa-submission',
-    name: 'GSA Schedule Submission',
-    price: 5500,
-    timeline: '60-90 Days',
-    icon: FileText,
-    description: 'Complete GSA Multiple Award Schedule (MAS) application from initial assessment through contract award.',
-    features: [
-      'Schedule eligibility assessment',
-      'SIN (Special Item Number) selection strategy',
-      'Pricing strategy development',
-      'Complete offer package preparation',
-      'FPT (Federal Procurement Tool) setup',
-      'Negotiations support',
-      'Award documentation',
-      'GSA Advantage setup',
-    ],
-    requirements: [
-      '2+ years in business',
-      '2 years financial statements',
-      'Relevant past performance',
-      'Commercial pricing history',
-    ],
-    process: [
-      { phase: 'Assessment', time: 'Week 1', desc: 'Evaluate eligibility and determine best SINs' },
-      { phase: 'Preparation', time: 'Weeks 2-4', desc: 'Gather documentation, develop pricing' },
-      { phase: 'Submission', time: 'Week 5', desc: 'Submit complete offer package' },
-      { phase: 'Negotiations', time: 'Weeks 6-12', desc: 'Respond to GSA questions, negotiate terms' },
-      { phase: 'Award', time: 'Week 12+', desc: 'Receive contract, begin GSA Advantage setup' },
-    ],
-  },
-  {
-    id: 'gsa-maintenance',
-    name: 'GSA Schedule Maintenance',
-    price: 2500,
-    timeline: 'Annual',
-    icon: Settings,
-    description: 'Keep your GSA Schedule compliant and competitive with ongoing management.',
-    features: [
-      'Annual compliance review',
-      'Price increase modifications',
-      'SIN additions and deletions',
-      'Mass modification processing',
-      'Industrial Funding Fee (IFF) reporting',
-      'Sales reporting support',
-      'Option period exercises',
-      'Catalog updates',
-    ],
-  },
-  {
-    id: 'fcp-migration',
-    name: 'FCP Baseline Migration',
-    price: 1500,
-    timeline: '7-14 Days',
-    icon: RefreshCw,
-    description: 'Migrate from legacy SIP/EDI to the new FAS Catalog Platform (FCP) before your deadline.',
-    features: [
-      'Current catalog assessment',
-      'Product/Services Plus file creation',
-      'FCP baseline submission',
-      'Compliance verification',
-      'Training on new platform',
-    ],
   },
 ];
 
@@ -793,7 +721,7 @@ const stats = [
 ];
 
 // ============================================
-// HELPER
+// COLOR HELPERS
 // ============================================
 
 const getColorClasses = (color: string) => ({
@@ -804,6 +732,13 @@ const getColorClasses = (color: string) => ({
   gradient: color === 'blue' ? 'from-blue-500 to-blue-700' : color === 'emerald' ? 'from-emerald-500 to-emerald-700' : color === 'rose' ? 'from-rose-500 to-rose-700' : color === 'amber' ? 'from-amber-400 to-orange-600' : 'from-purple-500 to-purple-700',
 });
 
+// Brand-aligned program colors
+const programAccent: Record<string, { header: string; accent: string; light: string; border: string; badge: string }> = {
+  fedstart: { header: 'bg-gov-blue', accent: 'text-gov-blue', light: 'bg-gov-blue/8', border: 'border-gov-blue/25', badge: 'bg-gov-blue/10 text-gov-blue' },
+  growth:   { header: 'bg-gov-crimson', accent: 'text-gov-crimson', light: 'bg-gov-crimson/8', border: 'border-gov-crimson/25', badge: 'bg-gov-crimson/10 text-gov-crimson' },
+  prime:    { header: 'bg-gov-navy', accent: 'text-gov-gold', light: 'bg-gov-navy/5', border: 'border-gov-navy/20', badge: 'bg-gov-gold/20 text-gov-navy' },
+};
+
 // ============================================
 // COMPONENT
 // ============================================
@@ -811,170 +746,96 @@ const getColorClasses = (color: string) => ({
 export default function Programs() {
   const [expandedProgram, setExpandedProgram] = useState<string | null>(null);
   const [expandedC, setExpandedC] = useState<string | null>(null);
-  const comparisonRef = useRef<HTMLDivElement>(null);
-  const programsRef = useRef<HTMLDivElement>(null);
-  const fiveCsRef = useRef<HTMLDivElement>(null);
-
-  const scrollToComparison = () => comparisonRef.current?.scrollIntoView({ behavior: 'smooth' });
-  const scrollToPrograms = () => programsRef.current?.scrollIntoView({ behavior: 'smooth' });
-  const scrollToFiveCs = () => fiveCsRef.current?.scrollIntoView({ behavior: 'smooth' });
 
   return (
     <>
       <Helmet>
         <title>Federal Contractor Programs — FedGovWin Professional Services</title>
-        <meta name="description" content="Win federal contracts with our proven 5 C's methodology. FedStart, Growth, and Prime programs plus GSA Schedule services." />
+        <meta name="description" content="Win federal contracts with our proven 5 C's methodology. FedStart ($3,200), Growth ($6,500), and Prime ($15,500) — clear deliverables, guaranteed timelines." />
       </Helmet>
 
+      {/* ============================================ */}
       {/* HERO */}
-      <section className="relative py-20 lg:py-28 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 overflow-hidden">
+      {/* ============================================ */}
+      <section className="relative bg-gov-navy overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-rose-500/10 rounded-full blur-[120px]" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-gov-blue/15 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gov-crimson/10 rounded-full blur-[100px]" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-sm text-white/80 mb-6">
-              <Sparkles size={16} className="text-amber-400" />
-              Federal Contractor Programs
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
-              Everything You Need to
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
-                Win Federal Contracts
-              </span>
-            </h1>
-
-            <p className="mt-6 text-xl text-slate-300 leading-relaxed">
-              Built on our proven 5 C's methodology: Compliance, Concept, Capture, Compete, and Continue. Three programs with clear deliverables and guaranteed timelines.
-            </p>
-
-            <div className="mt-10 flex flex-wrap gap-4">
-              <button onClick={scrollToFiveCs} className="inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-900 font-semibold rounded-lg hover:bg-slate-100 transition">
-                The 5 C's <ArrowDown size={18} />
-              </button>
-              <button onClick={scrollToPrograms} className="px-6 py-3 bg-white/10 border border-white/20 text-white rounded-lg hover:bg-white/20 transition">
-                View Programs
-              </button>
-              <button onClick={scrollToComparison} className="px-6 py-3 text-white/70 hover:text-white transition">
-                Compare All →
-              </button>
-            </div>
+        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 py-20 lg:py-28">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-sm text-white/80 mb-6">
+            <Sparkles size={15} className="text-gov-gold" />
+            Federal Contractor Programs
           </div>
 
-          {/* Stats */}
-          <div className="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {stats.map((stat) => {
-              const Icon = stat.icon;
-              return (
-                <div key={stat.label} className="p-5 rounded-xl bg-white/5 border border-white/10">
-                  <Icon size={20} className="text-amber-400 mb-2" />
-                  <div className="text-2xl font-bold text-white">{stat.value}</div>
-                  <div className="text-sm text-slate-400">{stat.label}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* THE 5 C's METHODOLOGY */}
-      <section ref={fiveCsRef} className="py-20 lg:py-28 bg-white scroll-mt-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-sm text-slate-700 font-medium mb-6">
-              <Layers size={16} />
-              Our Proven Framework
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                Everything You Need to
+                <span className="block text-gov-gold mt-1">Win Federal Contracts.</span>
+              </h1>
+              <p className="mt-6 text-xl text-slate-300 leading-relaxed">
+                Three programs built on our proven 5 C's methodology — from getting registered to building a serious federal practice. Clear deliverables, real timelines, no guesswork.
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer" size="lg" className="bg-white text-gov-navy hover:bg-slate-100 font-bold">
+                  Book Free Consultation
+                  <ArrowRight size={18} className="ml-2" />
+                </LinkButton>
+                <a href="#programs" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 border border-white/20 text-white rounded-lg hover:bg-white/20 transition font-semibold">
+                  View Programs
+                  <ArrowRight size={16} />
+                </a>
+              </div>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900">The 5 C's of Federal Contracting</h2>
-            <p className="mt-6 text-xl text-slate-600 max-w-3xl mx-auto">
-              Every successful government contractor masters these five disciplines. Our programs are structured around this proven methodology.
-            </p>
-          </div>
 
-          {/* Process Flow - Visual */}
-          <div className="relative py-8 mb-16">
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-rose-500 to-purple-500 -translate-y-1/2" />
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
-              {processSteps.map((step) => {
-                const colors = getColorClasses(step.color);
+            {/* Quick program price pills */}
+            <div className="space-y-3">
+              {marketingPrograms.map((p) => {
+                const colors = programAccent[p.id];
+                const Icon = p.icon;
                 return (
-                  <div key={step.step} className="flex flex-col items-center text-center">
-                    <div className={cn("w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl mb-3 relative z-10 shadow-lg bg-gradient-to-br", colors.gradient)}>
-                      {step.step}
+                  <a
+                    key={p.id}
+                    href="#programs"
+                    className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all group"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center text-white shrink-0", colors.header)}>
+                        <Icon size={20} />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-white">{p.name}</span>
+                          {p.popular && (
+                            <span className="px-2 py-0.5 rounded-full bg-gov-gold/20 text-gov-gold text-xs font-bold">Popular</span>
+                          )}
+                        </div>
+                        <span className="text-sm text-slate-400">{p.duration} · {p.idealFor}</span>
+                      </div>
                     </div>
-                    <h4 className="font-bold text-slate-900">{step.title}</h4>
-                    <p className="text-sm text-slate-500">{step.desc}</p>
-                  </div>
+                    <div className="text-right shrink-0 ml-4">
+                      <div className="font-display text-xl font-bold text-white">${p.price.toLocaleString()}</div>
+                      <ArrowRight size={14} className="ml-auto text-slate-500 group-hover:text-white transition mt-0.5" />
+                    </div>
+                  </a>
                 );
               })}
             </div>
           </div>
 
-          {/* 5 C's Expandable Cards */}
-          <div className="space-y-4">
-            {fiveCsData.map((c) => {
-              const Icon = c.icon;
-              const colors = getColorClasses(c.color);
-              const isExpanded = expandedC === c.number;
-              
+          {/* Stats */}
+          <div className="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4 pt-10 border-t border-white/10">
+            {stats.map((stat) => {
+              const Icon = stat.icon;
               return (
-                <div key={c.number} className={cn("rounded-2xl border-2 transition-all overflow-hidden", colors.border, isExpanded ? "shadow-lg" : "")}>
-                  {/* Header - Always Visible */}
-                  <button
-                    onClick={() => setExpandedC(isExpanded ? null : c.number)}
-                    className="w-full p-6 flex items-center gap-6 text-left hover:bg-slate-50 transition"
-                  >
-                    <div className={cn("w-14 h-14 rounded-xl flex items-center justify-center text-white shrink-0 bg-gradient-to-br", colors.gradient)}>
-                      <Icon size={28} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3">
-                        <span className={cn("text-sm font-bold px-2 py-0.5 rounded", colors.bgLight, colors.text)}>C{c.number}</span>
-                        <h3 className="text-xl font-bold text-slate-900">{c.name}</h3>
-                        <span className="text-slate-500">—</span>
-                        <span className={cn("font-medium", colors.text)}>{c.tagline}</span>
-                      </div>
-                      <p className="text-slate-600 mt-1">{c.description}</p>
-                    </div>
-                    <ChevronDown size={24} className={cn("text-slate-400 shrink-0 transition-transform", isExpanded && "rotate-180")} />
-                  </button>
-
-                  {/* Expanded Content */}
-                  {isExpanded && (
-                    <div className={cn("px-6 pb-6 border-t", colors.border)}>
-                      <div className="pt-6 grid lg:grid-cols-2 gap-8">
-                        {/* What It Means */}
-                        <div>
-                          <h4 className="font-bold text-slate-900 mb-3">What It Means</h4>
-                          <p className="text-slate-600 mb-6">{c.whatItMeans}</p>
-                          
-                          <div className={cn("p-4 rounded-xl", colors.bgLight)}>
-                            <h5 className={cn("font-bold mb-2", colors.text)}>Outcome</h5>
-                            <p className="text-slate-700">{c.outcome}</p>
-                          </div>
-                        </div>
-
-                        {/* Elements */}
-                        <div>
-                          <h4 className="font-bold text-slate-900 mb-3">Key Elements</h4>
-                          <div className="space-y-3">
-                            {c.elements.map((el, i) => (
-                              <div key={i} className="flex items-start gap-3">
-                                <Check size={18} className={cn("shrink-0 mt-0.5", colors.text)} />
-                                <div>
-                                  <span className="font-medium text-slate-900">{el.name}</span>
-                                  <p className="text-sm text-slate-500">{el.desc}</p>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                <div key={stat.label} className="flex items-center gap-3">
+                  <Icon size={22} className="text-gov-gold shrink-0" />
+                  <div>
+                    <div className="font-display text-2xl font-bold text-white">{stat.value}</div>
+                    <div className="text-sm text-slate-400">{stat.label}</div>
+                  </div>
                 </div>
               );
             })}
@@ -982,154 +843,177 @@ export default function Programs() {
         </div>
       </section>
 
-      {/* MARKETING PROGRAMS */}
-      <section ref={programsRef} className="py-20 lg:py-28 bg-slate-50 scroll-mt-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900">Marketing Programs</h2>
-            <p className="mt-4 text-lg text-slate-600">Choose your level of support — upgrade anytime with full credit applied</p>
+      {/* ============================================ */}
+      {/* PROGRAM CARDS — 3-column grid */}
+      {/* ============================================ */}
+      <section id="programs" className="bg-slate-50 py-20 scroll-mt-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Choose Your Program</p>
+            <h2 className="mt-3 font-display text-3xl lg:text-4xl font-bold text-gov-navy">
+              Three Levels of Support. One Path to Winning.
+            </h2>
+            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+              Pick where you are. Upgrade anytime — your full investment carries forward as credit.
+            </p>
           </div>
 
-          {/* Program Cards */}
-          <div className="space-y-8">
+          <div className="grid gap-6 lg:grid-cols-3">
             {marketingPrograms.map((program) => {
               const Icon = program.icon;
+              const colors = programAccent[program.id];
               const isExpanded = expandedProgram === program.id;
-              
+
               return (
-                <div 
+                <div
                   key={program.id}
                   className={cn(
-                    "rounded-3xl border-2 bg-white transition-all overflow-hidden",
-                    program.popular ? "border-rose-300 shadow-xl" : "border-slate-200",
+                    "rounded-2xl bg-white border-2 flex flex-col overflow-hidden transition-all",
+                    program.popular
+                      ? "border-gov-crimson shadow-xl shadow-gov-crimson/10 ring-2 ring-gov-crimson/20"
+                      : "border-slate-200 hover:border-slate-300 hover:shadow-lg"
                   )}
                 >
+                  {/* Popular banner */}
                   {program.popular && (
-                    <div className="bg-rose-600 text-white text-center py-2 text-sm font-bold">
+                    <div className="bg-gov-crimson text-white text-center py-1.5 text-xs font-bold tracking-wider uppercase">
                       Most Popular — Best Value for Active Pursuit
                     </div>
                   )}
-                  
-                  <div className="p-8">
-                    {/* Header Row */}
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6">
-                      <div className="flex items-center gap-5">
-                        <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br", program.gradient)}>
-                          <Icon size={32} />
+
+                  {/* Colored header */}
+                  <div className={cn("p-6 text-white", colors.header)}>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                          <Icon size={24} />
                         </div>
                         <div>
-                          <h3 className="text-2xl font-bold text-slate-900">{program.name}</h3>
-                          <p className={cn("font-medium", program.text)}>{program.tagline}</p>
-                          <p className="text-sm text-slate-500 mt-1">{program.idealFor}</p>
+                          <h3 className="font-display text-2xl font-bold">{program.name}</h3>
+                          <p className="text-sm text-white/80">{program.tagline}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-6">
-                        <div className="text-right">
-                          <div className="text-4xl font-bold text-slate-900">${program.price.toLocaleString()}</div>
-                          <div className="text-slate-500">{program.duration}</div>
-                        </div>
-                        <LinkButton href="/register" className={cn("px-6 py-3 text-white bg-gradient-to-r whitespace-nowrap", program.gradient)}>
-                          Get Started
-                        </LinkButton>
+                      <div className="text-right shrink-0 ml-3">
+                        <div className="font-display text-3xl font-bold">${program.price.toLocaleString()}</div>
+                        <div className="text-sm text-white/70">{program.duration}</div>
                       </div>
                     </div>
+                  </div>
 
-                    {/* Overview */}
-                    <p className="text-slate-600 mb-6">{program.overview}</p>
+                  {/* Card body */}
+                  <div className="p-6 flex flex-col flex-1">
+                    {/* Who it's for */}
+                    <div className={cn("rounded-xl p-4 mb-5", colors.light, colors.border, "border")}>
+                      <p className={cn("font-bold text-sm mb-1", colors.accent)}>{program.whoHeadline}</p>
+                      <p className="text-sm text-slate-700 leading-relaxed">{program.whoDesc}</p>
+                    </div>
 
-                    {/* Key Metrics */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                      {program.keyMetrics.map((m, i) => (
-                        <div key={i} className={cn("p-4 rounded-xl text-center", program.bgLight)}>
-                          <div className={cn("text-2xl font-bold", program.text)}>{m.metric}</div>
-                          <div className="text-sm text-slate-600">{m.label}</div>
+                    {/* Top highlights */}
+                    <ul className="space-y-2.5 mb-6 flex-1">
+                      {program.highlights.map((item) => (
+                        <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
+                          <CheckCircle size={16} className="text-gov-green shrink-0 mt-0.5" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Key metrics */}
+                    <div className="grid grid-cols-2 gap-2 mb-5">
+                      {program.keyMetrics.map((m) => (
+                        <div key={m.label} className={cn("p-3 rounded-lg text-center", colors.light)}>
+                          <div className={cn("font-display text-lg font-bold", colors.accent)}>{m.metric}</div>
+                          <div className="text-xs text-slate-600 font-medium">{m.label}</div>
                         </div>
                       ))}
                     </div>
 
-                    {/* 5 C's Coverage */}
-                    <div className="flex flex-wrap items-center gap-2 mb-6">
-                      <span className="text-sm text-slate-500 mr-2">Covers:</span>
-                      {program.csCoverage.map((coverage, i) => (
-                        <span key={i} className={cn("px-3 py-1 rounded-full text-sm font-medium", program.bgLight, program.text)}>
-                          {coverage.c}: {coverage.level}
-                        </span>
-                      ))}
-                    </div>
+                    {/* CTA */}
+                    <LinkButton
+                      href={LINKS.booking}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={cn(
+                        "w-full justify-center font-bold mb-3",
+                        program.popular
+                          ? "bg-gov-crimson hover:bg-gov-crimson/90 text-white"
+                          : program.id === 'prime'
+                          ? "bg-gov-navy hover:bg-gov-navy/90 text-white"
+                          : ""
+                      )}
+                    >
+                      Start {program.name} — ${program.price.toLocaleString()}
+                      <ArrowRight size={16} className="ml-1.5" />
+                    </LinkButton>
 
-                    {program.includesPrevious && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg text-sm font-medium mb-6">
-                        <CheckCheck size={18} />
-                        Includes everything in {program.includesPrevious}
-                      </div>
-                    )}
-
-                    {/* Expand/Collapse Button */}
+                    {/* Full details toggle */}
                     <button
                       onClick={() => setExpandedProgram(isExpanded ? null : program.id)}
                       className={cn(
-                        "w-full py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2",
-                        isExpanded ? "bg-slate-100 text-slate-700" : cn(program.bgLight, program.text)
+                        "w-full py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 border",
+                        isExpanded
+                          ? "bg-slate-100 text-slate-700 border-slate-200"
+                          : cn("bg-white text-slate-600 hover:bg-slate-50 border-slate-200", "hover:border-slate-300")
                       )}
                     >
-                      {isExpanded ? 'Hide Details' : 'View Full Details & Deliverables'}
-                      <ChevronDown size={20} className={cn("transition-transform", isExpanded && "rotate-180")} />
+                      {isExpanded ? 'Hide Full Breakdown' : 'See Full Deliverables'}
+                      <ChevronDown size={16} className={cn("transition-transform", isExpanded && "rotate-180")} />
                     </button>
+                  </div>
 
-                    {/* Expanded Content */}
-                    {isExpanded && (
-                      <div className="mt-8 pt-8 border-t border-slate-200">
-                        {/* Deliverables by Category */}
-                        <div className="space-y-10">
-                          {program.deliverables.map((category, catIdx) => {
-                            const CatIcon = category.icon;
-                            return (
-                              <div key={catIdx}>
-                                <div className="flex items-center gap-3 mb-6">
-                                  <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center", program.bgLight, program.text)}>
-                                    <CatIcon size={22} />
-                                  </div>
-                                  <h4 className="text-xl font-bold text-slate-900">{category.category}</h4>
+                  {/* Expanded deliverables */}
+                  {isExpanded && (
+                    <div className="border-t border-slate-100 px-6 pb-6">
+                      <div className="pt-6 space-y-8">
+                        {program.deliverables.map((cat, catIdx) => {
+                          const CatIcon = cat.icon;
+                          return (
+                            <div key={catIdx}>
+                              <div className="flex items-center gap-2 mb-4">
+                                <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", colors.light)}>
+                                  <CatIcon size={16} className={colors.accent} />
                                 </div>
-
-                                <div className="grid lg:grid-cols-2 gap-6">
-                                  {category.items.map((item, itemIdx) => (
-                                    <div key={itemIdx} className={cn("p-6 rounded-2xl border", program.border)}>
-                                      <div className="flex items-start justify-between mb-3">
-                                        <h5 className="font-bold text-slate-900">{item.name}</h5>
-                                        <span className={cn("text-xs font-medium px-2 py-1 rounded shrink-0 ml-2", program.bgLight, program.text)}>
-                                          {item.timeline}
-                                        </span>
-                                      </div>
-                                      <p className="text-slate-600 text-sm mb-4">{item.description}</p>
-                                      <ul className="space-y-2">
-                                        {item.details.map((detail, dIdx) => (
-                                          <li key={dIdx} className="flex items-start gap-2 text-sm text-slate-700">
-                                            <Check size={14} className={cn("shrink-0 mt-0.5", program.text)} />
-                                            {detail}
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  ))}
-                                </div>
+                                <h4 className="font-bold text-gov-navy">{cat.category}</h4>
                               </div>
-                            );
-                          })}
-                        </div>
+                              <div className="space-y-4">
+                                {cat.items.map((item, itemIdx) => (
+                                  <div key={itemIdx} className={cn("p-4 rounded-xl border", colors.border, "bg-white")}>
+                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                      <h5 className="font-bold text-gov-navy text-sm">{item.name}</h5>
+                                      <span className={cn("text-xs font-medium px-2 py-0.5 rounded shrink-0", colors.badge)}>
+                                        {item.timeline}
+                                      </span>
+                                    </div>
+                                    <p className="text-slate-600 text-xs mb-3 leading-relaxed">{item.description}</p>
+                                    <ul className="space-y-1.5">
+                                      {item.details.map((d, di) => (
+                                        <li key={di} className="flex items-start gap-2 text-xs text-slate-700">
+                                          <Check size={12} className={cn("shrink-0 mt-0.5", colors.accent)} />
+                                          {d}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
 
                         {/* Timeline */}
-                        <div className="mt-10 pt-10 border-t border-slate-200">
-                          <h4 className="text-xl font-bold text-slate-900 mb-6">{program.duration} Timeline</h4>
-                          <div className="grid lg:grid-cols-5 gap-4">
+                        <div>
+                          <h4 className="font-bold text-gov-navy mb-4">{program.duration} Timeline</h4>
+                          <div className="space-y-2">
                             {program.timeline.map((t, i) => (
-                              <div key={i} className={cn("p-4 rounded-xl", program.bgLight)}>
-                                <div className={cn("text-sm font-bold mb-1", program.text)}>{t.phase}</div>
-                                <div className="font-bold text-slate-900 mb-2">{t.title}</div>
-                                <ul className="space-y-1">
+                              <div key={i} className={cn("p-3 rounded-lg", colors.light)}>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className={cn("text-xs font-bold", colors.accent)}>{t.phase}</span>
+                                  <span className="text-xs font-semibold text-gov-navy">— {t.title}</span>
+                                </div>
+                                <ul className="space-y-0.5">
                                   {t.items.map((item, j) => (
                                     <li key={j} className="text-xs text-slate-600 flex items-start gap-1">
-                                      <Check size={10} className={cn("shrink-0 mt-0.5", program.text)} />
+                                      <Check size={10} className={cn("shrink-0 mt-0.5", colors.accent)} />
                                       {item}
                                     </li>
                                   ))}
@@ -1139,13 +1023,13 @@ export default function Programs() {
                           </div>
                         </div>
 
-                        {/* Not Included */}
+                        {/* Not included */}
                         {program.notIncluded && program.notIncluded.length > 0 && (
-                          <div className="mt-8 p-6 bg-slate-50 rounded-xl">
-                            <h5 className="font-bold text-slate-700 mb-3">Not Included (Available in Higher Tiers)</h5>
-                            <div className="flex flex-wrap gap-2">
+                          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <h5 className="font-bold text-slate-600 text-sm mb-2">Available in Higher Tiers</h5>
+                            <div className="flex flex-wrap gap-1.5">
                               {program.notIncluded.map((item, i) => (
-                                <span key={i} className="px-3 py-1 bg-slate-200 text-slate-600 rounded-full text-sm">
+                                <span key={i} className="px-2.5 py-1 bg-slate-200 text-slate-600 rounded-full text-xs">
                                   {item}
                                 </span>
                               ))}
@@ -1153,24 +1037,118 @@ export default function Programs() {
                           </div>
                         )}
 
-                        {/* Upgrade Note */}
+                        {/* Upgrade note */}
                         {program.upgradeNote && (
-                          <div className="mt-6 p-4 bg-emerald-50 rounded-xl flex items-center gap-3">
-                            <TrendingUp size={20} className="text-emerald-600" />
-                            <span className="text-emerald-700 font-medium">{program.upgradeNote}</span>
+                          <div className="p-4 bg-gov-green/10 rounded-xl border border-gov-green/25 flex items-center gap-3">
+                            <TrendingUp size={18} className="text-gov-green shrink-0" />
+                            <span className="text-sm text-gov-navy font-medium">{program.upgradeNote}</span>
                           </div>
                         )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
 
-                        {/* CTA */}
-                        <div className="mt-8 flex justify-center">
-                          <LinkButton href="/register" className={cn("px-10 py-4 text-lg text-white bg-gradient-to-r", program.gradient)}>
-                            Start {program.name} — ${program.price.toLocaleString()}
-                            <ArrowRight size={20} className="ml-2" />
-                          </LinkButton>
+          <p className="text-center text-sm text-slate-500 mt-6">
+            Not sure which program fits? We'll help you decide in a free 30-minute consultation. No pitch, no obligation.
+          </p>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* THE 5 C's — COMPACT EXPANDABLE */}
+      {/* ============================================ */}
+      <section className="bg-white py-20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gov-blue/10 text-gov-blue text-sm font-semibold mb-4">
+              <Layers size={15} />
+              Our Proven Framework
+            </div>
+            <h2 className="font-display text-3xl lg:text-4xl font-bold text-gov-navy">The 5 C's of Federal Contracting</h2>
+            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+              Every successful government contractor masters these five disciplines. Our programs are structured around this methodology.
+            </p>
+          </div>
+
+          {/* Process flow visual */}
+          <div className="relative mb-10">
+            <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-blue-400 via-rose-400 to-purple-400" />
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+              {fiveCsData.map((c) => {
+                const colors = getColorClasses(c.color);
+                const Icon = c.icon;
+                return (
+                  <div key={c.number} className="flex flex-col items-center text-center">
+                    <div className={cn("w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl mb-3 relative z-10 shadow-md bg-gradient-to-br", colors.gradient)}>
+                      {c.number}
+                    </div>
+                    <h4 className="font-bold text-gov-navy text-sm">{c.name}</h4>
+                    <p className="text-xs text-slate-500 mt-0.5">{c.tagline}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Expandable C cards */}
+          <div className="space-y-3">
+            {fiveCsData.map((c) => {
+              const Icon = c.icon;
+              const colors = getColorClasses(c.color);
+              const isExpanded = expandedC === c.number;
+              return (
+                <div key={c.number} className={cn("rounded-xl border-2 overflow-hidden transition-all", colors.border)}>
+                  <button
+                    onClick={() => setExpandedC(isExpanded ? null : c.number)}
+                    className="w-full p-5 flex items-center gap-5 text-left hover:bg-slate-50 transition"
+                  >
+                    <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 bg-gradient-to-br shadow-sm", colors.gradient)}>
+                      <Icon size={24} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className={cn("text-xs font-bold px-2 py-0.5 rounded", colors.bgLight, colors.text)}>C{c.number}</span>
+                        <span className="font-display text-lg font-bold text-gov-navy">{c.name}</span>
+                        <span className="text-slate-400 text-sm hidden sm:inline">—</span>
+                        <span className={cn("text-sm font-semibold hidden sm:inline", colors.text)}>{c.tagline}</span>
+                      </div>
+                      <p className="text-slate-600 text-sm mt-1 leading-snug">{c.description}</p>
+                    </div>
+                    <ChevronDown size={20} className={cn("text-slate-400 shrink-0 transition-transform", isExpanded && "rotate-180")} />
+                  </button>
+
+                  {isExpanded && (
+                    <div className={cn("px-5 pb-5 border-t", colors.border)}>
+                      <div className="pt-5 grid lg:grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="font-bold text-gov-navy mb-2 text-sm uppercase tracking-wider">What It Means</h4>
+                          <p className="text-slate-600 text-sm leading-relaxed mb-4">{c.whatItMeans}</p>
+                          <div className={cn("p-4 rounded-xl", colors.bgLight)}>
+                            <h5 className={cn("font-bold text-sm mb-1", colors.text)}>Outcome</h5>
+                            <p className="text-slate-700 text-sm">{c.outcome}</p>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gov-navy mb-3 text-sm uppercase tracking-wider">Key Elements</h4>
+                          <div className="space-y-2.5">
+                            {c.elements.map((el, i) => (
+                              <div key={i} className="flex items-start gap-2.5">
+                                <Check size={16} className={cn("shrink-0 mt-0.5", colors.text)} />
+                                <div>
+                                  <span className="font-semibold text-gov-navy text-sm">{el.name}</span>
+                                  <p className="text-xs text-slate-500 mt-0.5">{el.desc}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -1178,42 +1156,57 @@ export default function Programs() {
         </div>
       </section>
 
+      {/* ============================================ */}
       {/* COMPARISON TABLE */}
-      <section ref={comparisonRef} className="py-20 lg:py-28 bg-slate-900 scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-6">
+      {/* ============================================ */}
+      <section className="bg-gov-navy py-20">
+        <div className="mx-auto max-w-6xl px-5 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white">Complete Comparison</h2>
-            <p className="mt-4 text-slate-400">Every feature across all programs, organized by the 5 C's</p>
+            <p className="text-sm font-bold uppercase tracking-wider text-gov-gold mb-3">Side-by-Side</p>
+            <h2 className="font-display text-3xl lg:text-4xl font-bold text-white">Full Program Comparison</h2>
+            <p className="mt-4 text-slate-400">Every feature across all three programs, organized by the 5 C's</p>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-2xl border border-white/10">
             <table className="w-full">
               <thead>
-                <tr>
-                  <th className="p-4 text-left text-slate-400">Feature</th>
-                  {marketingPrograms.map((p) => (
-                    <th key={p.id} className="p-4 text-center">
-                      <span className={cn("inline-block px-3 py-1 rounded-full text-sm font-bold", p.bgLight, p.text)}>{p.name}</span>
-                      <div className="text-white font-bold text-xl mt-2">${p.price.toLocaleString()}</div>
-                      <div className="text-slate-500 text-sm">{p.duration}</div>
-                    </th>
-                  ))}
+                <tr className="border-b border-white/10">
+                  <th className="p-4 text-left text-slate-400 text-sm font-medium">Feature</th>
+                  {marketingPrograms.map((p) => {
+                    const colors = programAccent[p.id];
+                    const Icon = p.icon;
+                    return (
+                      <th key={p.id} className="p-4 text-center min-w-[120px]">
+                        <div className={cn("inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold text-white mb-2", colors.header)}>
+                          <Icon size={14} />
+                          {p.name}
+                        </div>
+                        <div className="font-display text-xl font-bold text-white">${p.price.toLocaleString()}</div>
+                        <div className="text-slate-500 text-xs">{p.duration}</div>
+                      </th>
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
                 {comparisonFeatures.map((cat) => (
                   <>
                     <tr key={cat.category}>
-                      <td colSpan={4} className="pt-8 pb-3 text-xs font-bold uppercase tracking-wide text-amber-400">{cat.category}</td>
+                      <td colSpan={4} className="pt-6 pb-2 px-4 text-xs font-bold uppercase tracking-widest text-gov-gold">{cat.category}</td>
                     </tr>
                     {cat.features.map((f, i) => (
-                      <tr key={f.name} className={i % 2 === 0 ? 'bg-slate-800/50' : ''}>
-                        <td className="p-3 text-slate-300">{f.name}</td>
-                        {['fedstart', 'growth', 'prime'].map((pid) => {
+                      <tr key={f.name} className={cn("border-b border-white/5", i % 2 === 0 ? 'bg-white/3' : '')}>
+                        <td className="p-3 px-4 text-slate-300 text-sm">{f.name}</td>
+                        {(['fedstart', 'growth', 'prime'] as const).map((pid) => {
                           const val = f[pid as keyof typeof f];
                           return (
                             <td key={pid} className="p-3 text-center">
-                              {val === true ? <Check size={18} className="mx-auto text-emerald-400" /> : val === false ? <span className="text-slate-600">—</span> : <span className="text-white">{val}</span>}
+                              {val === true
+                                ? <Check size={16} className="mx-auto text-gov-green" />
+                                : val === false
+                                ? <span className="text-slate-600 text-lg">—</span>
+                                : <span className="text-white text-sm font-medium">{val}</span>
+                              }
                             </td>
                           );
                         })}
@@ -1225,76 +1218,84 @@ export default function Programs() {
             </table>
           </div>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
-            {marketingPrograms.map((p) => (
-              <LinkButton key={p.id} href="/register" className={cn("px-6 py-3 text-white bg-gradient-to-r", p.gradient)}>
-                Start {p.name}
-              </LinkButton>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* GSA SERVICES */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-sm text-slate-700 font-medium mb-4">
-              <FileText size={16} />
-              Contract Vehicles
-            </div>
-            <h2 className="text-3xl font-bold text-slate-900">GSA Schedule Services</h2>
-            <p className="mt-2 text-slate-600">Separate from marketing programs — add to any tier</p>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-            {gsaServices.map((s) => {
-              const Icon = s.icon;
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            {marketingPrograms.map((p) => {
+              const colors = programAccent[p.id];
               return (
-                <div key={s.id} className="p-8 rounded-2xl border-2 border-slate-200 hover:border-slate-300 hover:shadow-lg transition">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center">
-                      <Icon size={24} className="text-slate-700" />
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-slate-900">${s.price.toLocaleString()}</div>
-                      <div className="text-sm text-slate-500">{s.timeline}</div>
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900">{s.name}</h3>
-                  <p className="mt-2 text-slate-600 mb-4">{s.description}</p>
-                  <ul className="space-y-2 mb-6">
-                    {s.features.map((f, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
-                        <Check size={14} className="text-emerald-500" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <LinkButton href="/register" className="w-full justify-center bg-slate-900 text-white">
-                    Get Started
-                  </LinkButton>
-                </div>
+                <LinkButton
+                  key={p.id}
+                  href={LINKS.booking}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn("text-white font-bold", colors.header)}
+                >
+                  Start {p.name} — ${p.price.toLocaleString()}
+                  <ArrowRight size={16} className="ml-1.5" />
+                </LinkButton>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-slate-900 to-slate-800">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white">Ready to Get Started?</h2>
-          <p className="mt-4 text-xl text-slate-300">Book a free consultation or call us directly.</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <LinkButton href={LINKS.booking} target="_blank" className="px-8 py-4 bg-white text-slate-900 hover:bg-slate-100">
-              Book Free Consultation
+      {/* ============================================ */}
+      {/* GSA CROSSLINK */}
+      {/* ============================================ */}
+      <section className="bg-gov-blue py-12">
+        <div className="mx-auto max-w-5xl px-5 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 text-white">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-white/60 mb-1">Also Available</p>
+              <h3 className="font-display text-xl font-bold">Need a GSA Schedule?</h3>
+              <p className="text-white/80 text-sm mt-1">
+                Get on the GSA MAS contract — $5,500 Essentials or $9,000 Full-Service — or upload your existing catalog to the GSA Catalog Platform for a flat $999.
+              </p>
+            </div>
+            <LinkButton
+              href="/services"
+              className="bg-white text-gov-blue hover:bg-slate-100 font-bold shrink-0"
+            >
+              GSA Schedule Services
+              <ArrowRight size={16} className="ml-1.5" />
             </LinkButton>
-            <a href="tel:8136650308" className="inline-flex items-center gap-2 px-8 py-4 border border-white/30 text-white hover:bg-white/10 rounded-lg font-semibold transition">
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* FINAL CTA */}
+      {/* ============================================ */}
+      <section className="bg-slate-50 py-20">
+        <div className="mx-auto max-w-3xl px-5 lg:px-8 text-center">
+          <p className="text-sm font-bold uppercase tracking-wider text-gov-blue mb-3">Start Here</p>
+          <h2 className="font-display text-3xl lg:text-4xl font-bold text-gov-navy">
+            One Conversation.<br />A Clear Path Forward.
+          </h2>
+          <p className="mt-4 text-lg text-slate-600 leading-relaxed">
+            Book a free 30-minute consultation. We'll assess where you are, recommend the right program, and give you a concrete action plan — no pitch, no obligation.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <LinkButton
+              href={LINKS.booking}
+              target="_blank"
+              rel="noreferrer"
+              size="lg"
+              className="font-bold"
+            >
+              Book Free Consultation
+              <ArrowRight size={18} className="ml-2" />
+            </LinkButton>
+            <a
+              href="tel:8136650308"
+              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-gov-navy/20 text-gov-navy hover:bg-gov-navy/5 rounded-lg font-semibold transition"
+            >
               <Phone size={18} />
               (813) 665-0308
             </a>
           </div>
+          <p className="text-slate-500 text-sm mt-6">
+            Upgrade anytime — your full investment always applies as credit toward the next tier.
+          </p>
         </div>
       </section>
     </>
