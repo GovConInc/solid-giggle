@@ -1,85 +1,36 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { 
-  ArrowRight, CheckCircle2, Shield, Target, FileText, Users,
-  Award, Building2, Rocket, TrendingUp, Clock, Database,
-  CheckCheck, AlertCircle, Zap
+import {
+  ArrowRight, CheckCircle, Shield, Target, Lightbulb,
+  Trophy, Repeat, Rocket, BarChart3, Crown, Phone,
 } from "lucide-react";
 import Section from "../components/Section";
-import Card from "../components/Card";
 import { LinkButton } from "../components/Button";
 import { BRAND, LINKS } from "../lib/constants";
-import MethodologyLoop from "../components/MethodologyLoop";
+import ContractDataExplorer from "../components/ContractDataExplorer";
 
-const guaranteedPrograms = [
-  {
-    icon: Shield,
-    title: "SAM.gov Registration",
-    subtitle: "5 Business Days",
-    description: "SAM.gov is free through the federal system. We step in for companies that prefer professional management or have issues. Complete SAM.gov registration with CAGE code, UEI, and all required validation.",
-  },
-  {
-    icon: Award,
-    title: "SBA Certifications",
-    subtitle: "14 Business Days",
-    description: "SBA certifications submitted within 14 days by our certification specialists. Full application preparation, templates, submission, and ongoing support. Includes a tailored set-aside roadmap.",
-    guarantee: "Submitted or Full Refund",
-  },
-  {
-    icon: Building2,
-    title: "GSA Schedule Award",
-    subtitle: "30 Business Days",
-    description: "Complete GSA MAS application submitted in 30 days. We start with strategy and alignment, prepare pricing, documentation, and technical responses, followed by negotiations, initial award, and more.",
-    guarantee: "Free Qualification Assessment",
-  },
+/* ───────────────────────────────────────────── */
+/*  DATA                                         */
+/* ───────────────────────────────────────────── */
+
+const stats = [
+  { value: "7,000+", label: "Registrations Completed" },
+  { value: "$640M", label: "Largest Win Supported" },
+  { value: "87%", label: "GSA Approval Rate" },
+  { value: "100%", label: "On-Time Guarantee" },
 ];
 
-const fcpServices = [
-  {
-    icon: Database,
-    title: "FCP Baseline Migration",
-    description: "Seamless transition from legacy GSA Schedule Input Program (SIP) to the new FAS Catalog Platform (FCP) without losing catalog data or compliance standing.",
-  },
-  {
-    icon: FileText,
-    title: "GSA Contract Management",
-    description: "Professional management of your GSA Schedule, including all Modifications, Sales Reporting, Product/Service Updates, Refreshes/Mass Mods, annual assessments, & more",
-  },
-  {
-    icon: CheckCheck,
-    title: "Modification Support",
-    description: "GSA Schedule modifications for new SINs, offerings, pricing, and EPA updates, with accurate and compliant GSA catalog pricing maintained throughout.",
-  },
-  {
-    icon: TrendingUp,
-    title: "GSA Advantage & eBuy Support",
-    description: "Ongoing management of GSA Advantage listings and eBuy participation, including catalog accuracy, compliance checks, and timely updates.",
-  },
+const fiveCs = [
+  { num: "1", name: "Compliance", icon: Shield, desc: "Registrations, certifications & eligibility." },
+  { num: "2", name: "Concept", icon: Lightbulb, desc: "Strategy, positioning & materials." },
+  { num: "3", name: "Capture", icon: Target, desc: "Finding & qualifying opportunities." },
+  { num: "4", name: "Compete", icon: Trophy, desc: "Proposals, pricing & reviews." },
+  { num: "5", name: "Continue", icon: Repeat, desc: "Performance, renewals & growth." },
 ];
 
-const whyChooseUs = [
-  {
-    stat: "7,000+",
-    label: "Registrations Completed",
-    detail: "SAM.gov, DSBS, FEMA, and SBA certifications processed and approved.",
-  },
-  {
-    stat: "$640M",
-    label: "Largest Win Supported",
-    detail: "High-value proposals supported across federal, state, and local government agencies.",
-  },
-  {
-    stat: "87%",
-    label: "GSA Approval Rate",
-    detail: "Accurate, complete submissions driven by experience, discipline, and execution speed.",
-  },
-  {
-    stat: "100%",
-    label: "On-Time Guarantee",
-    detail: "Every deadline met, or your money back.",
-  },
-];
+/* ───────────────────────────────────────────── */
+/*  COMPONENT                                    */
+/* ───────────────────────────────────────────── */
 
 export default function Home() {
   return (
@@ -100,364 +51,276 @@ export default function Home() {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white border-b border-slate-100">
-        <div className="absolute inset-0 bg-grid opacity-20" />
-        
-        <div className="relative mx-auto w-full max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Column - Heading & CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-1.5 text-sm font-bold text-slate-700 border border-slate-200">
-                <Zap size={14} className="animate-pulse-subtle" />
-                Federal Contracting Specialists
-              </div>
-
-              <h1 className="mt-6 font-display text-4xl font-black tracking-tight text-gov-navy sm:text-5xl lg:text-6xl leading-tight">
-                Win Federal Contracts. Keep Winning.
-              </h1>
-
-              <p className="mt-6 text-lg text-slate-700 leading-relaxed">
-                FedGovWin helps businesses enter the federal marketplace, get certified, and win contracts — with expert GSA Schedule support, SBA certifications, and proposal writing that delivers results. Guaranteed timelines. No guessing.
-              </p>
-
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer" size="lg">
-                  Book Readiness Call
-                  <ArrowRight size={18} className="ml-2" />
-                </LinkButton>
-                <LinkButton href="/services" variant="secondary" size="lg">
-                  Explore Services
-                </LinkButton>
-              </div>
-
-            </motion.div>
-            {/* Right Column - Quick Service Picker */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:pl-8"
-            >
-              <Card className="p-8 bg-white shadow-2xl">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="h-12 w-12 rounded-xl bg-gov-blue/10 flex items-center justify-center">
-                    <Rocket className="text-gov-blue" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-xl text-gov-navy">Where Do You Start?</h3>
-                    <p className="text-sm text-slate-600">Choose your path forward</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <Link
-                    to="/services/gsa-contractors"
-                    className="block p-4 rounded-xl border-2 border-slate-200 hover:border-gov-crimson hover:bg-gov-crimson/5 transition group"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-bold text-gov-navy group-hover:text-gov-crimson transition">
-                          New GSA Schedule Application
-                        </div>
-                        <div className="text-sm text-slate-600 mt-1">
-                          MAS award in 30 business days, guaranteed
-                        </div>
-                      </div>
-                      <ArrowRight className="text-slate-400 group-hover:text-gov-crimson transition" size={20} />
-                    </div>
-                  </Link>
-
-                  <Link
-                    to="/services/gsa-contractors"
-                    className="block p-4 rounded-xl border-2 border-slate-200 hover:border-gov-blue hover:bg-gov-blue/5 transition group"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-bold text-gov-navy group-hover:text-gov-blue transition">
-                          FCP Catalog Migration
-                        </div>
-                        <div className="text-sm text-slate-600 mt-1">
-                          SIP → FCP transition completed in 7–14 days
-                        </div>
-                      </div>
-                      <ArrowRight className="text-slate-400 group-hover:text-gov-blue transition" size={20} />
-                    </div>
-                  </Link>
-
-                  <Link
-                    to="/services/gsa-contractors"
-                    className="block p-4 rounded-xl border-2 border-slate-200 hover:border-gov-green hover:bg-gov-green/5 transition group"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-bold text-gov-navy group-hover:text-gov-green transition">
-                          Ongoing Schedule Management
-                        </div>
-                        <div className="text-sm text-slate-600 mt-1">
-                          Modifications, reporting, and catalog upkeep
-                        </div>
-                      </div>
-                      <ArrowRight className="text-slate-400 group-hover:text-gov-green transition" size={20} />
-                    </div>
-                  </Link>
-                </div>
-              </Card>
-            </motion.div>
+      {/* ── HERO ── */}
+      <section className="bg-gov-navy py-20 lg:py-28">
+        <div className="mx-auto max-w-4xl px-5 lg:px-8 text-center">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+            Win Federal Contracts.{" "}
+            <span className="text-gov-gold">Keep Winning.</span>
+          </h1>
+          <p className="mt-6 text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            {BRAND.fullName} helps businesses get registered, get certified, and win government contracts — with guaranteed timelines and proven methodology.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <LinkButton href={LINKS.booking} target="_blank" rel="noreferrer" size="lg" className="bg-white text-gov-navy hover:bg-slate-100 font-bold">
+              Book Free Consultation <ArrowRight size={18} className="ml-2" />
+            </LinkButton>
+            <a href="#services" className="inline-flex items-center gap-2 px-6 py-3 border border-white/20 text-white rounded-lg hover:bg-white/10 transition font-medium">
+              View Services <ArrowRight size={16} />
+            </a>
           </div>
-        </div>
-      </section>
 
-      {/* Social Proof Stats */}
-      <section className="bg-gov-navy py-12">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {whyChooseUs.map((item, idx) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-4xl font-black text-white mb-2">{item.stat}</div>
-                <div className="text-gov-gold font-bold mb-1">{item.label}</div>
-                <div className="text-sm text-slate-300">{item.detail}</div>
-              </motion.div>
+          {/* Stats */}
+          <div className="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-6 pt-10 border-t border-white/10">
+            {stats.map((s) => (
+              <div key={s.label}>
+                <div className="font-display text-2xl font-bold text-white">{s.value}</div>
+                <div className="text-sm text-slate-400 mt-0.5">{s.label}</div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Guaranteed Certification Programs */}
-      <Section title="Guaranteed Delivery. Every Time." kicker="Our Timelines" center>
-        <p className="text-center text-slate-600 max-w-5xl mx-auto mb-12">
-          These programs come with ironclad completion guarantees. We'll complete and submit your applications 
-          within the stated timelines—as long as you provide the documents we need. That's it. No excuses, no delays.
-        </p>
+      {/* ── CONTRACT SEARCH ── */}
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="text-center mb-10">
+            <p className="text-sm font-semibold uppercase tracking-wider text-gov-blue">Market Intelligence</p>
+            <h2 className="mt-2 font-display text-3xl font-bold text-gov-navy">
+              Search Federal Contract Awards
+            </h2>
+            <p className="mt-3 text-slate-600 max-w-xl mx-auto">
+              Research past-year contract awards by NAICS code, state, or set-aside type to find your opportunity.
+            </p>
+          </div>
+          <ContractDataExplorer />
+        </div>
+      </section>
 
-        <div className="grid gap-8 lg:grid-cols-3 mx-auto max-w-6xl">
-          {guaranteedPrograms.map((program, idx) => (
-            <motion.div
-              key={program.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-            >
-              <Card className="p-6 h-full border-2 mx-auto max-w-md" hover>
-                <div className="flex items-start justify-between mb-4">
-                  <div className="h-14 w-14 rounded-xl bg-gov-navy flex items-center justify-center text-white">
-                    <program.icon size={28} />
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs font-bold text-gov-green bg-gov-green/10 px-2 py-1 rounded">
-                      {program.guarantee}
+      {/* ── WHO WE ARE + 5 C's ── */}
+      <section className="bg-white py-16 border-t border-slate-100">
+        <div className="mx-auto max-w-5xl px-5 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            {/* Left — company brief */}
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wider text-gov-blue">About FedGovWin</p>
+              <h2 className="mt-2 font-display text-3xl font-bold text-gov-navy">
+                Built for Federal Contractors
+              </h2>
+              <p className="mt-4 text-slate-600 leading-relaxed">
+                FedGovWin Professional Services — based in Tampa, FL — was founded to help businesses navigate the
+                federal marketplace without the guesswork. We've completed over 7,000 registrations, supported wins up
+                to $640M, and maintain an 87% GSA approval rate.
+              </p>
+              <p className="mt-4 text-slate-600 leading-relaxed">
+                Our team brings backgrounds in government contracting, technology, and business development. Every
+                engagement is built on our proven 5&nbsp;C's methodology — a structured path from compliance through
+                continued growth.
+              </p>
+              <Link
+                to="/about/methodology"
+                className="mt-6 inline-flex items-center gap-2 text-gov-blue font-semibold text-sm hover:gap-3 transition-all"
+              >
+                Learn more about our methodology <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            {/* Right — 5 C's */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-4">The 5 C's Framework</h3>
+              {fiveCs.map((c) => {
+                const Icon = c.icon;
+                return (
+                  <div key={c.num} className="flex items-start gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100">
+                    <div className="w-9 h-9 rounded-lg bg-gov-navy flex items-center justify-center text-white shrink-0">
+                      <Icon size={18} />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-slate-400">C{c.num}</span>
+                        <span className="font-bold text-gov-navy text-sm">{c.name}</span>
+                      </div>
+                      <p className="text-sm text-slate-600 mt-0.5">{c.desc}</p>
                     </div>
                   </div>
-                </div>
-
-                <h3 className="text-xl font-bold text-gov-navy mb-1">{program.title}</h3>
-                <div className="text-sm font-semibold text-gov-blue mb-3 flex items-center gap-2">
-                  <Clock size={14} />
-                  {program.subtitle}
-                </div>
-                <p className="text-slate-600 leading-relaxed">{program.description}</p>
-
-                <Link 
-                  to="/services"
-                  className="mt-6 inline-flex items-center gap-2 text-gov-crimson font-bold text-sm hover:gap-3 transition-all"
-                >
-                  Learn More <ArrowRight size={16} />
-                </Link>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <Card className="inline-block p-6 bg-slate-50 border-2 border-gov-gold">
-            <div className="flex items-center gap-3">
-              <AlertCircle className="text-gov-gold" size={24} />
-              <div className="text-left">
-                <div className="font-bold text-gov-navy">The Only Requirement</div>
-                <div className="text-sm text-slate-600">
-                  Provide the documents we request. We handle the rest.
-                </div>
-              </div>
+                );
+              })}
             </div>
-          </Card>
+          </div>
         </div>
-      </Section>
+      </section>
 
-      {/* FCP Catalog Management for GSA Vendors */}
-      <section className="bg-slate-50 py-16">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="text-center mb-12">
-          <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">FOR GSA CONTRACTORS</p>
-            <h2 className="mt-2 font-display text-4xl font-bold text-gov-navy">2026 GSA Updates</h2>
-            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-              GSA has transitioned from legacy SIP/EDI to the new FAS Catalog Platform. We handle your baseline 
-              migration, Price Proposal migration, and Compliance and Pricing (C&P)report. Our services don't stop there.
+      {/* ── SERVICES — easy decision ── */}
+      <section id="services" className="bg-slate-50 py-20 scroll-mt-16">
+        <div className="mx-auto max-w-6xl px-5 lg:px-8">
+          <div className="text-center mb-14">
+            <p className="text-sm font-semibold uppercase tracking-wider text-gov-blue">Our Services</p>
+            <h2 className="mt-2 font-display text-3xl lg:text-4xl font-bold text-gov-navy">
+              Two Paths. One Goal: Winning.
+            </h2>
+            <p className="mt-3 text-slate-600 max-w-lg mx-auto">
+              Whether you need a GSA Schedule or a full federal contracting program, we have a clear path for you.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-12">
-            {fcpServices.map((service, idx) => (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-              >
-                <Card className="p-6 h-full bg-white" hover>
-                  <div className="h-12 w-12 rounded-xl bg-gov-blue/10 flex items-center justify-center text-gov-blue mb-4">
-                    <service.icon size={24} />
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* GSA Services */}
+            <div className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+              <div className="bg-gov-blue p-6 text-white">
+                <h3 className="font-display text-2xl font-bold">GSA Schedule Services</h3>
+                <p className="text-white/80 text-sm mt-1">Get on the GSA Schedule or manage your existing contract.</p>
+              </div>
+              <div className="p-6 lg:p-8 flex flex-col flex-1">
+                <div className="space-y-4 mb-6 flex-1">
+                  <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-100 rounded-lg">
+                    <div className="font-display text-lg font-bold text-gov-navy shrink-0 w-20">$5,500</div>
+                    <div>
+                      <div className="font-bold text-gov-navy text-sm">GSA Essentials</div>
+                      <p className="text-xs text-slate-600">Full MAS application submitted in 30 business days.</p>
+                    </div>
                   </div>
-                  <h3 className="font-bold text-gov-navy mb-2">{service.title}</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">{service.description}</p>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+                  <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-100 rounded-lg">
+                    <div className="font-display text-lg font-bold text-gov-navy shrink-0 w-20">$9,000</div>
+                    <div>
+                      <div className="font-bold text-gov-navy text-sm">GSA Full-Service</div>
+                      <p className="text-xs text-slate-600">Application + negotiation support + catalog setup.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-100 rounded-lg">
+                    <div className="font-display text-lg font-bold text-gov-navy shrink-0 w-20">$999</div>
+                    <div>
+                      <div className="font-bold text-gov-navy text-sm">FCP Catalog Migration</div>
+                      <p className="text-xs text-slate-600">SIP → FCP transition in 7–14 days. Avoid contract cancellation.</p>
+                    </div>
+                  </div>
+                </div>
 
-          <div className="bg-gradient-to-r from-gov-blue to-gov-navy rounded-2xl p-8 lg:p-12 text-white">
-            <div className="grid lg:grid-cols-2 gap-8 items-center">
-              <div>
-                <h3 className="text-2xl font-bold mb-4">Avoid GSA Contract Cancellation</h3>
-                <p className="text-slate-200 leading-relaxed mb-6">
-                  GSA requires FCP baseline migration within 60 days of notification. Missing this deadline 
-                  can result in contract suspension or cancellation. We complete migrations in 7-14 days.
-                </p>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="text-gov-gold shrink-0 mt-0.5" size={20} />
-                    <span>Product File & Services Plus File setup</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="text-gov-gold shrink-0 mt-0.5" size={20} />
-                    <span>Compliance & Pricing (C&P) reporting </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="text-gov-gold shrink-0 mt-0.5" size={20} />
-                    <span>Performance Assessment & Training</span>
-                  </li>
+                <ul className="space-y-2 mb-6 text-sm text-slate-700">
+                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-gov-green shrink-0" /> 87% approval rate</li>
+                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-gov-green shrink-0" /> 30-day submission guarantee</li>
+                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-gov-green shrink-0" /> Ongoing contract management available</li>
                 </ul>
-              </div>
-              <div className="lg:pl-8">
-                <Card className="p-8 bg-white/10 border-white/20">
-                  <div className="text-5xl font-black text-gov-gold mb-2">14 Days. Guarunteed.</div>
-                  <div className="text-white font-bold mb-4">To Complete FCP Migration</div>
-                  <p className="text-slate-300 text-sm mb-6">
-                    Don't risk losing your GSA Schedule. We handle the entire transition within 2 weeks - or your money back.
-                  </p>
-                  <LinkButton href="/services" variant="secondary" className="w-full">
-                    Get Started Now
-                  </LinkButton>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Methodology - The Stages */}
-      <section className="bg-white py-16">
-        <MethodologyLoop />
-      </section>
-
-      {/* Quick Links Section */}
-      <section className="bg-slate-50 py-16">
-        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="text-center mb-10">
-            <p className="text-sm font-bold uppercase tracking-wider text-gov-blue">Quick Links</p>
-            <h2 className="mt-2 font-display text-3xl font-bold text-gov-navy">Essential Resources</h2>
-          </div>
-          
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { name: "SAM.gov", url: "https://sam.gov", desc: "Federal contractor registration portal" },
-              { name: "GSA eLibrary", url: "https://www.gsaelibrary.gsa.gov", desc: "GSA Schedule contract search" },
-              { name: "FCP Platform", url: "https://catalog.gsa.gov/", desc: "FAS Catalog Platform for GSA vendors" },
-              { name: "GSA Advantage", url: "https://www.gsaadvantage.gov", desc: "Federal online shopping portal" },
-            ].map((link) => (
-              <a 
-                key={link.url}
-                href={link.url} 
-                target="_blank" 
-                rel="noreferrer noopener" 
-                className="group rounded-xl border-2 border-slate-200 bg-white p-5 transition hover:border-gov-blue hover:shadow-lg"
-              >
-                <div className="font-bold text-gov-navy group-hover:text-gov-blue transition">{link.name}</div>
-                <div className="mt-1 text-sm text-slate-600">{link.desc}</div>
-                <ArrowRight className="mt-3 text-slate-400 group-hover:text-gov-blue transition" size={16} />
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <Section title="Ready to Win Federal Contracts?" kicker="Next Step" dark>
-        <Card className="p-8 lg:p-12 bg-white/5 border-white/10" hover={false}>
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="font-display text-3xl font-bold text-white mb-4">
-                Book Your Free Federal Readiness Call
-              </h3>
-              <p className="text-slate-300 text-lg leading-relaxed mb-6">
-                We'll assess your federal contracting eligibility, review your certifications and GSA status,
-                and deliver a clear action plan. No pitch — just actionable intelligence.
-              </p>
-              <ul className="space-y-3">
-                <li className="flex items-center gap-3 text-white">
-                  <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  Federal eligibility and certification review
-                </li>
-                <li className="flex items-center gap-3 text-white">
-                  <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  GSA Schedule and FCP readiness assessment
-                </li>
-                <li className="flex items-center gap-3 text-white">
-                  <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  Opportunity pipeline and win strategy
-                </li>
-                <li className="flex items-center gap-3 text-white">
-                  <CheckCircle2 className="text-gov-gold shrink-0" size={20} />
-                  Clear next-step roadmap — no obligation
-                </li>
-              </ul>
-            </div>
-            <div className="lg:pl-8">
-              <Card className="p-8 bg-white text-center">
-                <div className="text-4xl mb-2">📞</div>
-                <h4 className="text-2xl font-bold text-gov-navy mb-3">Schedule Your Call</h4>
-                <p className="text-slate-600 mb-6">
-                  15-30 minutes. Zero obligation. 100% transparency.
-                </p>
-                <LinkButton
-                  href={LINKS.booking}
-                  target="_blank"
-                  rel="noreferrer"
-                  size="lg"
-                  className="w-full"
+                <Link
+                  to="/services"
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gov-blue text-white rounded-lg font-bold hover:bg-gov-blue/90 transition"
                 >
-                  Book Now — It's Free
-                  <ArrowRight size={18} className="ml-2" />
-                </LinkButton>
-                <p className="mt-4 text-xs text-slate-500">
-                  Trusted by businesses of all sizes across the US
-                </p>
-              </Card>
+                  GSA Schedule Services <ArrowRight size={16} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Contractor Programs */}
+            <div className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+              <div className="bg-gov-navy p-6 text-white">
+                <h3 className="font-display text-2xl font-bold">Federal Contractor Programs</h3>
+                <p className="text-white/80 text-sm mt-1">From registration to winning — pick where you are.</p>
+              </div>
+              <div className="p-6 lg:p-8 flex flex-col flex-1">
+                <div className="space-y-4 mb-6 flex-1">
+                  <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-100 rounded-lg">
+                    <div className="w-9 h-9 rounded-lg bg-gov-blue flex items-center justify-center text-white shrink-0">
+                      <Rocket size={18} />
+                    </div>
+                    <div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="font-bold text-gov-navy text-sm">FedStart</span>
+                        <span className="font-display text-sm font-bold text-slate-500">$3,200</span>
+                      </div>
+                      <p className="text-xs text-slate-600">3 months — registrations, certifications, capabilities statement.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-gov-crimson/5 border border-gov-crimson/15 rounded-lg">
+                    <div className="w-9 h-9 rounded-lg bg-gov-crimson flex items-center justify-center text-white shrink-0">
+                      <BarChart3 size={18} />
+                    </div>
+                    <div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="font-bold text-gov-navy text-sm">Growth</span>
+                        <span className="font-display text-sm font-bold text-slate-500">$6,500</span>
+                        <span className="text-xs font-bold text-gov-crimson bg-gov-crimson/10 px-1.5 py-0.5 rounded">Popular</span>
+                      </div>
+                      <p className="text-xs text-slate-600">6 months — bid portal, campaigns, unlimited RFP reviews.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-100 rounded-lg">
+                    <div className="w-9 h-9 rounded-lg bg-gov-navy flex items-center justify-center text-white shrink-0">
+                      <Crown size={18} />
+                    </div>
+                    <div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="font-bold text-gov-navy text-sm">Prime</span>
+                        <span className="font-display text-sm font-bold text-slate-500">$15,500</span>
+                      </div>
+                      <p className="text-xs text-slate-600">12 months — dedicated capture manager, 5 proposals, 4 campaigns.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <ul className="space-y-2 mb-6 text-sm text-slate-700">
+                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-gov-green shrink-0" /> Built on the proven 5 C's methodology</li>
+                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-gov-green shrink-0" /> Upgrade anytime — investment applies as credit</li>
+                  <li className="flex items-center gap-2"><CheckCircle size={14} className="text-gov-green shrink-0" /> Clear deliverables, real timelines</li>
+                </ul>
+
+                <Link
+                  to="/services/programs"
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gov-navy text-white rounded-lg font-bold hover:bg-gov-navy/90 transition"
+                >
+                  View Programs <ArrowRight size={16} />
+                </Link>
+              </div>
             </div>
           </div>
-        </Card>
+
+          <p className="text-center text-sm text-slate-500 mt-8">
+            Not sure where to start? Book a free consultation and we'll recommend the right path.
+          </p>
+        </div>
+      </section>
+
+      {/* ── FINAL CTA ── */}
+      <Section title="Ready to Start Winning?" kicker="Next Step" dark>
+        <div className="grid lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <p className="text-lg text-slate-300 leading-relaxed mb-6">
+              Book a free 30-minute consultation. We'll assess where you are, recommend the right service, and give you a concrete action plan — no pitch, no obligation.
+            </p>
+            <ul className="space-y-3">
+              {[
+                "Federal eligibility and certification review",
+                "GSA Schedule and FCP readiness assessment",
+                "Opportunity pipeline and win strategy",
+                "Clear next-step roadmap — no obligation",
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-white text-sm">
+                  <CheckCircle className="text-gov-gold shrink-0" size={16} />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center">
+            <h3 className="text-2xl font-bold text-white mb-2">Schedule Your Call</h3>
+            <p className="text-slate-400 mb-6 text-sm">
+              30 minutes. Zero obligation. 100% transparency.
+            </p>
+            <LinkButton
+              href={LINKS.booking}
+              target="_blank"
+              rel="noreferrer"
+              size="lg"
+              className="w-full bg-white text-gov-navy hover:bg-slate-100 font-bold"
+            >
+              Book Now — It's Free <ArrowRight size={18} className="ml-2" />
+            </LinkButton>
+            <div className="mt-4 flex items-center justify-center gap-2 text-slate-400 text-sm">
+              <Phone size={14} />
+              <a href="tel:8136650308" className="hover:text-white transition">{BRAND.phone}</a>
+            </div>
+          </div>
+        </div>
       </Section>
     </>
   );
