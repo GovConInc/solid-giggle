@@ -187,7 +187,8 @@ export default function ServicesCertifications() {
       {/* Hero */}
       <section className="bg-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-50" />
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gov-blue/5 to-transparent" />
+        <div className="absolute inset-0 bg-mesh opacity-30" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gov-blue/8 to-transparent" />
         
         <div className="relative mx-auto w-full max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">

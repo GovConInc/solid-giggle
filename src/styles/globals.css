@@ -8,8 +8,8 @@
   --ring: 10 22 40; /* gov-navy */
 }
 
-* { 
-  -webkit-tap-highlight-color: transparent; 
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -17,7 +17,7 @@ html {
 }
 
 ::selection {
-  background: rgba(10, 22, 40, 0.12);
+  background: rgba(30, 77, 140, 0.15);
   color: #0a1628;
 }
 
@@ -47,21 +47,52 @@ h1, .text-4xl, .text-5xl, .text-6xl {
   outline-offset: 2px;
 }
 
+/* ─── GRADIENTS ─── */
 .gradient-line {
   background: linear-gradient(90deg, #111827, #1e3a5f);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #0a1628 0%, #1e3a5f 100%);
+  background: linear-gradient(135deg, #0a1628 0%, #1e4d8c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+.gradient-text-hero {
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-border {
+  position: relative;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(30, 77, 140, 0.3), rgba(185, 28, 28, 0.3));
+  z-index: -1;
+}
+
+/* ─── BACKGROUNDS ─── */
 .bg-grid {
   background-image:
     linear-gradient(to right, rgba(10, 22, 40, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(10, 22, 40, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.bg-grid-dark {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
@@ -70,7 +101,55 @@ h1, .text-4xl, .text-5xl, .text-6xl {
   background-size: 24px 24px;
 }
 
-/* Card hover animation */
+.bg-dots-dark {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-mesh {
+  background:
+    radial-gradient(at 27% 37%, rgba(30, 77, 140, 0.08) 0px, transparent 50%),
+    radial-gradient(at 97% 21%, rgba(185, 28, 28, 0.06) 0px, transparent 50%),
+    radial-gradient(at 52% 99%, rgba(5, 150, 105, 0.04) 0px, transparent 50%),
+    radial-gradient(at 10% 29%, rgba(217, 119, 6, 0.04) 0px, transparent 50%);
+}
+
+.bg-mesh-dark {
+  background:
+    radial-gradient(at 27% 37%, rgba(30, 77, 140, 0.15) 0px, transparent 50%),
+    radial-gradient(at 97% 21%, rgba(185, 28, 28, 0.1) 0px, transparent 50%),
+    radial-gradient(at 52% 99%, rgba(5, 150, 105, 0.06) 0px, transparent 50%);
+}
+
+.bg-hero-gradient {
+  background: linear-gradient(135deg, #0a1628 0%, #122240 30%, #1e4d8c 70%, #0a1628 100%);
+}
+
+.bg-navy-gradient {
+  background: linear-gradient(180deg, #0a1628 0%, #0f1f38 100%);
+}
+
+/* ─── GLASSMORPHISM ─── */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-dark {
+  background: rgba(10, 22, 40, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ─── CARD EFFECTS ─── */
 .card-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -80,12 +159,52 @@ h1, .text-4xl, .text-5xl, .text-6xl {
   box-shadow: 0 20px 40px -12px rgba(10, 22, 40, 0.15);
 }
 
-/* Subtle text shadow for headers */
+.card-hover-glow {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-glow:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px -12px rgba(10, 22, 40, 0.15),
+    0 0 0 1px rgba(30, 77, 140, 0.1);
+}
+
+.card-interactive {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px rgba(10, 22, 40, 0.12);
+  border-color: rgba(30, 77, 140, 0.3);
+}
+
+/* ─── SHIMMER EFFECT ─── */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: shimmer 2s linear infinite;
+}
+
+/* ─── TEXT EFFECTS ─── */
 .text-shadow {
   text-shadow: 0 2px 4px rgba(10, 22, 40, 0.1);
 }
 
-/* Professional number formatting for stats */
+.text-shadow-dark {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ─── NUMBER FORMATTING ─── */
 .stat-number {
   font-family: 'Libre Franklin', sans-serif;
   font-weight: 800;
@@ -93,7 +212,7 @@ h1, .text-4xl, .text-5xl, .text-6xl {
   letter-spacing: -0.02em;
 }
 
-/* Scrollbar styling */
+/* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -112,32 +231,46 @@ h1, .text-4xl, .text-5xl, .text-6xl {
   background: #94a3b8;
 }
 
-/* Animation utilities */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ─── DECORATIVE SHAPES ─── */
+.accent-line {
+  width: 48px;
+  height: 4px;
+  background: linear-gradient(90deg, #b91c1c, #1e4d8c);
+  border-radius: 4px;
 }
 
-.animate-fade-in-up {
-  animation: fade-in-up 0.6s ease-out forwards;
+.accent-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #b91c1c, #d97706);
 }
 
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+/* ─── DIVIDERS ─── */
+.divider-gradient {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(10, 22, 40, 0.1), transparent);
 }
 
-.animate-pulse-subtle {
-  animation: pulse-subtle 2s ease-in-out infinite;
+.divider-gradient-dark {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
 }
 
-/* Smooth transitions for interactive elements */
+/* ─── SMOOTH TRANSITIONS ─── */
 button, a, input, select, textarea {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── STAGGER ANIMATION DELAYS ─── */
+.stagger-1 { animation-delay: 100ms; }
+.stagger-2 { animation-delay: 200ms; }
+.stagger-3 { animation-delay: 300ms; }
+.stagger-4 { animation-delay: 400ms; }
+.stagger-5 { animation-delay: 500ms; }
+.stagger-6 { animation-delay: 600ms; }
+
+/* ─── BADGE STYLES ─── */
+.badge-glow {
+  box-shadow: 0 0 12px -2px currentColor;
 }

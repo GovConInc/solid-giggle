@@ -243,9 +243,13 @@ export default function Programs() {
       </Helmet>
 
       {/* ── HERO ── */}
-      <section className="bg-gov-navy py-20 lg:py-28">
-        <div className="mx-auto max-w-4xl px-5 lg:px-8 text-center">
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+      <section className="bg-hero-gradient relative overflow-hidden py-20 lg:py-28">
+        <div className="absolute inset-0 bg-grid-dark" />
+        <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-gov-blue/20 blur-[120px]" />
+        <div className="absolute -bottom-40 -left-40 h-[400px] w-[400px] rounded-full bg-gov-crimson/10 blur-[120px]" />
+        <div className="relative mx-auto max-w-4xl px-5 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/10 px-4 py-1.5 text-sm font-medium text-slate-300 mb-6"><span className="h-2 w-2 rounded-full bg-gov-green animate-pulse" />Built on our proven 5 C's methodology</div>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight text-shadow-dark">
             Everything You Need to{" "}
             <span className="text-gov-gold">Win Federal Contracts.</span>
           </h1>
